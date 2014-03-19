@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var join = require('path').join;
 var should = require('should');
 var gulp = require('gulp');
@@ -13,8 +14,13 @@ var replace = transport.cmdreplace;
 var util = transport.util;
 
 describe('gulp-transport', function() {
-  var dir = join(base, 'relative-transport');
-  var pkg = new Package(dir);
+  var map = {};
+  function getPackage(name) {
+    if (map[name]) return map[name];
+
+    var dir = join(base, name);
+    return (map[name] = new Package(dir));
+  }
 
   it('util.transportId', function() {
     var pkg = {a: 1, b: 2, c: 3};
@@ -44,6 +50,7 @@ describe('gulp-transport', function() {
   });
 
   it('util.transportDeps', function() {
+    var pkg = getPackage('simple-transport');
     var options = {
       ignore: ['d'],
       idleading: '{{name}}/{{version}}'
@@ -62,6 +69,7 @@ describe('gulp-transport', function() {
   });
 
   it('cmdreplace', function(done) {
+    var pkg = getPackage('simple-transport');
     var stream = replace({pkg: pkg});
     var fakeBuffer = new Buffer('require("./a");\nrequire("b")');
     var fakeFile = new gutil.File({
@@ -82,6 +90,7 @@ describe('gulp-transport', function() {
   });
 
   it('cmdreplace with options', function(done) {
+    var pkg = getPackage('simple-transport');
     var stream = replace({
       pkg: pkg,
       ignore: ['b'],
@@ -105,24 +114,125 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
-  it('simple transport', function(done) {
-    var dir = join(base, 'relative-transport');
-    var pkg = new Package(dir);
-    var stream = transport({
-      pkg: pkg
+  it('cmdwrap', function(done) {
+    var pkg = getPackage('simple-transport');
+    var stream = wrap({pkg: pkg});
+    var fakeBuffer = new Buffer('console.log(123)');
+    var fakeFile = new gutil.File({
+      path: join(base, 'simple-transport/relative3.js'),
+      contents: fakeBuffer
     });
 
-    gulp.src(pkg.main, {cwd: dir})
-      .pipe(stream)
-      .on('data', function(file) {
-        console.log(file.contents.toString());
-      })
-      .on('end', function() {
-        done();
-      });
+    stream.on('data', function(file) {
+      var code = file.contents.toString();
+      code.should.eql('define("simple-transport/1.0.0/relative3", ["d/0.1.1/index"],' +
+        ' function(require, exports, module){\nconsole.log(123)\n});\n');
+    });
+
+    stream.on('end', function() {
+      done();
+    });
+
+    stream.write(fakeFile);
+    stream.end();
   });
 
-  it('has dependency', function() {
+  it('cmdwrap different type', function(done) {
+    var pkg = getPackage('type-transport');
+    var stream = wrap({pkg: pkg});
 
+    var fakeCss = new gutil.File({
+      path: join(base, 'type-transport/a.css'),
+      contents: new Buffer('body{color: #fff;}')
+    });
+
+    var fakeJson = new gutil.File({
+      path: join(base, 'type-transport/a.json'),
+      contents: new Buffer('{a:1}')
+    });
+
+    var fakeTpl = new gutil.File({
+      path: join(base, 'type-transport/a.tpl'),
+      contents: new Buffer('<div></div>')
+    });
+
+    stream.on('data', function(file) {
+      var code = file.contents.toString();
+      if (/css$/.test(file.path)) {
+        code.should.eql('define("type-transport/1.0.0/a.css", [], ' +
+          'function(require, exports, module){\nseajs.importStyle("body{color: #fff;}");\n});\n');
+      } else if (/json$/.test(file.path)) {
+        code.should.eql('define("type-transport/1.0.0/a.json", [], ' +
+          'function(require, exports, module){\nmodule.exports ={a:1}\n});\n');
+      } else if (/tpl$/.test(file.path)) {
+        code.should.eql('define("type-transport/1.0.0/a.tpl", [], ' +
+          'function(require, exports, module){\nmodule.exports="<div></div>";\n});\n');
+      }
+    });
+
+    stream.on('end', function() {
+      done();
+    });
+
+    stream.write(fakeCss);
+    stream.write(fakeJson);
+    stream.write(fakeTpl);
+    stream.end();
   });
+
+  it('cmdwrap no parser', function() {
+    var pkg = getPackage('type-transport');
+    var stream = wrap({pkg: pkg});
+
+    var fakeFile = new gutil.File({
+      path: join(base, 'type-transport/a.no'),
+      contents: new Buffer('123')
+    });
+
+    (function() {
+      stream.write(fakeFile);
+      stream.end();
+    }).should.throw('extension "no" not supported.');
+  });
+
+  it('cmdwrap do not support stream', function() {
+    var pkg = getPackage('type-transport');
+    var stream = wrap({pkg: pkg});
+
+    var filePath = join(base, 'type-transport/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.createReadStream(filePath)
+    });
+
+    (function() {
+      stream.write(fakeFile);
+      stream.end();
+    }).should.throw('Streaming not supported.');
+  });
+
+  it('transport', function(done) {
+    var pkg = getPackage('type-transport');
+    var stream = transport({pkg: pkg});
+
+    var filePath = join(base, 'type-transport/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      var code = file.contents.toString();
+      code.should.eql('define("type-transport/1.0.0/index", ["./a.css","./a.json","./a.tpl"], ' +
+        'function(require, exports, module){\nrequire("./a.css");\nrequire("./a.json");\nrequire("./a.tpl");\n\n});\n');
+    });
+
+    stream.on('end', function() {
+      done();
+    });
+
+    stream.write(fakeFile);
+    stream.end();
+  });
+
 });
