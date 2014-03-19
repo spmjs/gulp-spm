@@ -1,0 +1,11 @@
+{
+  "name": "b",
+  "version": "1.1.0",
+  "main": "src/b.js",
+  "spm": {
+    "dependencies": {
+      "d": "0.1.0",
+      "c": "1.1.1"
+    }
+  }
+}
