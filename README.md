@@ -1,6 +1,6 @@
 # gulp-transport [![Build Status](https://travis-ci.org/popomore/gulp-transport.png?branch=master)](https://travis-ci.org/popomore/gulp-transport) [![Coverage Status](https://coveralls.io/repos/popomore/gulp-transport/badge.png?branch=master)](https://coveralls.io/r/popomore/gulp-transport?branch=master)
 
-a gulp task for cmd transport
+gulp plugin for cmd transport
 
 ---
 
