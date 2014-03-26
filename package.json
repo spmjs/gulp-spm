@@ -1,6 +1,6 @@
 {
   "name": "gulp-transport",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "gulp plugin for cmd transport",
   "main": "index",
   "dependencies": {
