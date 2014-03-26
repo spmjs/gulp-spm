@@ -1,10 +1,11 @@
 'use strict';
 
+require('should');
 var fs = require('fs');
 var join = require('path').join;
-var should = require('should');
-var gulp = require('gulp');
+var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
+var duplex = require('duplex');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 
@@ -12,6 +13,9 @@ var transport = require('..');
 var wrap = transport.cmdwrap;
 var replace = transport.cmdreplace;
 var util = transport.util;
+var css2jsParser = transport.css2jsParser;
+var jsonParser = transport.jsonParser;
+var tplParser = transport.tplParser;
 
 describe('gulp-transport', function() {
   var map = {};
@@ -139,7 +143,6 @@ describe('gulp-transport', function() {
 
   it('cmdwrap different type', function(done) {
     var pkg = getPackage('type-transport');
-    var stream = wrap({pkg: pkg});
 
     var fakeCss = new gutil.File({
       path: join(base, 'type-transport/a.css'),
@@ -156,7 +159,13 @@ describe('gulp-transport', function() {
       contents: new Buffer('<div></div>')
     });
 
-    stream.on('data', function(file) {
+    var stream = duplex();
+
+    stream
+    .pipe(gulpif(/\.css/, css2jsParser({pkg: pkg})))
+    .pipe(gulpif(/\.json/, jsonParser({pkg: pkg})))
+    .pipe(gulpif(/\.tpl/, tplParser({pkg: pkg})))
+    .on('data', function(file) {
       var code = file.contents.toString();
       if (/css$/.test(file.path)) {
         code.should.eql('define("type-transport/1.0.0/a.css", [], ' +
@@ -177,7 +186,7 @@ describe('gulp-transport', function() {
     stream.write(fakeCss);
     stream.write(fakeJson);
     stream.write(fakeTpl);
-    stream.end();
+    stream._end();
   });
 
   it('cmdwrap no parser', function() {
