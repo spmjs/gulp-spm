@@ -217,6 +217,59 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
+  it('cmdwrap handlebars not match', function(done) {
+    var pkg = getPackage('handlebars-not-match');
+
+    var fakeTpl = new gutil.File({
+      path: join(base, 'handlebars-not-match/a.handlebars'),
+      contents: new Buffer('<div>{{content}}</div>')
+    });
+
+    var count = 0;
+    var stream = through2.obj();
+    var plugin = handlebarsParser({pkg: pkg});
+    plugin.on('error', function(e) {
+      count++;
+      e.plugin.should.eql('transport:handlebars');
+      e.message.should.eql('handlebars version should be 1.3.0 but 1.2.0');
+    });
+
+    stream
+    .pipe(gulpif(/\.handlebars/, plugin))
+    .on('end', function() {
+      count.should.eql(1);
+      done();
+    });
+
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
+  it('no handlebars deps', function(done) {
+    var pkg = getPackage('no-handlebars');
+
+    var fakeTpl = new gutil.File({
+      path: join(base, 'no-handlebars/a.handlebars'),
+      contents: new Buffer('<div>{{content}}</div>')
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(gulpif(/\.handlebars/, handlebarsParser({pkg: pkg})))
+    .on('data', function(file) {
+      var code = file.contents.toString();
+      code.should.eql(fs.readFileSync(__dirname + '/expected/no-handlebars.js').toString());
+    });
+
+    stream.on('end', function() {
+      done();
+    });
+
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
   it('cmdwrap no parser', function() {
     var pkg = getPackage('type-transport');
     var stream = wrap({pkg: pkg});
