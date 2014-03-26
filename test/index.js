@@ -16,6 +16,7 @@ var util = transport.util;
 var css2jsParser = transport.css2jsParser;
 var jsonParser = transport.jsonParser;
 var tplParser = transport.tplParser;
+var handlebarsParser = transport.handlebarsParser;
 
 describe('gulp-transport', function() {
   var map = {};
@@ -191,6 +192,31 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
+  it('cmdwrap handlebars', function(done) {
+    var pkg = getPackage('type-transport');
+
+    var fakeTpl = new gutil.File({
+      path: join(base, 'type-transport/a.handlebars'),
+      contents: new Buffer('<div>{{content}}</div>')
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(gulpif(/\.handlebars/, handlebarsParser({pkg: pkg})))
+    .on('data', function(file) {
+      var code = file.contents.toString();
+      code.should.eql(fs.readFileSync(__dirname + '/expected/transport-handlebars.js').toString());
+    });
+
+    stream.on('end', function() {
+      done();
+    });
+
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
   it('cmdwrap no parser', function() {
     var pkg = getPackage('type-transport');
     var stream = wrap({pkg: pkg});
@@ -234,8 +260,8 @@ describe('gulp-transport', function() {
 
     stream.on('data', function(file) {
       var code = file.contents.toString();
-      code.should.eql('define("type-transport/1.0.0/index", ["./a.css","./a.json","./a.tpl"], ' +
-        'function(require, exports, module){\nrequire("./a.css");\nrequire("./a.json");\nrequire("./a.tpl");\n\n});\n');
+      code.should.eql('define("type-transport/1.0.0/index", ["./a.css","./a.json","./a.tpl","./a.handlebars"], ' +
+        'function(require, exports, module){\nrequire("./a.css");\nrequire("./a.json");\nrequire("./a.tpl");\nrequire(\"./a.handlebars\");\n\n});\n');
     });
 
     stream.on('end', function() {
