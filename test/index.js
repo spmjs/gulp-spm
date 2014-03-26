@@ -5,7 +5,7 @@ var fs = require('fs');
 var join = require('path').join;
 var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
-var duplex = require('duplex');
+var through2 = require('through2');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 
@@ -159,13 +159,14 @@ describe('gulp-transport', function() {
       contents: new Buffer('<div></div>')
     });
 
-    var stream = duplex();
+    var stream = through2.obj(), count = 0;
 
     stream
     .pipe(gulpif(/\.css/, css2jsParser({pkg: pkg})))
     .pipe(gulpif(/\.json/, jsonParser({pkg: pkg})))
     .pipe(gulpif(/\.tpl/, tplParser({pkg: pkg})))
     .on('data', function(file) {
+      count++;
       var code = file.contents.toString();
       if (/css$/.test(file.path)) {
         code.should.eql('define("type-transport/1.0.0/a.css", [], ' +
@@ -180,13 +181,14 @@ describe('gulp-transport', function() {
     });
 
     stream.on('end', function() {
+      count.should.eql(3);
       done();
     });
 
     stream.write(fakeCss);
     stream.write(fakeJson);
     stream.write(fakeTpl);
-    stream._end();
+    stream.end();
   });
 
   it('cmdwrap no parser', function() {

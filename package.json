@@ -4,10 +4,10 @@
   "description": "gulp plugin for cmd transport",
   "main": "index",
   "dependencies": {
-    "gulp-replace": "^0.2.0",
-    "gulp-util": "^2.2.14",
-    "lazypipe": "^0.2.1",
-    "lodash": "^2.4.1",
+    "gulp-replace": "~0.2.0",
+    "gulp-util": "~2.2.14",
+    "lazypipe": "~0.2.1",
+    "lodash": "~2.4.1",
     "through2": "~0.4.1"
   },
   "devDependencies": {
@@ -15,10 +15,9 @@
     "istanbul": "^0.2.6",
     "mocha": "^1.17.1",
     "should": "^3.1.3",
-    "concat-stream": "^1.4.4",
-    "duplex": "^1.0.0",
-    "father": "^0.2.0",
-    "gulp-if": "0.0.5"
+    "concat-stream": "~1.4.4",
+    "father": "~0.2.0",
+    "gulp-if": "~0.0.5"
   },
   "repository": {
     "type": "git",
