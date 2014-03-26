@@ -260,7 +260,7 @@ describe('gulp-transport', function() {
 
     stream.on('data', function(file) {
       var code = file.contents.toString();
-      code.should.eql('define("type-transport/1.0.0/index", ["./a.css","./a.json","./a.tpl","./a.handlebars"], ' +
+      code.should.eql('define("type-transport/1.0.0/index", ["./a.css","./a.json","./a.tpl","./a.handlebars","handlebars/1.3.0/handlebars"], ' +
         'function(require, exports, module){\nrequire("./a.css");\nrequire("./a.json");\nrequire("./a.tpl");\nrequire(\"./a.handlebars\");\n\n});\n');
     });
 
