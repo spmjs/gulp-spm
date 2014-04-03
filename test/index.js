@@ -3,6 +3,7 @@
 require('should');
 var fs = require('fs');
 var join = require('path').join;
+var gulp = require('gulp');
 var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var through2 = require('through2');
@@ -352,4 +353,22 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
+  it('getId', function(done) {
+    var pkg = getPackage('js-require-css');
+    var b = pkg.dependencies['b'];
+
+    gulp.src(join(b.dest, b.main))
+      .on('data', function(file) {
+        var id = util.getId(file, {pkg: pkg});
+        id.should.eql('index.css');
+        done();
+      });
+  });
+
+  it('transportDeps', function() {
+    var pkg = getPackage('js-require-css');
+
+    var deps = util.transportDeps('index.js', pkg, {ignore: []});
+    deps.should.eql(['index.css']);
+  });
 });
