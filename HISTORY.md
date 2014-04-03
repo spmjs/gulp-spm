@@ -6,6 +6,7 @@
 
 - add cssParser
 - upgrade father
+- getId support sub package
 
 ## 0.2.0
 
