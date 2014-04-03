@@ -20,11 +20,11 @@ var handlebarsParser = transport.handlebarsParser;
 
 describe('gulp-transport', function() {
   var map = {};
-  function getPackage(name) {
+  function getPackage(name, options) {
     if (map[name]) return map[name];
 
     var dir = join(base, name);
-    return (map[name] = new Package(dir));
+    return (map[name] = new Package(dir, options));
   }
 
   it('util.transportId', function() {
@@ -64,12 +64,12 @@ describe('gulp-transport', function() {
     expected.should.eql([
       './relative1',
       './relative2',
+      './relative3',
       'd',
       'c/1.1.1/index',
-      'not-exist',
-      './relative3',
       './b.tpl',
-      'b/1.1.0/src/b'
+      'b/1.1.0/src/b',
+      'not-exist'
     ]);
   });
 
@@ -143,7 +143,7 @@ describe('gulp-transport', function() {
   });
 
   it('cmdwrap different type', function(done) {
-    var pkg = getPackage('type-transport');
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
 
     var fakeCss = new gutil.File({
       path: join(base, 'type-transport/a.css'),
@@ -193,7 +193,7 @@ describe('gulp-transport', function() {
   });
 
   it('cmdwrap handlebars', function(done) {
-    var pkg = getPackage('type-transport');
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
 
     var fakeTpl = new gutil.File({
       path: join(base, 'type-transport/a.handlebars'),
@@ -271,7 +271,7 @@ describe('gulp-transport', function() {
   });
 
   it('cmdwrap no parser', function() {
-    var pkg = getPackage('type-transport');
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
     var stream = wrap({pkg: pkg});
 
     var fakeFile = new gutil.File({
@@ -286,7 +286,7 @@ describe('gulp-transport', function() {
   });
 
   it('cmdwrap do not support stream', function() {
-    var pkg = getPackage('type-transport');
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
     var stream = wrap({pkg: pkg});
 
     var filePath = join(base, 'type-transport/index.js');
@@ -302,7 +302,7 @@ describe('gulp-transport', function() {
   });
 
   it('transport', function(done) {
-    var pkg = getPackage('type-transport');
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
     var stream = transport({pkg: pkg});
 
     var filePath = join(base, 'type-transport/index.js');
