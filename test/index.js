@@ -17,6 +17,7 @@ var css2jsParser = transport.css2jsParser;
 var jsonParser = transport.jsonParser;
 var tplParser = transport.tplParser;
 var handlebarsParser = transport.handlebarsParser;
+var cssParser = transport.cssParser;
 
 describe('gulp-transport', function() {
   var map = {};
@@ -299,6 +300,32 @@ describe('gulp-transport', function() {
       stream.write(fakeFile);
       stream.end();
     }).should.throw('Streaming not supported.');
+  });
+
+  it('css import', function(done) {
+    var pkg = getPackage('css-import');
+
+    var main = join(pkg.dest, pkg.main);
+    var fakeTpl = new gutil.File({
+      path: main,
+      contents: fs.readFileSync(main)
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(cssParser({pkg: pkg}))
+    .on('data', function(file) {
+      var code = file.contents.toString();
+      code.should.eql(fs.readFileSync(__dirname + '/expected/css-imports.css').toString());
+    });
+
+    stream.on('end', function() {
+      done();
+    });
+
+    stream.write(fakeTpl);
+    stream.end();
   });
 
   it('transport', function(done) {

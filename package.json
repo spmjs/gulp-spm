@@ -4,6 +4,7 @@
   "description": "gulp plugin for cmd transport",
   "main": "index",
   "dependencies": {
+    "css-imports": "~0.1.0",
     "gulp-replace": "~0.2.0",
     "gulp-util": "~2.2.14",
     "lazypipe": "~0.2.1",
