@@ -352,13 +352,13 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
-  it('getId', function(done) {
+  it('generateId', function(done) {
     var pkg = getPackage('js-require-css');
     var b = pkg.dependencies['b'];
 
     gulp.src(join(b.dest, b.main))
       .on('data', function(file) {
-        var id = util.getId(file, {pkg: pkg});
+        var id = util.generateId(file, {pkg: pkg});
         id.should.eql('index.css');
         done();
       });
@@ -381,5 +381,12 @@ describe('gulp-transport', function() {
         e.message.should.eql('c@1.0.0 conflict with c@1.0.1');
         done();
       });
+  });
+
+  it('transport file deps which not contains in pkg.files', function() {
+    var pkg = getPackage('simple-transport');
+    (function() {
+      util.transportDeps('not-exist.js', pkg);
+    }).should.throw('not-exist.js is not included in relative3.js,relative2.js,relative1.js,index.js');
   });
 });
