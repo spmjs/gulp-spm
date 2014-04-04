@@ -7,6 +7,7 @@
 - add cssParser
 - upgrade father
 - getId support sub package
+- don't return relative path in dependent package
 
 ## 0.2.0
 
