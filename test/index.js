@@ -370,4 +370,16 @@ describe('gulp-transport', function() {
     var deps = util.transportDeps('index.js', pkg, {ignore: []});
     deps.should.eql(['index.css']);
   });
+
+  it('css conflict', function(done) {
+    var pkg = getPackage('css-conflict');
+
+    gulp.src(join(pkg.dest, pkg.main))
+      .pipe(cssParser({pkg: pkg}))
+      .on('error', function(e) {
+        e.plugin.should.eql('transport:css');
+        e.message.should.eql('c@1.0.0 conflict with c@1.0.1');
+        done();
+      });
+  });
 });
