@@ -2,6 +2,10 @@
 
 ---
 
+## 0.3.1
+
+throw when css conflict
+
 ## 0.3.0
 
 - add cssParser
