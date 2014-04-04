@@ -69,7 +69,6 @@ describe('gulp-transport', function() {
       './relative3',
       'd',
       'c/1.1.1/index',
-      './b.tpl',
       'b/1.1.0/src/b',
       'not-exist'
     ]);
