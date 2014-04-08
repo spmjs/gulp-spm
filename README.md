@@ -30,6 +30,7 @@ See [example](https://github.com/popomore/gulp-transport/blob/master/test/index.
 - pkg: package info parsed by father
 - idleading: cmd id prefix, support simple template, E.g. `{{name}}/{{version}}`
 - ignore: array that ignore to transport
+- suffix: the suffix of filename, E.g. a.js -> a-debug.js
 
 ## LISENCE
 
