@@ -21,13 +21,6 @@ var handlebarsParser = transport.handlebarsParser;
 var cssParser = transport.cssParser;
 
 describe('gulp-transport', function() {
-  var map = {};
-  function getPackage(name, options) {
-    if (map[name]) return map[name];
-
-    var dir = join(base, name);
-    return (map[name] = new Package(dir, options));
-  }
 
   it('util.transportId', function() {
     var pkg = {a: 1, b: 2, c: 3};
@@ -46,7 +39,8 @@ describe('gulp-transport', function() {
     util.extendOption({pkg: {}}).should.eql({
       pkg: {},
       ignore: [],
-      idleading: '{{name}}/{{version}}'
+      idleading: '{{name}}/{{version}}',
+      suffix: ''
     });
   });
 
@@ -357,7 +351,38 @@ describe('gulp-transport', function() {
       util.transportDeps('not-exist.js', pkg);
     }).should.throw('not-exist.js is not included in relative3.js,relative2.js,relative1.js,index.js');
   });
+
+  it('transportId with suffix', function(done) {
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var stream = transport({
+      pkg: pkg,
+      include: 'self',
+      suffix: '-debug'
+    });
+
+    var filePath = join(base, 'type-transport/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      assert(file, 'transport-suffix.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  });
 });
+
+var map = {};
+function getPackage(name, options) {
+  if (map[name]) return map[name];
+
+  var dir = join(base, name);
+  return (map[name] = new Package(dir, options));
+}
 
 function assert (file, expectedFile) {
   var code = file.contents.toString();
