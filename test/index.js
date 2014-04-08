@@ -36,12 +36,14 @@ describe('gulp-transport', function() {
       util.extendOption();
     }).should.throw();
 
-    util.extendOption({pkg: {}}).should.eql({
+    var orig = {pkg: {}};
+    util.extendOption(orig).should.eql({
       pkg: {},
       ignore: [],
       idleading: '{{name}}/{{version}}',
       suffix: ''
     });
+    orig.should.eql({pkg: {}});
   });
 
   it('util.template', function() {
