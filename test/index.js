@@ -85,11 +85,8 @@ describe('gulp-transport', function() {
     stream.on('data', function(file) {
       var code = file.contents.toString();
       code.should.eql('require("./a");\nrequire("b/1.1.0/src/b")');
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+    })
+    .on('end', done);
 
     stream.write(fakeFile);
     stream.end();
@@ -110,11 +107,8 @@ describe('gulp-transport', function() {
     stream.on('data', function(file) {
       var code = file.contents.toString();
       code.should.eql('require("./a");\nrequire("b");\nrequire("c-1.1.1/index");');
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+    })
+    .on('end', done);
 
     stream.write(fakeFile);
     stream.end();
@@ -130,14 +124,9 @@ describe('gulp-transport', function() {
     });
 
     stream.on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql('define("simple-transport/1.0.0/relative3", ["d/0.1.1/index"],' +
-        ' function(require, exports, module){\nconsole.log(123)\n});\n');
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+      assert(file, 'cmdwrap.js');
+    })
+    .on('end', done);
 
     stream.write(fakeFile);
     stream.end();
@@ -169,16 +158,12 @@ describe('gulp-transport', function() {
     .pipe(gulpif(/\.tpl/, tplParser({pkg: pkg})))
     .on('data', function(file) {
       count++;
-      var code = file.contents.toString();
       if (/css$/.test(file.path)) {
-        code.should.eql('define("type-transport/1.0.0/a.css", [], ' +
-          'function(require, exports, module){\nseajs.importStyle("body{color: #fff;}");\n});\n');
+        assert(file, 'type-transport-css.js');
       } else if (/json$/.test(file.path)) {
-        code.should.eql('define("type-transport/1.0.0/a.json", [], ' +
-          'function(require, exports, module){\nmodule.exports ={a:1}\n});\n');
+        assert(file, 'type-transport-json.js');
       } else if (/tpl$/.test(file.path)) {
-        code.should.eql('define("type-transport/1.0.0/a.tpl", [], ' +
-          'function(require, exports, module){\nmodule.exports="<div></div>";\n});\n');
+        assert(file, 'type-transport-tpl.js');
       }
     });
 
@@ -206,13 +191,9 @@ describe('gulp-transport', function() {
     stream
     .pipe(gulpif(/\.handlebars/, handlebarsParser({pkg: pkg})))
     .on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql(fs.readFileSync(__dirname + '/expected/transport-handlebars.js').toString());
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+      assert(file, 'transport-handlebars.js');
+    })
+    .on('end', done);
 
     stream.write(fakeTpl);
     stream.end();
@@ -259,13 +240,9 @@ describe('gulp-transport', function() {
     stream
     .pipe(gulpif(/\.handlebars/, handlebarsParser({pkg: pkg})))
     .on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql(fs.readFileSync(__dirname + '/expected/no-handlebars.js').toString());
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+      assert(file, 'no-handlebars.js');
+    })
+    .on('end', done);
 
     stream.write(fakeTpl);
     stream.end();
@@ -316,13 +293,9 @@ describe('gulp-transport', function() {
     stream
     .pipe(cssParser({pkg: pkg}))
     .on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql(fs.readFileSync(__dirname + '/expected/css-imports.css').toString());
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+      assert(file, 'css-imports.css');
+    })
+    .on('end', done);
 
     stream.write(fakeTpl);
     stream.end();
@@ -339,14 +312,9 @@ describe('gulp-transport', function() {
     });
 
     stream.on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql('define("type-transport/1.0.0/index", ["./a.css","./a.json","./a.tpl","./a.handlebars","handlebars/1.3.0/handlebars"], ' +
-        'function(require, exports, module){\nrequire("./a.css");\nrequire("./a.json");\nrequire("./a.tpl");\nrequire(\"./a.handlebars\");\n\n});\n');
-    });
-
-    stream.on('end', function() {
-      done();
-    });
+      assert(file, 'transport.js');
+    })
+    .on('end', done);
 
     stream.write(fakeFile);
     stream.end();
@@ -360,8 +328,8 @@ describe('gulp-transport', function() {
       .on('data', function(file) {
         var id = util.generateId(file, {pkg: pkg});
         id.should.eql('index.css');
-        done();
-      });
+      })
+      .on('end', done);
   });
 
   it('transportDeps', function() {
@@ -390,3 +358,9 @@ describe('gulp-transport', function() {
     }).should.throw('not-exist.js is not included in relative3.js,relative2.js,relative1.js,index.js');
   });
 });
+
+function assert (file, expectedFile) {
+  var code = file.contents.toString();
+  var expected = fs.readFileSync(__dirname + '/expected/' + expectedFile).toString();
+  code.should.eql(expected);
+}
