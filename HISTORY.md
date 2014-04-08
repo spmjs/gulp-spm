@@ -2,6 +2,10 @@
 
 ---
 
+## 0.3.2
+
+add suffix option
+
 ## 0.3.1
 
 throw when css conflict
