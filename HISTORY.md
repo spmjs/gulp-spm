@@ -4,6 +4,10 @@
 
 ## 0.3.2
 
+don't modify origin option
+
+## 0.3.2
+
 add suffix option
 
 ## 0.3.1
