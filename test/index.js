@@ -319,7 +319,7 @@ describe('gulp-transport', function() {
     var pkg = getPackage('js-require-css');
     var b = pkg.dependencies['b'];
 
-    gulp.src(join(b.dest, b.main))
+    gulp.src(join(b.dest, b.main), {base: join(base, 'js-require-css')})
       .on('data', function(file) {
         var id = util.generateId(file, {pkg: pkg});
         id.should.eql('index.css');
