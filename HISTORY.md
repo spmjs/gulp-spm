@@ -2,6 +2,10 @@
 
 ---
 
+## 0.3.5
+
+fix generateId when set base
+
 ## 0.3.4
 
 util.replaceSuffix -> util.rename
