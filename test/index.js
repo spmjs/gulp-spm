@@ -40,8 +40,7 @@ describe('gulp-transport', function() {
     util.extendOption(orig).should.eql({
       pkg: {},
       ignore: [],
-      idleading: '{{name}}/{{version}}',
-      suffix: ''
+      idleading: '{{name}}/{{version}}'
     });
     orig.should.eql({pkg: {}});
   });
@@ -359,7 +358,7 @@ describe('gulp-transport', function() {
     var stream = transport({
       pkg: pkg,
       include: 'self',
-      suffix: '-debug'
+      rename: {suffix: '-debug'}
     });
 
     var filePath = join(base, 'type-transport/index.js');
@@ -369,6 +368,7 @@ describe('gulp-transport', function() {
     });
 
     stream.on('data', function(file) {
+      file.path.should.endWith('index-debug.js');
       assert(file, 'transport-suffix.js');
     })
     .on('end', done);

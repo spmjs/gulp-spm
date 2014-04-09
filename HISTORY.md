@@ -2,6 +2,10 @@
 
 ---
 
+## 0.3.3
+
+util.replaceSuffix -> util.rename
+
 ## 0.3.2
 
 don't modify origin option
