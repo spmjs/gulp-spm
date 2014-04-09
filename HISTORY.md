@@ -2,11 +2,11 @@
 
 ---
 
-## 0.3.3
+## 0.3.4
 
 util.replaceSuffix -> util.rename
 
-## 0.3.2
+## 0.3.3
 
 don't modify origin option
 
