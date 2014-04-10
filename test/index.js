@@ -319,6 +319,51 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
+  it('css import ignore', function(done) {
+    var pkg = getPackage('css-import');
+
+    var main = join(pkg.dest, pkg.main);
+    var fakeTpl = new gutil.File({
+      path: main,
+      contents: fs.readFileSync(main)
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(cssParser({pkg: pkg, ignore: ['b']}))
+    .on('data', function(file) {
+      assert(file, 'css-imports-ignore.css');
+    })
+    .on('end', done);
+
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
+  it('css import error', function(done) {
+    var pkg = getPackage('css-import');
+
+    var path = join(pkg.dest, 'a5.css');
+    var fakeTpl = new gutil.File({
+      path: path,
+      contents: fs.readFileSync(path)
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(cssParser({pkg: pkg}))
+    .on('error', function(e) {
+      e.message.should.eql('package c not exists');
+      e.plugin.should.eql('transport:css');
+      done();
+    });
+
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
   it('transport', function(done) {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
     var stream = transport({pkg: pkg});

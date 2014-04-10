@@ -6,6 +6,7 @@
 
 - upgrade css-import@0.2.0
 - transport relative id into complete id by transportId
+- more testcase form cssParser
 
 ## 0.3.5
 
