@@ -2,9 +2,10 @@
 
 ---
 
-## 0.3.6
+## 0.4.0
 
-upgrade css-import@0.2.0
+- upgrade css-import@0.2.0
+- transport relative id into complete id by transportId
 
 ## 0.3.5
 
