@@ -11,8 +11,8 @@ var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 
 var transport = require('..');
-var wrap = transport.cmdwrap;
-var replace = transport.cmdreplace;
+var wrap = transport.wrap;
+var replace = transport.replace;
 var util = transport.util;
 var css2jsParser = transport.css2jsParser;
 var jsonParser = transport.jsonParser;
@@ -23,24 +23,48 @@ var cssParser = transport.cssParser;
 describe('gulp-transport', function() {
 
   it('util.transportId', function() {
-    var pkg = {a: 1, b: 2, c: 3};
-    var options = {
-      idleading: '{{a}}-{{b}}-{{c}}'
-    };
-    var expected = util.transportId('src/a', pkg, options);
+    var expected = util.transportId(
+      'src/a', {
+        a: 1,
+        b: 2,
+        c: 3
+      }, {
+        idleading: '{{a}}-{{b}}-{{c}}',
+        cwd: ''
+      }
+    );
     expected.should.eql('1-2-3/src/a');
+
+    var pkg = getPackage('transport-id-error');
+    var tid = util.transportId;
+    var options = {
+      idleading: '{{name}}/{{version}}'
+    };
+    tid('index.js', pkg, options).should.eql('a/1.0.0/index');
+
+    (function() {
+      tid('./a.js', pkg, options);
+    }).should.throw('no base path of ./a.js');
+
+    (function() {
+      tid('../a.js', pkg, options, 'index.js');
+    }).should.throw('../a.js is out of bound');
   });
 
   it('util.extendOption', function() {
-    (function(){
-      util.extendOption();
-    }).should.throw();
+    util.extendOption().should.eql({
+      ignore: [],
+      idleading: '{{name}}/{{version}}',
+      cwd: process.cwd(),
+      pkg: null
+    });
 
     var orig = {pkg: {}};
     util.extendOption(orig).should.eql({
       pkg: {},
       ignore: [],
-      idleading: '{{name}}/{{version}}'
+      idleading: '{{name}}/{{version}}',
+      cwd: process.cwd()
     });
     orig.should.eql({pkg: {}});
   });
@@ -59,9 +83,9 @@ describe('gulp-transport', function() {
     };
     var expected = util.transportDeps('index.js', pkg, options);
     expected.should.eql([
-      './relative1',
-      './relative2',
-      './relative3',
+      'simple-transport/1.0.0/relative1',
+      'simple-transport/1.0.0/relative2',
+      'simple-transport/1.0.0/relative3',
       'd',
       'c/1.1.1/index',
       'b/1.1.0/src/b',
@@ -69,65 +93,64 @@ describe('gulp-transport', function() {
     ]);
   });
 
-  it('cmdreplace', function(done) {
+  it('replace', function() {
     var pkg = getPackage('simple-transport');
-    var stream = replace({pkg: pkg});
     var fakeBuffer = new Buffer('require("./a");\nrequire("b")');
     var fakeFile = new gutil.File({
-      contents: fakeBuffer
+      contents: fakeBuffer,
+      path: join(base, 'simple-transport/c.js'),
     });
 
-    stream.on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql('require("./a");\nrequire("b/1.1.0/src/b")');
-    })
-    .on('end', done);
-
-    stream.write(fakeFile);
-    stream.end();
+    var opt = util.extendOption({pkg: pkg});
+    var code = replace(fakeFile, opt).toString();
+    code.should.eql('require("simple-transport/1.0.0/a");\nrequire("b/1.1.0/src/b")');
   });
 
-  it('cmdreplace with options', function(done) {
+  it('replace with options', function() {
     var pkg = getPackage('simple-transport');
-    var stream = replace({
+    var fakeBuffer = new Buffer('require("./a.js");\nrequire("b");\nrequire("c");');
+    var fakeFile = new gutil.File({
+      contents: fakeBuffer,
+      path: join(base, 'simple-transport/c.js'),
+    });
+
+    var opt = {
       pkg: pkg,
       ignore: ['b'],
       idleading: '{{name}}-{{version}}'
-    });
-    var fakeBuffer = new Buffer('require("./a.js");\nrequire("b");\nrequire("c");');
-    var fakeFile = new gutil.File({
-      contents: fakeBuffer
-    });
-
-    stream.on('data', function(file) {
-      var code = file.contents.toString();
-      code.should.eql('require("./a");\nrequire("b");\nrequire("c-1.1.1/index");');
-    })
-    .on('end', done);
-
-    stream.write(fakeFile);
-    stream.end();
+    };
+    var code = replace(fakeFile, opt).toString();
+    code.should.eql('require("simple-transport-1.0.0/a");\nrequire("b");\nrequire("c-1.1.1/index");');
   });
 
-  it('cmdwrap', function(done) {
+  it('replace relative path of dependent package', function() {
     var pkg = getPackage('simple-transport');
-    var stream = wrap({pkg: pkg});
+    var path = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
+    var fakeFile = new gutil.File({
+      contents: fs.readFileSync(path),
+      path: path,
+    });
+
+    var opt = util.extendOption({pkg: pkg});
+    var code = replace(fakeFile, opt).toString();
+    code.should.eql('require("c/1.1.1/index");\nrequire("b/1.1.0/src/b.tpl");\n');
+  });
+
+  it('wrap', function() {
+    var pkg = getPackage('simple-transport');
     var fakeBuffer = new Buffer('console.log(123)');
     var fakeFile = new gutil.File({
       path: join(base, 'simple-transport/relative3.js'),
       contents: fakeBuffer
     });
 
-    stream.on('data', function(file) {
-      assert(file, 'cmdwrap.js');
-    })
-    .on('end', done);
+    var opt = util.extendOption({pkg: pkg});
+    var buffer = wrap(fakeFile, opt);
+    assert({contents: buffer}, 'cmdwrap.js');
 
-    stream.write(fakeFile);
-    stream.end();
   });
 
-  it('cmdwrap different type', function(done) {
+  it('transport different type', function(done) {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
 
     var fakeCss = new gutil.File({
@@ -173,7 +196,7 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
-  it('cmdwrap handlebars', function(done) {
+  it('transport handlebars', function(done) {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
 
     var fakeTpl = new gutil.File({
@@ -194,7 +217,7 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
-  it('cmdwrap handlebars not match', function(done) {
+  it('transport handlebars not match', function(done) {
     var pkg = getPackage('handlebars-not-match');
 
     var fakeTpl = new gutil.File({
@@ -243,9 +266,9 @@ describe('gulp-transport', function() {
     stream.end();
   });
 
-  it('cmdwrap no parser', function() {
+  it('transport no parser', function() {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
-    var stream = wrap({pkg: pkg});
+    var stream = transport({pkg: pkg});
 
     var fakeFile = new gutil.File({
       path: join(base, 'type-transport/a.no'),
@@ -258,9 +281,9 @@ describe('gulp-transport', function() {
     }).should.throw('extension "no" not supported.');
   });
 
-  it('cmdwrap do not support stream', function() {
+  it('transport do not support stream', function() {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
-    var stream = wrap({pkg: pkg});
+    var stream = transport({pkg: pkg});
 
     var filePath = join(base, 'type-transport/index.js');
     var fakeFile = new gutil.File({
@@ -322,7 +345,7 @@ describe('gulp-transport', function() {
     gulp.src(join(b.dest, b.main), {base: join(base, 'js-require-css')})
       .on('data', function(file) {
         var id = util.generateId(file, {pkg: pkg});
-        id.should.eql('index.css');
+        id.should.eql('b/1.0.0/index.css');
       })
       .on('end', done);
   });
@@ -331,7 +354,7 @@ describe('gulp-transport', function() {
     var pkg = getPackage('js-require-css');
 
     var deps = util.transportDeps('index.js', pkg, {ignore: []});
-    deps.should.eql(['index.css']);
+    deps.should.eql(['b/1.0.0/index.css']);
   });
 
   it('css conflict', function(done) {
@@ -375,6 +398,38 @@ describe('gulp-transport', function() {
 
     stream.write(fakeFile);
     stream.end();
+  });
+
+  it('rename error when transport', function(done) {
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var stream = transport({
+      pkg: pkg,
+      include: 'self',
+      rename: function() {
+        throw new Error();
+      }
+    });
+
+    var filePath = join(base, 'type-transport/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      file.path.should.endWith('index.js');
+      assert(file, 'transport.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  });
+
+  it('pkg missing', function() {
+    (function() {
+      transport();
+    }).should.throw('pkg missing');
   });
 });
 
