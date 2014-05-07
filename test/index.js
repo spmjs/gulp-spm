@@ -122,6 +122,19 @@ describe('gulp-transport', function() {
     code.should.eql('require("simple-transport-1.0.0/a");\nrequire("b");\nrequire("c-1.1.1/index");');
   });
 
+  it('replace deep-deps', function() {
+    var pkg = getPackage('deep-deps');
+    var p = join(base, 'deep-deps/sea-modules/c/1.1.1/index.js');
+    var fakeFile = new gutil.File({
+      contents: fs.readFileSync(p),
+      path: p
+    });
+
+    var opt = util.extendOption({pkg: pkg});
+    var code = replace(fakeFile, opt).toString();
+    code.should.eql('require("d/0.1.0/index");\n');
+  });
+
   it('replace relative path of dependent package', function() {
     var pkg = getPackage('simple-transport');
     var path = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
