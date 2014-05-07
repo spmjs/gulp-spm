@@ -88,26 +88,25 @@ describe('gulp-transport', function() {
       'simple-transport/1.0.0/relative3',
       'd',
       'c/1.1.1/index',
-      'b/1.1.0/src/b',
-      'not-exist'
+      'b/1.1.0/src/b'
     ]);
   });
 
   it('replace', function() {
-    var pkg = getPackage('simple-transport');
-    var fakeBuffer = new Buffer('require("./a");\nrequire("b")');
+    var pkg = getPackage('simple-transport', {output: ['c.js']});
+    var p = join(base, 'simple-transport/c.js');
     var fakeFile = new gutil.File({
-      contents: fakeBuffer,
-      path: join(base, 'simple-transport/c.js'),
+      contents: fs.readFileSync(p),
+      path: p
     });
 
     var opt = util.extendOption({pkg: pkg});
     var code = replace(fakeFile, opt).toString();
-    code.should.eql('require("simple-transport/1.0.0/a");\nrequire("b/1.1.0/src/b")');
+    code.should.eql('require("simple-transport/1.0.0/a");\nrequire("b/1.1.0/src/b");\n');
   });
 
   it('replace with options', function() {
-    var pkg = getPackage('simple-transport');
+    var pkg = getPackage('simple-transport', {output: ['c.js']});
     var fakeBuffer = new Buffer('require("./a.js");\nrequire("b");\nrequire("c");');
     var fakeFile = new gutil.File({
       contents: fakeBuffer,
@@ -414,6 +413,7 @@ describe('gulp-transport', function() {
       });
   });
 
+  // father will throw now
   it('transport file deps which not contains in pkg.files', function() {
     var pkg = getPackage('simple-transport');
     (function() {
@@ -478,12 +478,10 @@ describe('gulp-transport', function() {
   });
 });
 
-var map = {};
-function getPackage(name, options) {
-  if (map[name]) return map[name];
 
+function getPackage(name, options) {
   var dir = join(base, name);
-  return (map[name] = new Package(dir, options));
+  return new Package(dir, options);
 }
 
 function assert (file, expectedFile) {
