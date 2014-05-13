@@ -44,11 +44,7 @@ describe('gulp-transport', function() {
 
     (function() {
       tid('./a.js', pkg, options);
-    }).should.throw('no base path of ./a.js');
-
-    (function() {
-      tid('../a.js', pkg, options, 'index.js');
-    }).should.throw('../a.js is out of bound');
+    }).should.throw('do not support relative path');
   });
 
   it('util.extendOption', function() {
@@ -204,6 +200,31 @@ describe('gulp-transport', function() {
 
     stream.write(fakeCss);
     stream.write(fakeJson);
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
+  it('transport hash', function(done) {
+    var pkg = getPackage('transport-hash');
+
+    var file = join(base, 'transport-hash/index.js');
+    var fakeTpl = new gutil.File({
+      path: file,
+      contents: fs.readFileSync(file)
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(transport({
+      pkg: pkg,
+      hash: true
+    }))
+    .on('data', function(file) {
+      assert(file, 'transport-hash.js');
+    })
+    .on('end', done);
+
     stream.write(fakeTpl);
     stream.end();
   });
@@ -488,6 +509,16 @@ describe('gulp-transport', function() {
     (function() {
       transport();
     }).should.throw('pkg missing');
+  });
+
+  it('resolve path', function() {
+    util.resolvePath('./a.js', 'b.js').should.eql('a.js');
+    util.resolvePath('../a.js', 'src/b.js').should.eql('a.js');
+    util.resolvePath('a.js', 'b/c/d.js').should.eql('a.js');
+    util.resolvePath('a.js').should.eql('a.js');
+    (function() {
+      util.resolvePath('../a.js', 'b.js');
+    }).should.throw('../a.js is out of bound');
   });
 });
 
