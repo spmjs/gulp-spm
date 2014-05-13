@@ -16,7 +16,6 @@ describe('Util', function() {
     util.extendOption().should.eql({
       ignore: [],
       idleading: '{{name}}/{{version}}',
-      cwd: process.cwd(),
       pkg: null,
       rename: null
     });
@@ -29,7 +28,6 @@ describe('Util', function() {
       pkg: {},
       ignore: [],
       idleading: '{{name}}/{{version}}',
-      cwd: process.cwd(),
       rename: null
     });
     orig.should.eql({
