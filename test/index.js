@@ -93,7 +93,7 @@ describe('gulp-transport', function() {
   });
 
   it('replace', function() {
-    var pkg = getPackage('simple-transport', {output: ['c.js']});
+    var pkg = getPackage('simple-transport', {entry: ['c.js']});
     var p = join(base, 'simple-transport/c.js');
     var fakeFile = new gutil.File({
       contents: fs.readFileSync(p),
@@ -106,7 +106,7 @@ describe('gulp-transport', function() {
   });
 
   it('replace with options', function() {
-    var pkg = getPackage('simple-transport', {output: ['c.js']});
+    var pkg = getPackage('simple-transport', {entry: ['c.js']});
     var fakeBuffer = new Buffer('require("./a.js");\nrequire("b");\nrequire("c");');
     var fakeFile = new gutil.File({
       contents: fakeBuffer,

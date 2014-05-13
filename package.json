@@ -16,7 +16,7 @@
   "devDependencies": {
     "concat-stream": "~1.4.4",
     "coveralls": "~2.8.0",
-    "father": "~0.5.1",
+    "father": "~0.6.1",
     "gulp": "^3.6.0",
     "gulp-if": "~0.0.5",
     "istanbul": "^0.2.6",
