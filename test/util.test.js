@@ -1,5 +1,6 @@
 'use strict';
 
+require('should');
 var util = require('..').util;
 
 describe('Util', function() {
@@ -70,10 +71,10 @@ describe('Util', function() {
   });
 
   it('isRelative', function() {
-    util.isRelative('./a').should.be.ok();
-    util.isRelative('../a').should.be.ok();
-    util.isRelative('/a.js').should.not.be.ok();
-    util.isRelative('a.js').should.not.be.ok();
+    util.isRelative('./a').should.be.ok;
+    util.isRelative('../a').should.be.ok;
+    util.isRelative('/a.js').should.not.be.ok;
+    util.isRelative('a.js').should.not.be.ok;
   });
 
   it('resolvePath', function() {
