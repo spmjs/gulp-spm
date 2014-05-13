@@ -323,13 +323,13 @@ describe('Parser', function() {
     .pipe(transport({
       pkg: pkg,
       rename: function(file) {
-        var hash = utility.sha1(file.origin).substring(0,8);
+        var hash = utility.sha1(fs.readFileSync(file.origin)).substring(0,8);
         file.basename += '-' + hash;
         return file;
       }
     }))
     .on('data', function(file) {
-      file.path.should.include('transport-hash/index-e5a16770.js');
+      file.path.should.include('transport-hash/index-8951f677.js');
       assert(file, 'transport-hash.js');
     })
     .on('end', done);
