@@ -23,14 +23,22 @@ gulp.src(pkg.main)
   .pipe(gulp.dest('path/to/dest'));
 ```
 
-See [example](https://github.com/popomore/gulp-transport/blob/master/test/index.js)
+See [example](https://github.com/popomore/gulp-transport/blob/master/test/parser.test.js)
 
 ### options
 
 - pkg: package info parsed by father
 - idleading: cmd id prefix, support simple template, E.g. `{{name}}/{{version}}`
 - ignore: array that ignore to transport
-- suffix: the suffix of filename, E.g. a.js -> a-debug.js
+- rename: option in [rename](https://github.com/popomore/rename)
+
+### parser
+
+- transport.plugin.tplParser: transport .tpl to .js
+- transport.plugin.jsonParser: transport .json to .js
+- transport.plugin.css2jsParser: transport .css to .js
+- transport.plugin.handlebarsParser: transport .handlebars to .js
+- transport.plugin.cssParser: transport .css to .css
 
 ## LISENCE
 
