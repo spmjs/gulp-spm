@@ -27,7 +27,8 @@ describe('gulp-transport', function() {
       'src/a', {
         a: 1,
         b: 2,
-        c: 3
+        c: 3,
+        dest: ''
       }, {
         idleading: '{{a}}-{{b}}-{{c}}',
         cwd: ''
@@ -513,6 +514,7 @@ describe('gulp-transport', function() {
 
   it('resolve path', function() {
     util.resolvePath('./a.js', 'b.js').should.eql('a.js');
+    util.resolvePath('./a', 'b.js').should.eql('a');
     util.resolvePath('../a.js', 'src/b.js').should.eql('a.js');
     util.resolvePath('a.js', 'b/c/d.js').should.eql('a.js');
     util.resolvePath('a.js').should.eql('a.js');
