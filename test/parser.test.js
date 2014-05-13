@@ -15,11 +15,11 @@ var transport = require('..');
 var wrap = transport.wrap;
 var replace = transport.replace;
 var util = transport.util;
-var css2jsParser = transport.parser.css2jsParser;
-var jsonParser = transport.parser.jsonParser;
-var tplParser = transport.parser.tplParser;
-var handlebarsParser = transport.parser.handlebarsParser;
-var cssParser = transport.parser.cssParser;
+var css2jsParser = transport.plugin.css2jsParser;
+var jsonParser = transport.plugin.jsonParser;
+var tplParser = transport.plugin.tplParser;
+var handlebarsParser = transport.plugin.handlebarsParser;
+var cssParser = transport.plugin.cssParser;
 
 describe('Parser', function() {
 
