@@ -7,6 +7,7 @@ var gulp = require('gulp');
 var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var through2 = require('through2');
+var utility = require('utility');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 
@@ -219,9 +220,14 @@ describe('gulp-transport', function() {
     stream
     .pipe(transport({
       pkg: pkg,
-      hash: true
+      rename: function(file) {
+        var hash = utility.sha1(file.origin).substring(0,8);
+        file.basename += '-' + hash;
+        return file;
+      }
     }))
     .on('data', function(file) {
+      file.path.should.include('transport-hash/index-e5a16770.js');
       assert(file, 'transport-hash.js');
     })
     .on('end', done);
