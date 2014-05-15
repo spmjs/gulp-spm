@@ -97,7 +97,7 @@ describe('Common', function() {
     var pkg = getPackage('simple-transport');
     (function() {
       transport.transportDeps('not-exist.js', pkg);
-    }).should.throw('not-exist.js is not included in relative3.js,relative2.js,relative1.js,index.js');
+    }).should.throw('not-exist.js is not included in index.js,relative1.js,relative2.js,relative3.js');
   });
 
   xit('transportDeps throw when package is not found', function() {});
