@@ -47,7 +47,7 @@ describe('Util', function() {
     util.addExt('a').should.eql('a.js');
     util.addExt('a.js').should.eql('a.js');
     util.addExt('./a.js').should.eql('./a.js');
-    util.addExt('./a.css').should.eql('./a.css');
+    util.addExt('./a.css').should.eql('./a.css.js');
   });
 
   it('rename', function() {
