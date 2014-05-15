@@ -2,6 +2,11 @@
 
 ---
 
+## 0.4.1
+
+- PluginError miss argument
+- fix addExt: a.css -> a.css.js
+
 ## 0.4.0
 
 - upgrade css-import@0.2.0
