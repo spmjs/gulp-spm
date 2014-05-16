@@ -309,7 +309,31 @@ describe('Parser', function() {
       });
   });
 
- it('rename with hash', function(done) {
+  it('rename with debug', function(done) {
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var stream = transport({
+      pkg: pkg,
+      rename: {
+        suffix: '-debug'
+      }
+    });
+
+    var filePath = join(base, 'type-transport/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      assert(file, 'rename-debug.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  })
+
+  it('rename with hash', function(done) {
     var pkg = getPackage('transport-hash');
     var file = join(base, 'transport-hash/index.js');
     var fakeTpl = new gutil.File({
@@ -330,7 +354,7 @@ describe('Parser', function() {
     }))
     .on('data', function(file) {
       file.path.should.include('transport-hash/index-8951f677.js');
-      assert(file, 'transport-hash.js');
+      assert(file, 'rename-hash.js');
     })
     .on('end', done);
 

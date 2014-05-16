@@ -2,6 +2,10 @@
 
 ---
 
+## 0.4.2
+
+rollback: addExt: a.css -> a.css.js
+
 ## 0.4.1
 
 - PluginError miss argument
