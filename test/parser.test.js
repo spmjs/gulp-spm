@@ -91,7 +91,7 @@ describe('Parser', function() {
   });
 
  it('transport js', function(done) {
-    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars-runtime'}});
     var stream = transport({pkg: pkg});
 
     var filePath = join(base, 'type-transport/index.js');
@@ -161,7 +161,7 @@ describe('Parser', function() {
   });
 
   it('transport handlebars', function(done) {
-    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars-runtime'}});
 
     var fakeTpl = new gutil.File({
       path: join(base, 'type-transport/a.handlebars'),
@@ -310,7 +310,7 @@ describe('Parser', function() {
   });
 
   it('rename with debug', function(done) {
-    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars-runtime'}});
     var stream = transport({
       pkg: pkg,
       rename: {
@@ -331,7 +331,7 @@ describe('Parser', function() {
 
     stream.write(fakeFile);
     stream.end();
-  })
+  });
 
   it('rename with hash', function(done) {
     var pkg = getPackage('transport-hash');

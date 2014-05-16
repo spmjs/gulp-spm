@@ -1,5 +1,5 @@
-define("type-transport/1.0.0/a.handlebars", ["handlebars"], function(require, exports, module) {
-var Handlebars = require("handlebars");
+define("type-transport/1.0.0/a.handlebars", ["handlebars-runtime"], function(require, exports, module) {
+var Handlebars = require("handlebars-runtime")["default"];
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
