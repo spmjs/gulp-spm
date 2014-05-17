@@ -2,6 +2,10 @@
 
 ---
 
+## 0.4.3
+
+handlebars -> handlebars-runtime
+
 ## 0.4.2
 
 rollback: addExt: a.css -> a.css.js
