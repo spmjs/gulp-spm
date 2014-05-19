@@ -2,6 +2,11 @@
 
 ---
 
+## 0.4.5
+
+- stop parsing dependencies when have been ignore
+- ignore condition before package check
+
 ## 0.4.4
 
 fix quote bug in handlebar and tpl
