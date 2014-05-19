@@ -119,6 +119,7 @@ describe('Parser', function() {
     var stream = css2jsParser({pkg: pkg});
     stream
     .on('data', function(file) {
+      file.path.should.endWith('.css');
       assert(file, 'type-transport-css.js');
     })
     .on('end', done);
@@ -136,6 +137,7 @@ describe('Parser', function() {
     var stream = jsonParser({pkg: pkg});
     stream
     .on('data', function(file) {
+      file.path.should.endWith('.json');
       assert(file, 'type-transport-json.js');
     })
     .on('end', done);
@@ -153,6 +155,7 @@ describe('Parser', function() {
     var stream = tplParser({pkg: pkg});
     stream
     .on('data', function(file) {
+      file.path.should.endWith('.tpl');
       assert(file, 'type-transport-tpl.js');
     })
     .on('end', done);
@@ -173,6 +176,7 @@ describe('Parser', function() {
     stream
     .pipe(gulpif(/\.handlebars/, handlebarsParser({pkg: pkg})))
     .on('data', function(file) {
+      file.path.should.endWith('.handlebars');
       assert(file, 'transport-handlebars.js');
     })
     .on('end', done);
