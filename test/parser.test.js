@@ -33,7 +33,7 @@ describe('Parser', function() {
 
     var opt = util.extendOption({pkg: pkg});
     var code = replace(fakeFile, opt).toString();
-    code.should.eql('require("simple-transport/1.0.0/a");\nrequire("b/1.1.0/src/b");\n');
+    code.should.eql('require("simple-transport/1.0.0/a");\nrequire("b/1.1.0/src/b");\n//require("d");\n');
   });
 
   it('replace with options', function() {
