@@ -2,6 +2,10 @@
 
 ---
 
+## 0.4.4
+
+fix quote bug in handlebar and tpl
+
 ## 0.4.3
 
 handlebars -> handlebars-runtime
