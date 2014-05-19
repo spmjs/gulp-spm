@@ -86,6 +86,19 @@ describe('Common', function() {
     ]);
   });
 
+  it('stop parsing dependencies when ignore', function() {
+    var pkg = getPackage('deep-deps');
+    var options = {
+      ignore: ['c'],
+      idleading: '{{name}}/{{version}}'
+    };
+    var expected = transport.transportDeps('a.js', pkg, options);
+    expected.should.eql([
+      'c',
+      'b/1.1.0/src/b'
+    ]);
+  });
+
   it('transportDeps do not contain css\'s dependencies', function() {
     var pkg = getPackage('js-require-css');
     var deps = transport.transportDeps('index.js', pkg);
