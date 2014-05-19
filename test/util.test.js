@@ -61,11 +61,12 @@ describe('Util', function() {
         return file;
       }
     }).should.eql('a-debug.js');
-    util.rename('a', {
-      rename: function() {
-        throw new Error();
+    (function() {
+      util.rename('a', {rename: rename});
+      function rename() {
+        throw new Error('not found');
       }
-    }).should.eql('a.js');
+    }).should.throw('a.js not found');
   });
 
   it('isRelative', function() {

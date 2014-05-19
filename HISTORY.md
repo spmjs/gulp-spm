@@ -6,6 +6,7 @@
 
 - stop parsing dependencies when have been ignore
 - ignore condition before package check
+- throw when rename error
 
 ## 0.4.4
 
