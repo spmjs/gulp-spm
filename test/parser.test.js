@@ -357,7 +357,7 @@ describe('Parser', function() {
       }
     }))
     .on('data', function(file) {
-      file.path.should.include('transport-hash/index-8951f677.js');
+      util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
       assert(file, 'rename-hash.js');
     })
     .on('end', done);
@@ -373,8 +373,12 @@ function getPackage(name, options) {
   return new Package(dir, options);
 }
 
-function assert (file, expectedFile) {
+function assert(file, expectedFile) {
   var code = file.contents.toString();
-  var expected = fs.readFileSync(__dirname + '/expected/' + expectedFile).toString();
+  var expected = readFile(__dirname + '/expected/' + expectedFile);
   code.should.eql(expected);
+}
+
+function readFile(path) {
+  return fs.readFileSync(path).toString().replace(/\r/g, '');
 }

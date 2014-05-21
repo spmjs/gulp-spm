@@ -2,6 +2,10 @@
 
 ---
 
+## 0.4.6
+
+fix windows path
+
 ## 0.4.5
 
 - stop parsing dependencies when have been ignore
