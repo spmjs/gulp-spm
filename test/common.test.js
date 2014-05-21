@@ -61,11 +61,11 @@ describe('Common', function() {
     expected.should.eql([
       'simple-transport/1.0.0/relative1',
       'simple-transport/1.0.0/relative2',
-      'simple-transport/1.0.0/relative3',
-      'd/0.1.1/index',
       'd/0.1.0/index',
       'c/1.1.1/index',
-      'b/1.1.0/src/b'
+      'simple-transport/1.0.0/relative3',
+      'b/1.1.0/src/b',
+      'd/0.1.1/index'
     ]);
   });
 
@@ -79,9 +79,9 @@ describe('Common', function() {
     expected.should.eql([
       'simple-transport/1.0.0/relative1',
       'simple-transport/1.0.0/relative2',
-      'simple-transport/1.0.0/relative3',
       'd',
       'c/1.1.1/index',
+      'simple-transport/1.0.0/relative3',
       'b/1.1.0/src/b'
     ]);
   });
