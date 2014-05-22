@@ -366,6 +366,25 @@ describe('Parser', function() {
     stream.end();
   });
 
+  it('check path', function(done) {
+    var pkg = getPackage('check-path');
+    var stream = transport({pkg: pkg});
+
+    var filePath = join(base, 'check-path/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      assert(file, 'check-path.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  });
+
 });
 
 function getPackage(name, options) {
