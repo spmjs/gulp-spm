@@ -8,7 +8,8 @@ transport.plugin = {
   jsonParser: require('./lib/parser/json'),
   css2jsParser: require('./lib/parser/css2js'),
   handlebarsParser: require('./lib/parser/handlebars'),
-  cssParser: require('./lib/parser/css')
+  cssParser: require('./lib/parser/css'),
+  jsParser: require('./lib/parser/js')
 };
 
 // common method
