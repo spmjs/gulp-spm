@@ -329,6 +329,8 @@ describe('Parser', function() {
     });
 
     stream.on('data', function(file) {
+      util.winPath(file.originPath).should.include('type-transport/index.js');
+      util.winPath(file.path).should.include('type-transport/index-debug.js');
       assert(file, 'rename-debug.js');
     })
     .on('end', done);
@@ -357,6 +359,7 @@ describe('Parser', function() {
       }
     }))
     .on('data', function(file) {
+      util.winPath(file.originPath).should.include('transport-hash/index.js');
       util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
       assert(file, 'rename-hash.js');
     })
