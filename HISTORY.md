@@ -6,6 +6,7 @@
 
 - idleading support function
 - change .css -> .css.js
+- remove css comment
 
 ## 0.4.7
 

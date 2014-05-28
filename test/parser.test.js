@@ -113,7 +113,7 @@ describe('Parser', function() {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
     var fakeCss = new gutil.File({
       path: join(base, 'type-transport/a.css'),
-      contents: new Buffer('body{color: #fff;}')
+      contents: new Buffer('/* comment */body{color: #fff;}')
     });
 
     var stream = css2jsParser({pkg: pkg});
