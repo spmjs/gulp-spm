@@ -2,6 +2,7 @@
 
 require('should');
 var fs = require('fs');
+var path = require('path');
 var join = require('path').join;
 var gutil = require('gulp-util');
 var Package = require('father').SpmPackage;
@@ -50,6 +51,21 @@ describe('Common', function() {
 
     transport.transportId('index.js', pkg, opt)
       .should.endWith('type-transport/1.0.0/index-debug');
+  });
+
+  it('transportId with function of idleading ', function() {
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var opt = {
+      idleading: function(filepath, pkg) {
+        var dir = path.extname(filepath) === '.js'? 'js' : 'other';
+        return dir + '/' + pkg.name + '/{{version}}';
+      }
+    };
+
+    transport.transportId('index.js', pkg, opt)
+      .should.endWith('js/type-transport/1.0.0/index');
+    transport.transportId('a.tpl', pkg, opt)
+      .should.endWith('other/type-transport/1.0.0/a.tpl');
   });
 
   it('transportDeps', function() {

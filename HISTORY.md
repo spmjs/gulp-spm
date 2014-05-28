@@ -2,6 +2,15 @@
 
 ---
 
+## 0.5.0
+
+- idleading support function
+
+## 0.4.7
+
+- update npmignore
+- exports jsParser
+
 ## 0.4.6
 
 fix windows path
