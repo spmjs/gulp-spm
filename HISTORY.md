@@ -5,6 +5,7 @@
 ## 0.5.0
 
 - idleading support function
+- change .css -> .css.js
 
 ## 0.4.7
 

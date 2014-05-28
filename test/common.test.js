@@ -118,7 +118,7 @@ describe('Common', function() {
   it('transportDeps do not contain css\'s dependencies', function() {
     var pkg = getPackage('js-require-css');
     var deps = transport.transportDeps('index.js', pkg);
-    deps.should.eql(['b/1.0.0/index.css']);
+    deps.should.eql(['b/1.0.0/index.css.js']);
   });
 
   // father will throw now
@@ -141,7 +141,7 @@ describe('Common', function() {
       path: fakePath
     });
     transport.generateId(fakeFile, {pkg: pkg})
-      .should.eql('b/1.0.0/index.css');
+      .should.eql('b/1.0.0/index.css.js');
   });
 
   it('generateDeps', function() {
@@ -152,7 +152,7 @@ describe('Common', function() {
       path: fakePath
     });
     transport.generateDeps(fakeFile, {pkg: pkg})
-      .should.eql('"b/1.0.0/index.css"');
+      .should.eql('"b/1.0.0/index.css.js"');
   });
 
   it('getFileInfo not found', function() {
