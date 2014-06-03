@@ -7,6 +7,7 @@
 - idleading support function
 - change .css -> .css.js
 - remove css comment
+- support require directory
 
 ## 0.4.7
 

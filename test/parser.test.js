@@ -388,6 +388,24 @@ describe('Parser', function() {
     stream.end();
   });
 
+  it('require directory', function(done) {
+    var pkg = getPackage('require-directory');
+    var stream = transport({pkg: pkg});
+
+    var filePath = join(base, 'require-directory/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      assert(file, 'require-directory.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  });
 });
 
 function getPackage(name, options) {
