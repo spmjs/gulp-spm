@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.1
+
+fix ie hack when css2js
+
 ## 0.5.0
 
 - idleading support function

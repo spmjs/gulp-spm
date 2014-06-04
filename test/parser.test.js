@@ -111,9 +111,10 @@ describe('Parser', function() {
 
   it('transport css2js', function(done) {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var p = join(base, 'type-transport/a.css');
     var fakeCss = new gutil.File({
-      path: join(base, 'type-transport/a.css'),
-      contents: new Buffer('/* comment */body{color: #fff;}')
+      path: p,
+      contents: fs.readFileSync(p)
     });
 
     var stream = css2jsParser({pkg: pkg});
