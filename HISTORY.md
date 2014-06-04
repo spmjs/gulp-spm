@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.2
+
+add styleBox option
+
 ## 0.5.1
 
 fix ie hack when css2js

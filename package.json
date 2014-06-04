@@ -12,7 +12,8 @@
     "through2": "~0.4.1",
     "rename": "~0.2.0",
     "requires": "~1.0.1",
-    "strip-comments": "~0.1.6"
+    "strip-comments": "~0.1.6",
+    "css": "~1.6.0"
   },
   "devDependencies": {
     "concat-stream": "~1.4.4",

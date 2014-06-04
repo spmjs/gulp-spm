@@ -407,6 +407,44 @@ describe('Parser', function() {
     stream.write(fakeFile);
     stream.end();
   });
+
+  it('stylebox js', function(done) {
+    var pkg = getPackage('stylebox');
+    var stream = transport({pkg: pkg, styleBox: true});
+
+    var filePath = join(base, 'stylebox/index.js');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      assert(file, 'stylebox.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  });
+
+  it('stylebox css2js', function(done) {
+    var pkg = getPackage('stylebox');
+    var stream = css2jsParser({pkg: pkg, styleBox: true});
+
+    var filePath = join(base, 'stylebox/index.css');
+    var fakeFile = new gutil.File({
+      path: filePath,
+      contents: fs.readFileSync(filePath)
+    });
+
+    stream.on('data', function(file) {
+      assert(file, 'stylebox.css.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeFile);
+    stream.end();
+  });
 });
 
 function getPackage(name, options) {
