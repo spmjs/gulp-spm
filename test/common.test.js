@@ -155,6 +155,32 @@ describe('Common', function() {
       .should.eql('"b/1.0.0/index.css.js"');
   });
 
+  it('getFileInfo', function() {
+    var pkg = getPackage('simple-transport');
+    var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
+    var fakeFile = new gutil.File({
+      contents: '',
+      path: fakePath
+    });
+
+    var fileInfo = transport.getFileInfo(fakeFile, pkg);
+    fileInfo.filepath.should.eql('src/b.js');
+    fileInfo.pkg.id.should.eql('b@1.1.0');
+  });
+
+  it('getFileInfo deep directory', function() {
+    var pkg = getPackage('require-directory');
+    var fakePath = join(base, 'require-directory/lib/index.js');
+    var fakeFile = new gutil.File({
+      contents: '',
+      path: fakePath
+    });
+
+    var fileInfo = transport.getFileInfo(fakeFile, pkg);
+    fileInfo.filepath.should.eql('lib/index.js');
+    fileInfo.pkg.id.should.eql('a@1.0.0');
+  });
+
   it('getFileInfo not found', function() {
     var pkg = getPackage('js-require-css');
     var fakePath = join(base, 'js-require-css/sea-modules/b/1.0.1/index.css');
