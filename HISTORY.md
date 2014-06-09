@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.3
+
+fix win path in getFileInfo spmjs/spm#815
+
 ## 0.5.2
 
 add styleBox option
