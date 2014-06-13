@@ -186,6 +186,28 @@ describe('Parser', function() {
     stream.end();
   });
 
+  it('transport handlebars ignore', function(done) {
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars-runtime'}});
+
+    var fakeTpl = new gutil.File({
+      path: join(base, 'type-transport/a.handlebars'),
+      contents: new Buffer('<div>{{content}}</div>')
+    });
+
+    var stream = through2.obj();
+
+    stream
+    .pipe(gulpif(/\.handlebars/, handlebarsParser({pkg: pkg, ignore: ['handlebars-runtime']})))
+    .on('data', function(file) {
+      file.path.should.endWith('.handlebars');
+      assert(file, 'transport-handlebars-ignore.js');
+    })
+    .on('end', done);
+
+    stream.write(fakeTpl);
+    stream.end();
+  });
+
   it('transport handlebars not match', function(done) {
     var pkg = getPackage('handlebars-not-match');
 

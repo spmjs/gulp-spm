@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.5
+
+fix ignore in handlebars spmjs/spm#831
+
 ## 0.5.4
 
 fix idleading exception
