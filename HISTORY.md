@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.4
+
+fix idleading exception
+
 ## 0.5.3
 
 fix win path in getFileInfo spmjs/spm#815
