@@ -263,6 +263,33 @@ describe('Common', function() {
       stream.end();
     }).should.throw('extension "no" not supported.');
   });
+
+  it('getStyleId', function() {
+    var pkg = getPackage('simple-transport');
+    var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
+    var fakeFile = new gutil.File({
+      contents: '',
+      path: fakePath
+    });
+
+    var opt = {
+      idleading: '{{name}}/{{version}}',
+      pkg: pkg
+    };
+    transport.getStyleId(fakeFile, opt)
+      .should.eql('b-1_1_0');
+
+    opt = {
+      idleading: function(filepath, pkg) {
+        return pkg.name + '/' + path.extname(filepath) + '/';
+      },
+      pkg: pkg
+    };
+    transport.getStyleId(fakeFile, opt)
+      .should.eql('b-_js');
+  });
+
+
 });
 
 function getPackage(name, options) {
