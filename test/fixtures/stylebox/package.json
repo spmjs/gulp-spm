@@ -1,4 +1,9 @@
 {
   "name": "a",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "spm": {
+    "dependencies": {
+      "import-style": "1.0.0"
+    }
+  }
 }

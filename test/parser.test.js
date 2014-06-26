@@ -128,6 +128,25 @@ describe('Parser', function() {
     stream.end();
   });
 
+  it('transport css2js ignore', function(done) {
+    var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+    var p = join(base, 'type-transport/a.css');
+    var fakeCss = new gutil.File({
+      path: p,
+      contents: fs.readFileSync(p)
+    });
+
+    var stream = css2jsParser({pkg: pkg, ignore:['import-style']});
+    stream
+      .on('data', function(file) {
+        file.path.should.endWith('.css');
+        assert(file, 'type-transport-css-ignore.js');
+      })
+      .on('end', done);
+    stream.write(fakeCss);
+    stream.end();
+  });
+
   it('transport json', function(done) {
     var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
     var fakeJson = new gutil.File({

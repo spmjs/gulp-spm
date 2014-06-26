@@ -6,3 +6,5 @@ node_modules/
 .editorconfig
 .travis.yml
 .jshintrc
+tmp/
+.idea/
