@@ -7,7 +7,7 @@ require("type-transport/1.0.0/a");
 
 });
 define("type-transport/1.0.0/a.css.js", ["import-style/1.0.0/index"], function(require, exports, module){
-require("import-style/1.0.0/index")('body{  color: #fff;  border-color: transparent\\0;}');
+require("import-style/1.0.0/index")('body{color:#fff;_padding:0;*margin:0;border-color:transparent\\0;}');
 
 });
 define("type-transport/1.0.0/a.json", [], function(require, exports, module){

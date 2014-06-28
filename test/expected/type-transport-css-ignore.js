@@ -1,1 +1,1 @@
-require('import-style')('body{  color: #fff;  border-color: transparent\\0;}');
+require('import-style')('body{color:#fff;_padding:0;*margin:0;border-color:transparent\\0;}');
