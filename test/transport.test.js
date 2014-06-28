@@ -10,7 +10,7 @@ var transport = require('../lib/transport');
 
 describe.only('Transport', function() {
 
- it('transport relative', function(done) {
+  it('transport js relative', function(done) {
     var pkg = getPackage('type-transport', {
       extraDeps: {
         handlebars: 'handlebars-runtime',
@@ -30,6 +30,25 @@ describe.only('Transport', function() {
     .on('end', done);
   });
 
+  it('transport css', function(done) {
+    var pkg = getPackage('css-import', {
+      extraDeps: {
+        handlebars: 'handlebars-runtime',
+        css: 'import-style'
+      }
+    });
+
+    var opt = {
+      cwd: join(base, 'css-import'),
+      cwdbase: true
+    };
+    gulp.src('index.css', opt)
+    .pipe(transport({pkg: pkg}))
+    .on('data', function(file) {
+      assert(file, 'css-imports.css');
+    })
+    .on('end', done);
+  });
 });
 
 function getPackage(name, options) {

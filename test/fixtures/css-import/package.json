@@ -4,7 +4,8 @@
   "spm": {
     "main": "index.css",
     "dependencies": {
-      "b": "1.0.0"
+      "b": "1.0.0",
+      "import-style": "1.0.0"
     }
   }
 }
