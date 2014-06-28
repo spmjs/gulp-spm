@@ -11,11 +11,11 @@ require("import-style/1.0.0/index")('body{  color: #fff;  border-color: transpar
 
 });
 define("type-transport/1.0.0/a.json", [], function(require, exports, module){
-module.exports = {}
+module.exports = {};
 
 });
 define("type-transport/1.0.0/a.tpl", [], function(require, exports, module){
-module.exports='<div></div>';
+module.exports = '<div></div>';
 
 });
 define("type-transport/1.0.0/a.handlebars", ["handlebars-runtime/1.3.0/handlebars"], function(require, exports, module){

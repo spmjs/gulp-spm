@@ -8,7 +8,7 @@ var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
 
-describe.only('Transport', function() {
+describe('Transport', function() {
 
   it('transport js relative', function(done) {
     var pkg = getPackage('type-transport', {
