@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.6
+
+upgrade searequire@1.3.0
+
 ## 0.5.5
 
 fix ignore in handlebars spmjs/spm#831
