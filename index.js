@@ -1,6 +1,6 @@
 'use strict';
 
-var transport = require('./lib/parser/js');
+var transport = require('./lib/transport');
 
 // parser
 transport.plugin = {

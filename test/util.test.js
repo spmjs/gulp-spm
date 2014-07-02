@@ -1,7 +1,7 @@
 'use strict';
 
 require('should');
-var util = require('..').util;
+var util = require('../lib/util');
 
 describe('Util', function() {
 

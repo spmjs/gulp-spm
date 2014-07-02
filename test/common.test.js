@@ -7,7 +7,7 @@ var join = require('path').join;
 var gutil = require('gulp-util');
 var Package = require('father').SpmPackage;
 
-var transport = require('..');
+var common = require('../lib/common');
 var base = join(__dirname, 'fixtures');
 
 describe('Common', function() {
@@ -17,7 +17,7 @@ describe('Common', function() {
     it('transportId', function() {
       var pkg, opt;
       (function() {
-        transport.transportId('./a.js');
+        common.transportId('./a.js');
       }).should.throw('do not support relative path');
 
       pkg = {
@@ -30,7 +30,7 @@ describe('Common', function() {
         idleading: '{{a}}-{{b}}-{{c}}',
         cwd: ''
       };
-      transport.transportId('src/a', pkg, opt)
+      common.transportId('src/a', pkg, opt)
         .should.eql('1-2-3/src/a');
 
       pkg = {
@@ -41,7 +41,7 @@ describe('Common', function() {
       opt = {
         idleading: '{{name}}/{{version}}'
       };
-      transport.transportId('index.js', pkg, opt)
+      common.transportId('index.js', pkg, opt)
         .should.eql('a/1.0.0/index');
     });
 
@@ -51,7 +51,7 @@ describe('Common', function() {
         rename: {suffix: '-debug'}
       };
 
-      transport.transportId('index.js', pkg, opt)
+      common.transportId('index.js', pkg, opt)
         .should.endWith('type-transport/1.0.0/index-debug');
     });
 
@@ -64,9 +64,9 @@ describe('Common', function() {
         }
       };
 
-      transport.transportId('index.js', pkg, opt)
+      common.transportId('index.js', pkg, opt)
         .should.endWith('js/type-transport/1.0.0/index');
-      transport.transportId('a.tpl', pkg, opt)
+      common.transportId('a.tpl', pkg, opt)
         .should.endWith('other/type-transport/1.0.0/a.tpl');
     });
 
@@ -79,7 +79,7 @@ describe('Common', function() {
       var options = {
         idleading: '{{name}}/{{version}}'
       };
-      var expected = transport.transportDeps('index.js', pkg, options);
+      var expected = common.transportDeps('index.js', pkg, options);
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
@@ -97,7 +97,7 @@ describe('Common', function() {
         ignore: ['d'],
         idleading: '{{name}}/{{version}}'
       };
-      var expected = transport.transportDeps('index.js', pkg, options);
+      var expected = common.transportDeps('index.js', pkg, options);
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
@@ -114,7 +114,7 @@ describe('Common', function() {
         ignore: ['c'],
         idleading: '{{name}}/{{version}}'
       };
-      var expected = transport.transportDeps('a.js', pkg, options);
+      var expected = common.transportDeps('a.js', pkg, options);
       expected.should.eql([
         'c',
         'b/1.1.0/src/b'
@@ -123,7 +123,7 @@ describe('Common', function() {
 
     it('transportDeps do not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
-      var deps = transport.transportDeps('index.js', pkg);
+      var deps = common.transportDeps('index.js', pkg);
       deps.should.eql(['b/1.0.0/index.css.js']);
     });
 
@@ -131,7 +131,7 @@ describe('Common', function() {
     it('transportDeps which not exist in pkg.files', function() {
       var pkg = getPackage('simple-transport');
       (function() {
-        transport.transportDeps('not-exist.js', pkg);
+        common.transportDeps('not-exist.js', pkg);
       }).should.throw('not-exist.js is not included in index.js,relative1.js,relative2.js,relative3.js');
     });
 
@@ -149,7 +149,7 @@ describe('Common', function() {
       contents: fs.readFileSync(fakePath),
       path: fakePath
     });
-    transport.generateId(fakeFile, {pkg: pkg})
+    common.generateId(fakeFile, {pkg: pkg})
       .should.eql('b/1.0.0/index.css.js');
   });
 
@@ -160,7 +160,7 @@ describe('Common', function() {
       contents: fs.readFileSync(fakePath),
       path: fakePath
     });
-    transport.generateDeps(fakeFile, {pkg: pkg})
+    common.generateDeps(fakeFile, {pkg: pkg})
       .should.eql('"b/1.0.0/index.css.js"');
   });
 
@@ -174,7 +174,7 @@ describe('Common', function() {
         path: fakePath
       });
 
-      var fileInfo = transport.getFileInfo(fakeFile, pkg);
+      var fileInfo = common.getFileInfo(fakeFile, pkg);
       fileInfo.filepath.should.eql('src/b.js');
       fileInfo.pkg.id.should.eql('b@1.1.0');
     });
@@ -187,7 +187,7 @@ describe('Common', function() {
         path: fakePath
       });
 
-      var fileInfo = transport.getFileInfo(fakeFile, pkg);
+      var fileInfo = common.getFileInfo(fakeFile, pkg);
       fileInfo.filepath.should.eql('lib/index.js');
       fileInfo.pkg.id.should.eql('a@1.0.0');
     });
@@ -200,7 +200,7 @@ describe('Common', function() {
         path: fakePath
       });
       (function() {
-        transport.getFileInfo(fakeFile, pkg);
+        common.getFileInfo(fakeFile, pkg);
       }).should.throw('not found sea-modules/b/1.0.1/index.css of pkg a@1.0.0');
     });
   });
@@ -210,7 +210,7 @@ describe('Common', function() {
 
     it('createStream', function(done) {
       var pkg = getPackage('simple-transport');
-      var stream = transport.createStream({pkg: pkg}, 'js', parser);
+      var stream = common.createStream({pkg: pkg}, 'js', parser);
       var fakePath = join(base, 'simple-transport/index.js');
       var fakeFile = new gutil.File({
         path: fakePath,
@@ -228,7 +228,7 @@ describe('Common', function() {
 
     it('createStream throw by parser', function(done) {
       var pkg = getPackage('simple-transport');
-      var stream = transport.createStream({pkg: pkg}, 'js', function() {throw new Error('error')});
+      var stream = common.createStream({pkg: pkg}, 'js', function() {throw new Error('error')});
       var fakePath = join(base, 'simple-transport/index.js');
       var fakeFile = new gutil.File({
         path: fakePath,
@@ -246,13 +246,13 @@ describe('Common', function() {
 
     it('createStream miss pkg', function() {
       (function() {
-        transport.createStream({});
+        common.createStream({});
       }).should.throw('pkg missing');
     });
 
     it('createStream do not support stream', function() {
       var pkg = getPackage('simple-transport');
-      var stream = transport.createStream({pkg: pkg}, 'js', parser);
+      var stream = common.createStream({pkg: pkg}, 'js', parser);
       var filePath = join(base, 'simple-transport/index.js');
       var fakeFile = new gutil.File({
         path: filePath,
@@ -267,7 +267,7 @@ describe('Common', function() {
 
     it('createStream not supported parser', function() {
       var pkg = getPackage('simple-transport');
-      var stream = transport.createStream({pkg: pkg}, 'js', parser);
+      var stream = common.createStream({pkg: pkg}, 'js', parser);
       var fakeFile = new gutil.File({
         path: join(base, 'simple-transport/a.no'),
         contents: ''
@@ -293,7 +293,7 @@ describe('Common', function() {
       idleading: '{{name}}/{{version}}',
       pkg: pkg
     };
-    transport.getStyleId(fakeFile, opt)
+    common.getStyleId(fakeFile, opt)
       .should.eql('b-1_1_0');
 
     opt = {
@@ -302,7 +302,7 @@ describe('Common', function() {
       },
       pkg: pkg
     };
-    transport.getStyleId(fakeFile, opt)
+    common.getStyleId(fakeFile, opt)
       .should.eql('b-_js');
   });
 

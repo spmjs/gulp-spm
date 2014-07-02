@@ -11,15 +11,15 @@ var utility = require('utility');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 
-var transport = require('..');
-var wrap = transport.wrap;
-var replace = transport.replace;
-var util = transport.util;
-var css2jsParser = transport.plugin.css2jsParser;
-var jsonParser = transport.plugin.jsonParser;
-var tplParser = transport.plugin.tplParser;
-var handlebarsParser = transport.plugin.handlebarsParser;
-var cssParser = transport.plugin.cssParser;
+var transport = require('../lib/parser/js');
+var wrap = require('../lib/parser/js').wrap;
+var replace = require('../lib/parser/js').replace;
+var util = require('../lib/util');
+var css2jsParser = require('../lib/parser/css2js');
+var jsonParser = require('../lib/parser/json');
+var tplParser = require('../lib/parser/tpl');
+var handlebarsParser = require('../lib/parser/handlebars');
+var cssParser = require('../lib/parser/css');
 
 describe('Parser', function() {
 
