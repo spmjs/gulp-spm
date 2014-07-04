@@ -124,7 +124,7 @@ describe('Common', function() {
     it('transportDeps do not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
       var deps = common.transportDeps('index.js', pkg);
-      deps.should.eql(['b/1.0.0/index.css.js']);
+      deps.should.eql(['b/1.0.0/index.css.js', 'import-style']);
     });
 
     // father will throw now
@@ -161,7 +161,7 @@ describe('Common', function() {
       path: fakePath
     });
     common.generateDeps(fakeFile, {pkg: pkg})
-      .should.eql('"b/1.0.0/index.css.js"');
+      .should.eql('"b/1.0.0/index.css.js","import-style"');
   });
 
   describe('getFileInfo', function() {

@@ -9,6 +9,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (helper = helpers.content) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.content); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</div>";
+    + "</div>\n";
   return buffer;
   });
