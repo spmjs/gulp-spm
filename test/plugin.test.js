@@ -4,17 +4,17 @@ require('should');
 var join = require('path').join;
 var base = join(__dirname, 'fixtures');
 
-var jsParser = require('../lib/parser/js');
-var css2jsParser = require('../lib/parser/css2js');
-var jsonParser = require('../lib/parser/json');
-var tplParser = require('../lib/parser/tpl');
-var handlebarsParser = require('../lib/parser/handlebars');
-var cssParser = require('../lib/parser/css');
+var jsParser = require('../lib/plugin/js');
+var css2jsParser = require('../lib/plugin/css2js');
+var jsonParser = require('../lib/plugin/json');
+var tplParser = require('../lib/plugin/tpl');
+var handlebarsParser = require('../lib/plugin/handlebars');
+var cssParser = require('../lib/plugin/css');
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
 var getPackage = require('./support/getPackage');
 
-describe('Parser', function() {
+describe('Plugin', function() {
 
   describe('js', function() {
 
