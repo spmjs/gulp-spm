@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.7
+
+do not return css package of dependency
+
 ## 0.5.5
 
 fix ignore in handlebars spmjs/spm#831
