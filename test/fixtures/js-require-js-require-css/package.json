@@ -1,10 +1,10 @@
 {
-  "name": "b",
+  "name": "a",
   "version": "1.0.0",
   "spm": {
-    "main": "index.css",
     "dependencies": {
-      "c": "1.0.0"
+      "handlebars": "1.0.0",
+      "b": "1.0.0"
     }
   }
 }

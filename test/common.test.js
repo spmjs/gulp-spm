@@ -127,6 +127,13 @@ describe('Common', function() {
       deps.should.eql(['b/1.0.0/index.css.js', 'import-style']);
     });
 
+
+    it('transportDeps do not contain css\'s dependencies deep', function() {
+      var pkg = getPackage('js-require-js-require-css');
+      var deps = common.transportDeps('index.js', pkg);
+      deps.should.eql(['b/1.0.0/index']);
+    });
+
     // father will throw now
     it('transportDeps which not exist in pkg.files', function() {
       var pkg = getPackage('simple-transport');

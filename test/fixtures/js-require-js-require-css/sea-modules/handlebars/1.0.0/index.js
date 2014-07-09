@@ -1,5 +1,4 @@
 @import url("./a.css");
-@import url("c");
 
 body {
   background: red;
