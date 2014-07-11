@@ -84,11 +84,11 @@ describe('Common', function() {
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
-        'c/1.1.1/index',
-        'd/0.1.0/index',
         'simple-transport/1.0.0/relative3',
+        'd/0.1.1/index',
         'b/1.1.0/src/b',
-        'd/0.1.1/index'
+        'c/1.1.1/index',
+        'd/0.1.0/index'
       ]);
     });
 
@@ -103,10 +103,10 @@ describe('Common', function() {
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
-        'c/1.1.1/index',
-        'd',
         'simple-transport/1.0.0/relative3',
-        'b/1.1.0/src/b'
+        'd',
+        'b/1.1.0/src/b',
+        'c/1.1.1/index'
       ]);
     });
 
@@ -127,7 +127,7 @@ describe('Common', function() {
     it('transportDeps do not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
       var deps = common.transportDeps('index.js', pkg);
-      deps.should.eql(['b/1.0.0/index.css.js', 'import-style']);
+      deps.should.eql(['d/1.0.0/index', 'import-style/1.0.0/index']);
     });
 
 
@@ -183,7 +183,7 @@ describe('Common', function() {
       path: fakePath
     });
     common.generateDeps(fakeFile, {pkg: pkg})
-      .should.eql('"b/1.0.0/index.css.js","import-style"');
+      .should.eql('"d/1.0.0/index","import-style/1.0.0/index"');
   });
 
   describe('getFileInfo', function() {

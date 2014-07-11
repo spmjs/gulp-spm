@@ -80,6 +80,22 @@ describe('Transport', function() {
       .on('end', done);
     });
 
+    it('self with css', function(done) {
+      var pkg = getPackage('js-require-css');
+
+      var opt = {
+        cwd: join(base, 'js-require-css'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'self'}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-self-css.js');
+      })
+      .on('end', done);
+    });
+
     it('relative', function(done) {
       var pkg = getPackage('js-require-js');
 
@@ -109,6 +125,22 @@ describe('Transport', function() {
       .pipe(transport({pkg: pkg, include: 'relative', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-ignore.js');
+      })
+      .on('end', done);
+    });
+
+    it('relative with css', function(done) {
+      var pkg = getPackage('js-require-css');
+
+      var opt = {
+        cwd: join(base, 'js-require-css'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'relative'}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-relative-css.js');
       })
       .on('end', done);
     });
@@ -160,6 +192,23 @@ describe('Transport', function() {
       })
       .on('end', done);
     });
+
+    it('all with css', function(done) {
+      var pkg = getPackage('js-require-css');
+
+      var opt = {
+        cwd: join(base, 'js-require-css'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'all'}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-all-css.js');
+      })
+      .on('end', done);
+    });
+
   });
 
   // xit('transport css2js ignore import-style', function(done) {
