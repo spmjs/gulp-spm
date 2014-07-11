@@ -83,8 +83,8 @@ describe('Common', function() {
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
-        'd/0.1.0/index',
         'c/1.1.1/index',
+        'd/0.1.0/index',
         'simple-transport/1.0.0/relative3',
         'b/1.1.0/src/b',
         'd/0.1.1/index'
@@ -101,8 +101,8 @@ describe('Common', function() {
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
-        'd',
         'c/1.1.1/index',
+        'd',
         'simple-transport/1.0.0/relative3',
         'b/1.1.0/src/b'
       ]);
@@ -116,8 +116,9 @@ describe('Common', function() {
       };
       var expected = common.transportDeps('a.js', pkg, options);
       expected.should.eql([
+        'b/1.1.0/src/b',
         'c',
-        'b/1.1.0/src/b'
+        'd/0.1.0/index'
       ]);
     });
 
@@ -140,6 +141,18 @@ describe('Common', function() {
       (function() {
         common.transportDeps('not-exist.js', pkg);
       }).should.throw('not-exist.js is not included in index.js,relative1.js,relative2.js,relative3.js');
+    });
+
+    xit('transportDeps skip', function() {
+      var pkg = getPackage('simple-transport');
+      var deps = common.transportDeps('index.js', pkg, {skip: ['c']});
+      deps.should.eql([
+        'simple-transport/1.0.0/relative1',
+        'simple-transport/1.0.0/relative2',
+        'simple-transport/1.0.0/relative3',
+        'b/1.1.0/src/b',
+        'd/0.1.1/index'
+      ]);
     });
 
     xit('transportDeps throw when package is not found', function() {});

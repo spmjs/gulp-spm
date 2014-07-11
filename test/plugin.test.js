@@ -10,6 +10,7 @@ var jsonParser = require('../lib/plugin/json');
 var tplParser = require('../lib/plugin/tpl');
 var handlebarsParser = require('../lib/plugin/handlebars');
 var cssParser = require('../lib/plugin/css');
+var include = require('../lib/plugin/include');
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
 var getPackage = require('./support/getPackage');
@@ -33,7 +34,7 @@ describe('Plugin', function() {
     });
 
     // ignore 应该只是不 transport，而不是停止解析
-    xit('transport js ignore', function(done) {
+    it('transport js ignore', function(done) {
       var fakeFile = createFile(base, 'simple-transport/c.js');
 
       var stream = jsParser({
@@ -262,6 +263,25 @@ describe('Plugin', function() {
       .on('error', function(e) {
         e.plugin.should.eql('transport:css');
         e.message.should.eql('c@1.0.0 conflict with c@1.0.1');
+        done();
+      });
+      stream.write(fakeFile);
+      stream.end();
+    });
+  });
+
+  describe('include', function() {
+    var pkg = getPackage('css-conflict');
+
+    it('self', function(done) {
+      var fakeFile = createFile(pkg.dest, pkg.main);
+
+      var ret = [];
+      var stream = include({pkg: pkg, include: 'self'})
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
         done();
       });
       stream.write(fakeFile);
