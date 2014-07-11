@@ -77,7 +77,8 @@ describe('Common', function() {
     it('transportDeps', function() {
       var pkg = getPackage('simple-transport');
       var options = {
-        idleading: '{{name}}/{{version}}'
+        idleading: '{{name}}/{{version}}',
+        include: 'self'
       };
       var expected = common.transportDeps('index.js', pkg, options);
       expected.should.eql([
@@ -95,7 +96,8 @@ describe('Common', function() {
       var pkg = getPackage('simple-transport');
       var options = {
         ignore: ['d'],
-        idleading: '{{name}}/{{version}}'
+        idleading: '{{name}}/{{version}}',
+        include: 'self'
       };
       var expected = common.transportDeps('index.js', pkg, options);
       expected.should.eql([
@@ -118,7 +120,7 @@ describe('Common', function() {
       expected.should.eql([
         'b/1.1.0/src/b',
         'c',
-        'd/0.1.0/index'
+        'd'
       ]);
     });
 

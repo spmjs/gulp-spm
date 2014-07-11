@@ -10,13 +10,8 @@ var transport = require('../lib/transport');
 
 describe('Transport', function() {
 
-  it('transport js relative', function(done) {
-    var pkg = getPackage('type-transport', {
-      extraDeps: {
-        handlebars: 'handlebars-runtime',
-        css: 'import-style'
-      }
-    });
+  xit('transport js relative', function(done) {
+    var pkg = getPackage('type-transport');
 
     var opt = {
       cwd: join(base, 'type-transport'),
@@ -48,6 +43,123 @@ describe('Transport', function() {
       assert(file, 'css-imports.css');
     })
     .on('end', done);
+  });
+
+  // https://github.com/popomore/gulp-transport/issues/5
+  describe('include', function() {
+
+    it('self', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'self'}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-self.js');
+      })
+      .on('end', done);
+    });
+
+    it('self with ignore', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'self', ignore: ['b']}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-self-ignore.js');
+      })
+      .on('end', done);
+    });
+
+    it('relative', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'relative'}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-relative.js');
+      })
+      .on('end', done);
+    });
+
+
+    it('relative with ignore', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'relative', ignore: ['b']}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-relative-ignore.js');
+      })
+      .on('end', done);
+    });
+
+    it('all', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'all'}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-all.js');
+      })
+      .on('end', done);
+    });
+
+    it('all with ignore', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-all-ignore.js');
+      })
+      .on('end', done);
+    });
+
+    it('all with ignore2', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var opt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'all', ignore: ['c']}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-all-ignore2.js');
+      })
+      .on('end', done);
+    });
   });
 
   // xit('transport css2js ignore import-style', function(done) {

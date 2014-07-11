@@ -24,7 +24,7 @@ describe('Plugin', function() {
     it('transport js', function(done) {
       var fakeFile = createFile(base, 'simple-transport/c.js');
 
-      var stream = jsParser({pkg: pkg})
+      var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
         assert(file, 'plugin-js.js');
       })
@@ -33,14 +33,14 @@ describe('Plugin', function() {
       stream.end();
     });
 
-    // ignore 应该只是不 transport，而不是停止解析
     it('transport js ignore', function(done) {
       var fakeFile = createFile(base, 'simple-transport/c.js');
 
       var stream = jsParser({
         pkg: pkg,
         ignore: ['b'],
-        idleading: '{{name}}-{{version}}'
+        idleading: '{{name}}-{{version}}',
+        include: 'self'
       })
       .on('data', function(file) {
         assert(file, 'plugin-js-ignore.js');
@@ -54,7 +54,7 @@ describe('Plugin', function() {
       var pkg = getPackage('type-transport');
       var fakeFile = createFile(base, 'type-transport/index.js');
 
-      var stream = jsParser({pkg: pkg})
+      var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
         assert(file, 'plugin-js-type.js');
       })
@@ -66,7 +66,7 @@ describe('Plugin', function() {
     it('transport js deep', function(done) {
       var fakeFile = createFile(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
 
-      var stream = jsParser({pkg: pkg})
+      var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
         assert(file, 'plugin-js-deep.js');
       })
@@ -81,7 +81,7 @@ describe('Plugin', function() {
       });
       var fakeFile = createFile(base, 'type-transport/stylebox.js');
 
-      var stream = jsParser({pkg: pkg, styleBox: true})
+      var stream = jsParser({pkg: pkg, styleBox: true, include: 'self'})
       .on('data', function(file) {
         assert(file, 'plugin-js-stylebox.js');
       })
