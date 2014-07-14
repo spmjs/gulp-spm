@@ -126,14 +126,14 @@ describe('Common', function() {
 
     it('transportDeps do not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
-      var deps = common.transportDeps('index.js', pkg);
+      var deps = common.transportDeps('index.js', pkg, {pkg: pkg});
       deps.should.eql(['d/1.0.0/index', 'import-style/1.0.0/index']);
     });
 
 
     it('transportDeps do not contain css\'s dependencies deep', function() {
       var pkg = getPackage('js-require-js-require-css');
-      var deps = common.transportDeps('index.js', pkg);
+      var deps = common.transportDeps('index.js', pkg, {pkg: pkg});
       deps.should.eql(['b/1.0.0/index']);
     });
 

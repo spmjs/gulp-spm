@@ -20,3 +20,9 @@ define("a/1.0.0/a.css.js", [], function(require, exports, module){
 require("import-style/1.0.0/index")('div{padding:0;}a{color:#000;}');
 
 });
+define("import-style/1.0.0/index", [], function(require, exports, module){
+module.exports = function importStyle(str) {
+  return '';
+};
+
+});

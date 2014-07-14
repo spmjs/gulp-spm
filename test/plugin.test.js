@@ -270,7 +270,7 @@ describe('Plugin', function() {
     });
   });
 
-  describe('include', function() {
+  xdescribe('include', function() {
     var pkg = getPackage('css-conflict');
 
     it('self', function(done) {

@@ -10,41 +10,6 @@ var transport = require('../lib/transport');
 
 describe('Transport', function() {
 
-  xit('transport js relative', function(done) {
-    var pkg = getPackage('type-transport');
-
-    var opt = {
-      cwd: join(base, 'type-transport'),
-      cwdbase: true
-    };
-    gulp.src('index.js', opt)
-    .pipe(transport({pkg: pkg}))
-    .on('data', function(file) {
-      assert(file, 'transport-relative.js');
-    })
-    .on('end', done);
-  });
-
-  it('transport css', function(done) {
-    var pkg = getPackage('css-import', {
-      extraDeps: {
-        handlebars: 'handlebars-runtime',
-        css: 'import-style'
-      }
-    });
-
-    var opt = {
-      cwd: join(base, 'css-import'),
-      cwdbase: true
-    };
-    gulp.src('index.css', opt)
-    .pipe(transport({pkg: pkg}))
-    .on('data', function(file) {
-      assert(file, 'css-imports.css');
-    })
-    .on('end', done);
-  });
-
   // https://github.com/popomore/gulp-transport/issues/5
   describe('include', function() {
 

@@ -8,11 +8,11 @@ require('c');
 require("b/1.0.0/b");
 
 });
-define("b/1.0.0/b", ["c"], function(require, exports, module){
+define("b/1.0.0/b", [], function(require, exports, module){
 console.log('b');
 
 });
-define("a/1.0.0/a", ["c"], function(require, exports, module){
+define("a/1.0.0/a", [], function(require, exports, module){
 console.log('a');
 
 });
