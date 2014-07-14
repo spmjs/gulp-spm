@@ -4,9 +4,11 @@ require('should');
 var fs = require('fs');
 var join = require('path').join;
 var gulp = require('gulp');
+var utility = require('utility');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
+var util = require('../lib/util');
 
 describe('Transport', function() {
 
@@ -176,6 +178,69 @@ describe('Transport', function() {
 
   });
 
+  describe('rename', function() {
+
+    it('rename with debug', function(done) {
+      var pkg = getPackage('type-transport');
+
+      var opt = {
+        cwd: join(base, 'type-transport'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      .on('data', function(file) {
+        util.winPath(file.originPath).should.include('type-transport/index.js');
+        util.winPath(file.path).should.include('type-transport/index-debug.js');
+        assert(file, 'transport-rename-debug.js');
+      })
+      .on('end', done);
+    });
+
+    it('rename with hash', function(done) {
+      var pkg = getPackage('transport-hash');
+
+      var opt = {
+        cwd: join(base, 'transport-hash'),
+        cwdbase: true
+      };
+
+      function rename(file) {
+        var hash = utility.sha1(fs.readFileSync(file.origin)).substring(0,8);
+        file.basename += '-' + hash;
+        return file;
+      }
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, rename: rename}))
+      .on('data', function(file) {
+        util.winPath(file.originPath).should.include('transport-hash/index.js');
+        util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
+        assert(file, 'transport-rename-hash.js');
+      })
+      .on('end', done);
+    });
+
+    it('rename with css', function(done) {
+      var pkg = getPackage('css-import');
+
+      var opt = {
+        cwd: join(base, 'css-import'),
+        cwdbase: true
+      };
+
+      gulp.src('index.css', opt)
+      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      .on('data', function(file) {
+        util.winPath(file.originPath).should.include('css-import/index.css');
+        util.winPath(file.path).should.include('css-import/index-debug.css');
+        assert(file, 'transport-rename-css.css');
+      })
+      .on('end', done);
+    });
+  });
+
   // xit('transport css2js ignore import-style', function(done) {
   //   var fakeCss = createFile(join(base, 'type-transport/a.css'));
 
@@ -241,63 +306,7 @@ describe('Transport', function() {
   //   stream.end();
   // });
 
-    // it('rename with debug', function(done) {
-    //   var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars-runtime'}});
-    //   var stream = jsParser({
-    //     pkg: pkg,
-    //     rename: {
-    //       suffix: '-debug'
-    //     }
-    //   });
 
-    //   var filePath = join(base, 'type-transport/index.js');
-    //   var fakeFile = new gutil.File({
-    //     path: filePath,
-    //     contents: fs.readFileSync(filePath)
-    //   });
-
-    //   stream.on('data', function(file) {
-    //     util.winPath(file.originPath).should.include('type-transport/index.js');
-    //     util.winPath(file.path).should.include('type-transport/index-debug.js');
-    //     assert(file, 'rename-debug.js');
-    //   })
-    //   .on('end', done);
-
-    //   stream.write(fakeFile);
-    //   stream.end();
-    // });
-
-    // it('rename with hash', function(done) {
-    //   var pkg = getPackage('transport-hash');
-    //   var file = join(base, 'transport-hash/index.js');
-    //   var fakeTpl = new gutil.File({
-    //     path: file,
-    //     contents: fs.readFileSync(file)
-    //   });
-
-    //   var stream = through2.obj();
-
-    //   stream
-    //   .pipe(jsParser({
-    //     pkg: pkg,
-    //     rename: function(file) {
-    //       var hash = utility.sha1(fs.readFileSync(file.origin)).substring(0,8);
-    //       file.basename += '-' + hash;
-    //       return file;
-    //     }
-    //   }))
-    //   .on('data', function(file) {
-    //     util.winPath(file.originPath).should.include('transport-hash/index.js');
-    //     util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
-    //     assert(file, 'rename-hash.js');
-    //   })
-    //   .on('end', done);
-
-    //   stream.write(fakeTpl);
-    //   stream.end();
-    // });
-
-  it('rename css', function() {});
 });
 
 function getPackage(name, options) {
