@@ -145,6 +145,13 @@ describe('Common', function() {
       }).should.throw('not-exist.js is not included in index.js,relative1.js,relative2.js,relative3.js');
     });
 
+    it('transportDeps getExtra expection', function() {
+      var pkg = getPackage('no-handlebars');
+      (function() {
+        common.transportDeps('index.js', pkg, {pkg: pkg});
+      }).should.throw('handlebars-runtime not exist, but required .handlebars');
+    });
+
     xit('transportDeps skip', function() {
       var pkg = getPackage('simple-transport');
       var deps = common.transportDeps('index.js', pkg, {skip: ['c']});

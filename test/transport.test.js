@@ -112,6 +112,22 @@ describe('Transport', function() {
       .on('end', done);
     });
 
+    it('relative with css ignore', function(done) {
+      var pkg = getPackage('js-require-css');
+
+      var opt = {
+        cwd: join(base, 'js-require-css'),
+        cwdbase: true
+      };
+
+      gulp.src('index.js', opt)
+      .pipe(transport({pkg: pkg, include: 'relative', ignore: ['import-style']}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-relative-css-ignore.js');
+      })
+      .on('end', done);
+    });
+
     it('all', function(done) {
       var pkg = getPackage('js-require-js');
 
@@ -241,71 +257,51 @@ describe('Transport', function() {
     });
   });
 
-  // xit('transport css2js ignore import-style', function(done) {
-  //   var fakeCss = createFile(join(base, 'type-transport/a.css'));
+  xit('no handlebars deps', function(done) {
+    var pkg = getPackage('no-handlebars');
+    var opt = {
+      cwd: join(base, 'no-handlebars'),
+      cwdbase: true
+    };
 
-  //   var stream = css2jsParser({pkg: pkg, ignore:['import-style']});
-  //   stream
-  //   .on('data', function(file) {
-  //     file.path.should.endWith('.css.js');
-  //     assert(file, 'transport-css2js-ignore.js');
-  //   })
-  //   .on('end', done);
-  //   stream.write(fakeCss);
-  //   stream.end();
-  // });
+    gulp.src('index.js', opt)
+    .pipe(transport({pkg: pkg, include: 'self'}))
+    .once('error', function(e) {
+      e.message.should.eql('handlebars-runtime not exist, but required .handlebars');
 
-    // it('no handlebars deps', function(done) {
-    //   var pkg = getPackage('no-handlebars');
-    //   var fakeFile = createFile(join(base, 'no-handlebars/a.handlebars'));
+    })
+    .on('end', done);
+  });
 
-    //   var stream = handlebarsParser({pkg: pkg})
-    //   .on('data', function(file) {
-    //     assert(file, 'no-handlebars.js');
-    //   })
-    //   .on('end', done);
-    //   stream.write(fakeFile);
-    //   stream.end();
-    // });
+  it('check path', function(done) {
+    var pkg = getPackage('check-path');
+    var opt = {
+      cwd: join(base, 'check-path'),
+      cwdbase: true
+    };
 
-  // it('check path', function(done) {
-  //   var pkg = getPackage('check-path');
-  //   var stream = jsParser({pkg: pkg});
+    gulp.src('index.js', opt)
+    .pipe(transport({pkg: pkg, include: 'self'}))
+    .on('data', function(file) {
+      assert(file, 'check-path.js');
+    })
+    .on('end', done);
+  });
 
-  //   var filePath = join(base, 'check-path/index.js');
-  //   var fakeFile = new gutil.File({
-  //     path: filePath,
-  //     contents: fs.readFileSync(filePath)
-  //   });
+  it('require directory', function(done) {
+    var pkg = getPackage('require-directory');
+    var opt = {
+      cwd: join(base, 'require-directory'),
+      cwdbase: true
+    };
 
-  //   stream.on('data', function(file) {
-  //     assert(file, 'check-path.js');
-  //   })
-  //   .on('end', done);
-
-  //   stream.write(fakeFile);
-  //   stream.end();
-  // });
-
-  // it('require directory', function(done) {
-  //   var pkg = getPackage('require-directory');
-  //   var stream = jsParser({pkg: pkg});
-
-  //   var filePath = join(base, 'require-directory/index.js');
-  //   var fakeFile = new gutil.File({
-  //     path: filePath,
-  //     contents: fs.readFileSync(filePath)
-  //   });
-
-  //   stream.on('data', function(file) {
-  //     assert(file, 'require-directory.js');
-  //   })
-  //   .on('end', done);
-
-  //   stream.write(fakeFile);
-  //   stream.end();
-  // });
-
+    gulp.src('index.js', opt)
+    .pipe(transport({pkg: pkg, include: 'self'}))
+    .on('data', function(file) {
+      assert(file, 'require-directory.js');
+    })
+    .on('end', done);
+  });
 
 });
 
