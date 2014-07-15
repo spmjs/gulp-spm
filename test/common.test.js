@@ -170,29 +170,6 @@ describe('Common', function() {
 
   });
 
-
-  it('generateId', function() {
-    var pkg = getPackage('js-require-css');
-    var fakePath = join(base, 'js-require-css/sea-modules/b/1.0.0/index.css');
-    var fakeFile = new gutil.File({
-      contents: fs.readFileSync(fakePath),
-      path: fakePath
-    });
-    common.generateId(fakeFile, {pkg: pkg})
-      .should.eql('b/1.0.0/index.css.js');
-  });
-
-  it('generateDeps', function() {
-    var pkg = getPackage('js-require-css');
-    var fakePath = join(base, 'js-require-css/index.js');
-    var fakeFile = new gutil.File({
-      contents: fs.readFileSync(fakePath),
-      path: fakePath
-    });
-    common.generateDeps(fakeFile, {pkg: pkg})
-      .should.eql('"d/1.0.0/index","import-style/1.0.0/index"');
-  });
-
   describe('getFileInfo', function() {
 
     it('getFileInfo', function() {
