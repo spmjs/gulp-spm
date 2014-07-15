@@ -12,6 +12,22 @@ var util = require('../lib/util');
 
 describe('Transport', function() {
 
+  it('transport all', function(done) {
+    var pkg = getPackage('simple-transport');
+
+    var opt = {
+      cwd: join(base, 'simple-transport'),
+      cwdbase: true
+    };
+
+    gulp.src('index.js', opt)
+    .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
+    .on('data', function(file) {
+      assert(file, 'transport-all.js');
+    })
+    .on('end', done);
+  });
+
   // https://github.com/popomore/gulp-transport/issues/5
   describe('include', function() {
 
