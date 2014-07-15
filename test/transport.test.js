@@ -303,6 +303,54 @@ describe('Transport', function() {
     .on('end', done);
   });
 
+  describe('exports', function() {
+    var exports = require('..');
+
+    it('transport', function() {
+      exports.should.equal(transport);
+    });
+
+    it('plugin.js', function() {
+      exports.plugin.js.should.equal(require('../lib/plugin/js'));
+    });
+
+    it('plugin.css', function() {
+      exports.plugin.css.should.equal(require('../lib/plugin/css'));
+    });
+
+    it('plugin.css2js', function() {
+      exports.plugin.css2js.should.equal(require('../lib/plugin/css2js'));
+    });
+
+    it('plugin.handlebars', function() {
+      exports.plugin.handlebars.should.equal(require('../lib/plugin/handlebars'));
+    });
+
+    it('plugin.tpl', function() {
+      exports.plugin.tpl.should.equal(require('../lib/plugin/tpl'));
+    });
+
+    it('plugin.json', function() {
+      exports.plugin.json.should.equal(require('../lib/plugin/json'));
+    });
+
+    it('plugin.include', function() {
+      exports.plugin.include.should.equal(require('../lib/plugin/include'));
+    });
+
+    it('plugin.concat', function() {
+      exports.plugin.concat.should.equal(require('../lib/plugin/concat'));
+    });
+
+    it('common', function() {
+      exports.common.should.equal(require('../lib/common'));
+    });
+
+    it('util', function() {
+      exports.util.should.equal(require('../lib/util'));
+    });
+  });
+
 });
 
 function getPackage(name, options) {
