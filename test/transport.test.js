@@ -20,12 +20,12 @@ describe('Transport', function() {
       cwdbase: true
     };
 
-    gulp.src('index.js', opt)
+    gulp.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
     .on('data', function(file) {
       assert(file, 'transport-all.js');
-    })
-    .on('end', done);
+      done();
+    });
   });
 
   // https://github.com/popomore/gulp-transport/issues/5
@@ -39,12 +39,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'self'}))
       .on('data', function(file) {
         assert(file, 'transport-include-self.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('self with ignore', function(done) {
@@ -55,12 +55,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'self', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-self-ignore.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('self with css', function(done) {
@@ -71,12 +71,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'self'}))
       .on('data', function(file) {
         assert(file, 'transport-include-self-css.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('relative', function(done) {
@@ -87,12 +87,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative'}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
 
@@ -104,12 +104,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-ignore.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('relative with css', function(done) {
@@ -120,12 +120,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative'}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-css.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('relative with css ignore', function(done) {
@@ -136,12 +136,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative', ignore: ['import-style']}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-css-ignore.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('all', function(done) {
@@ -152,12 +152,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all'}))
       .on('data', function(file) {
         assert(file, 'transport-include-all.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('all with ignore', function(done) {
@@ -168,12 +168,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('all with ignore2', function(done) {
@@ -184,12 +184,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all', ignore: ['c']}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore2.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('all with css', function(done) {
@@ -200,12 +200,12 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all'}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-css.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
   });
@@ -220,14 +220,14 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('type-transport/index.js');
         util.winPath(file.path).should.include('type-transport/index-debug.js');
         assert(file, 'transport-rename-debug.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('rename with hash', function(done) {
@@ -244,14 +244,14 @@ describe('Transport', function() {
         return file;
       }
 
-      gulp.src('index.js', opt)
+      gulp.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: rename}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('transport-hash/index.js');
         util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
         assert(file, 'transport-rename-hash.js');
-      })
-      .on('end', done);
+        done();
+      });
     });
 
     it('rename with css', function(done) {
@@ -268,8 +268,8 @@ describe('Transport', function() {
         util.winPath(file.originPath).should.include('css-import/index.css');
         util.winPath(file.path).should.include('css-import/index-debug.css');
         assert(file, 'transport-rename-css.css');
-      })
-      .on('end', done);
+        done();
+      });
     });
   });
 
@@ -280,7 +280,7 @@ describe('Transport', function() {
       cwdbase: true
     };
 
-    gulp.src('index.js', opt)
+    gulp.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'self'}))
     .once('error', function(e) {
       e.message.should.eql('handlebars-runtime not exist, but required .handlebars');
@@ -289,19 +289,37 @@ describe('Transport', function() {
     .on('end', done);
   });
 
-  it('check path', function(done) {
-    var pkg = getPackage('check-path');
-    var opt = {
-      cwd: join(base, 'check-path'),
-      cwdbase: true
-    };
+  describe('other extension', function() {
 
-    gulp.src('index.js', opt)
-    .pipe(transport({pkg: pkg, include: 'self'}))
-    .on('data', function(file) {
-      assert(file, 'check-path.js');
-    })
-    .on('end', done);
+    it('relative', function(done) {
+      var pkg = getPackage('require-other-ext');
+      var opt = {
+        cwd: join(base, 'require-other-ext'),
+        cwdbase: true
+      };
+
+      gulp.src(pkg.main, opt)
+      .pipe(transport({pkg: pkg}))
+      .on('data', function(file) {
+        assert(file, 'transport-other-ext.js');
+        done();
+      });
+    });
+
+    it('debug', function(done) {
+      var pkg = getPackage('require-other-ext');
+      var opt = {
+        cwd: join(base, 'require-other-ext'),
+        cwdbase: true
+      };
+
+      gulp.src(pkg.main, opt)
+      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      .on('data', function(file) {
+        assert(file, 'transport-other-ext-debug.js');
+        done();
+      });
+    });
   });
 
   it('require directory', function(done) {
@@ -311,12 +329,12 @@ describe('Transport', function() {
       cwdbase: true
     };
 
-    gulp.src('index.js', opt)
+    gulp.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'self'}))
     .on('data', function(file) {
       assert(file, 'require-directory.js');
-    })
-    .on('end', done);
+      done();
+    });
   });
 
   describe('exports', function() {
