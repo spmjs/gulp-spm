@@ -2,9 +2,10 @@
 
 ---
 
-## 0.5.6
+## 0.6.0
 
-upgrade searequire@1.3.0
+- big change, transport stream wrapped
+- upgrade searequire@1.5.0
 
 ## 0.5.5
 
