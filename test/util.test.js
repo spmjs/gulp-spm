@@ -1,7 +1,7 @@
 'use strict';
 
 require('should');
-var util = require('..').util;
+var util = require('../lib/util');
 
 describe('Util', function() {
 
@@ -15,6 +15,7 @@ describe('Util', function() {
   it('extendOption', function() {
     util.extendOption().should.eql({
       ignore: [],
+      include: 'relative',
       idleading: '{{name}}/{{version}}',
       pkg: null,
       rename: null
@@ -27,6 +28,7 @@ describe('Util', function() {
     util.extendOption(orig).should.eql({
       pkg: {},
       ignore: [],
+      include: 'relative',
       idleading: '{{name}}/{{version}}',
       rename: null
     });

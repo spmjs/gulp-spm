@@ -1,0 +1,10 @@
+{
+  "name": "a",
+  "version": "1.0.0",
+  "spm": {
+    "dependencies": {
+      "handlebars": "1.0.0",
+      "b": "1.0.0"
+    }
+  }
+}

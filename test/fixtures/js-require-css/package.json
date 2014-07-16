@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "spm": {
     "dependencies": {
-      "handlebars": "1.0.0",
-      "b": "1.0.0"
+      "b": "1.0.0",
+      "c": "1.0.0",
+      "d": "1.0.0",
+      "import-style": "1.0.0"
     }
   }
 }

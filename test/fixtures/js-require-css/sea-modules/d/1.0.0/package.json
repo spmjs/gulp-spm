@@ -1,0 +1,10 @@
+{
+  "name": "d",
+  "version": "1.0.0",
+  "spm": {
+    "dependencies": {
+      "c": "1.0.0",
+      "import-style": "1.0.0"
+    }
+  }
+}
