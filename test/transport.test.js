@@ -431,6 +431,10 @@ describe('Transport', function() {
       exports.plugin.concat.should.equal(require('../lib/plugin/concat'));
     });
 
+    it('plugin.dest', function() {
+      exports.plugin.dest.should.equal(require('../lib/plugin/dest'));
+    });
+
     it('common', function() {
       exports.common.should.equal(require('../lib/common'));
     });
