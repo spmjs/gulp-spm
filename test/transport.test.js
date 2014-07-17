@@ -8,6 +8,7 @@ var utility = require('utility');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
+var plugin = require('../lib/plugin');
 var util = require('../lib/util');
 
 describe('Transport', function() {
@@ -319,6 +320,60 @@ describe('Transport', function() {
         assert(file, 'transport-other-ext-debug.js');
         done();
       });
+    });
+  });
+
+  describe('custom stream', function() {
+
+    it('js stream', function(done) {
+      var pkg = getPackage('js-require-js');
+
+      var gulpOpt = {
+        cwd: join(base, 'js-require-js'),
+        cwdbase: true
+      };
+
+      var isCalled = false, args;
+      var stream = {
+        '.js': function(opt) {
+          isCalled = true;
+          args = opt;
+          return plugin.js({
+            pkg: pkg
+          });
+        }
+      };
+      var opt = {
+        pkg: pkg,
+        idleading: '',
+        stream: stream
+      };
+
+      gulp.src(pkg.main, gulpOpt)
+      .pipe(transport(opt))
+      .on('data', function(file) {
+        assert(file, 'transport-include-relative.js');
+        isCalled.should.be.true;
+        args.ignore.should.equal('');
+        args.include.should.equal('');
+        args.pkg.should.equal(pkg);
+        args.idleading.should.equal('');
+        args.stream.should.equal(stream);
+        done();
+      });
+    });
+
+    it('should throw when opt.stream is not function', function() {
+      var pkg = getPackage('js-require-js');
+      var opt = {
+        pkg: pkg,
+        stream: {
+          '.js': plugin.js({pkg: pkg})
+        }
+      };
+      (function() {
+        transport(opt);
+      }).should.throw('opt.stream\'s value should be function');
     });
   });
 
