@@ -46,17 +46,17 @@ describe('Common', function() {
     });
 
     it('transportId with suffix', function() {
-      var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+      var pkg = getPackage('type-transport');
       var opt = {
         rename: {suffix: '-debug'}
       };
 
       common.transportId('index.js', pkg, opt)
-        .should.endWith('type-transport/1.0.0/index-debug');
+        .should.eql('type-transport/1.0.0/index-debug');
     });
 
     it('transportId with function of idleading ', function() {
-      var pkg = getPackage('type-transport', {extraDeps: {handlebars: 'handlebars'}});
+      var pkg = getPackage('type-transport');
       var opt = {
         idleading: function(filepath, pkg) {
           var dir = path.extname(filepath) === '.js'? 'js' : 'other';
@@ -65,11 +65,22 @@ describe('Common', function() {
       };
 
       common.transportId('index.js', pkg, opt)
-        .should.endWith('js/type-transport/1.0.0/index');
+        .should.eql('js/type-transport/1.0.0/index');
       common.transportId('a.tpl', pkg, opt)
-        .should.endWith('other/type-transport/1.0.0/a.tpl');
+        .should.eql('other/type-transport/1.0.0/a.tpl');
     });
 
+    it('transportId with idleading empty string', function() {
+      var pkg = getPackage('type-transport');
+      var opt = {
+        idleading: ''
+      };
+
+      common.transportId('index.js', pkg, opt)
+        .should.eql('index');
+      common.transportId('a.tpl', pkg, opt)
+        .should.eql('a.tpl');
+    });
   });
 
   describe('transportDeps', function() {
