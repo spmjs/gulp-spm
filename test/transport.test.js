@@ -268,7 +268,7 @@ describe('Transport', function() {
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('css-import/index.css');
-        util.winPath(file.path).should.include('css-import/index-debug.css');
+        util.winPath(file.path).should.include('css-import/a/1.0.0/index-debug.css');
         assert(file, 'transport-rename-css.css');
         done();
       });

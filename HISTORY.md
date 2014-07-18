@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.2
+
+fix dest position
+
 ## 0.6.1
 
 - fix extendOption when empty string
