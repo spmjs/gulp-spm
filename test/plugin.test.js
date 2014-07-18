@@ -2,6 +2,7 @@
 
 require('should');
 var join = require('path').join;
+var File = require('vinyl');
 
 var jsParser = require('../lib/plugin/js');
 var css2jsParser = require('../lib/plugin/css2js');
@@ -10,6 +11,7 @@ var tplParser = require('../lib/plugin/tpl');
 var handlebarsParser = require('../lib/plugin/handlebars');
 var cssParser = require('../lib/plugin/css');
 var include = require('../lib/plugin/include');
+var concat = require('../lib/plugin/concat');
 var dest = require('../lib/plugin/dest');
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
@@ -285,6 +287,65 @@ describe('Plugin', function() {
         done();
       });
       stream.write(fakeFile);
+      stream.end();
+    });
+  });
+
+  describe('concat', function() {
+
+    it('files', function(done) {
+      var firstFile = new File({
+        path: 'a.js',
+        contents: new Buffer('a')
+      });
+      firstFile.customProperty = 'prop';
+      var middleFile = new File({
+        path: 'b.js',
+        contents: new Buffer('b')
+      });
+      middleFile.dependentPath = 'a.js';
+      var lastFile = new File({
+        path: 'a.js',
+        contents: new Buffer('a')
+      });
+      lastFile.dependentPath = 'a.js';
+
+      var stream = concat()
+      .on('data', function(file) {
+        file.path.should.eql('a.js');
+        file.customProperty.should.eql('prop');
+        file.contents.toString().should.eql('ab');
+      })
+      .on('end', done);
+      stream.write(firstFile);
+      stream.write(middleFile);
+      stream.write(lastFile);
+      stream.end();
+    });
+
+    it('no end', function(done) {
+      var firstFile = new File({
+        path: 'a.js',
+        contents: new Buffer('a')
+      });
+      firstFile.customProperty = 'prop';
+      var middleFile = new File({
+        path: 'b.js',
+        contents: new Buffer('b')
+      });
+      middleFile.dependentPath = 'a.js';
+
+      var isCalled = false;
+      var stream = concat()
+      .on('data', function() {
+        isCalled = true;
+      })
+      .on('end', function() {
+        isCalled.should.be.false;
+        done();
+      });
+      stream.write(firstFile);
+      stream.write(middleFile);
       stream.end();
     });
   });
