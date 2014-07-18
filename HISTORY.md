@@ -2,6 +2,12 @@
 
 ---
 
+## 0.6.1
+
+- fix extendOption when empty string
+- opt.stream's value should be function
+- add dest plugin
+
 ## 0.6.0
 
 - big change, transport stream wrapped
