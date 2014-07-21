@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.3
+
+remove dest plugin in from transport
+
 ## 0.6.2
 
 fix dest position
