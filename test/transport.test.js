@@ -24,7 +24,7 @@ describe('Transport', function() {
     gulp.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
     .on('data', function(file) {
-      util.winPath(file.path).should.endWith('simple-transport/simple-transport/1.0.0/index.js');
+      util.winPath(file.path).should.endWith('simple-transport/index.js');
       assert(file, 'transport-all.js');
       done();
     });
@@ -226,7 +226,7 @@ describe('Transport', function() {
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('type-transport/index.js');
-        util.winPath(file.path).should.include('type-transport/type-transport/1.0.0/index-debug.js');
+        util.winPath(file.path).should.include('type-transport/index-debug.js');
         assert(file, 'transport-rename-debug.js');
         done();
       });
@@ -250,7 +250,7 @@ describe('Transport', function() {
       .pipe(transport({pkg: pkg, rename: rename}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('transport-hash/index.js');
-        util.winPath(file.path).should.include('transport-hash/a/1.0.0/index-8951f677.js');
+        util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
         assert(file, 'transport-rename-hash.js');
         done();
       });
@@ -268,7 +268,7 @@ describe('Transport', function() {
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('css-import/index.css');
-        util.winPath(file.path).should.include('css-import/a/1.0.0/index-debug.css');
+        util.winPath(file.path).should.include('css-import/index-debug.css');
         assert(file, 'transport-rename-css.css');
         done();
       });
