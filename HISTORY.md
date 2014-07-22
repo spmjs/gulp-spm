@@ -4,7 +4,8 @@
 
 ## 0.6.5
 
-fix dest plugin when rename
+- fix dest plugin when rename
+- improve fileInfo return [originPath, path, pkg]
 
 ## 0.6.4
 

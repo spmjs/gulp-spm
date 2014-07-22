@@ -192,7 +192,8 @@ describe('Common', function() {
       });
 
       var fileInfo = common.getFileInfo(fakeFile, pkg);
-      fileInfo.filepath.should.eql('src/b.js');
+      fileInfo.originPath.should.eql('src/b.js');
+      fileInfo.path.should.eql('src/b.js');
       fileInfo.pkg.id.should.eql('b@1.1.0');
     });
 
@@ -205,7 +206,8 @@ describe('Common', function() {
       });
 
       var fileInfo = common.getFileInfo(fakeFile, pkg);
-      fileInfo.filepath.should.eql('lib/index.js');
+      fileInfo.originPath.should.eql('lib/index.js');
+      fileInfo.path.should.eql('lib/index.js');
       fileInfo.pkg.id.should.eql('a@1.0.0');
     });
 
