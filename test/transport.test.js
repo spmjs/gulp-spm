@@ -393,6 +393,37 @@ describe('Transport', function() {
     });
   });
 
+  it('transport dependency', function(done) {
+    var pkg = getPackage('js-require-js');
+    var opt = {
+      cwd: join(base, 'js-require-js'),
+      cwdbase: true
+    };
+
+    var ret = [], src = [
+      'src/index.js',
+      'sea-modules/b/1.0.0/index.js',
+      'sea-modules/c/1.0.0/index.js'
+    ];
+    gulp.src(src, opt)
+    .pipe(transport({pkg: pkg, include: 'relative'}))
+    .pipe(plugin.dest({pkg: pkg}))
+    .on('data', function(file) {
+      ret.push(file);
+    })
+    .on('end', function() {
+      util.winPath(ret[0].path).should.endWith('js-require-js/a/1.0.0/src/index.js');
+      assert(ret[0], 'transport-include-relative.js');
+
+      util.winPath(ret[1].path).should.endWith('js-require-js/b/1.0.0/index.js');
+      assert(ret[1], 'transport-include-relative-b.js');
+
+      util.winPath(ret[2].path).should.endWith('js-require-js/c/1.0.0/index.js');
+      assert(ret[2], 'transport-include-relative-c.js');
+      done();
+    });
+  });
+
   describe('exports', function() {
     var exports = require('..');
 

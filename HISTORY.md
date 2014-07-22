@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.4
+
+can transport the dependencies of the package
+
 ## 0.6.3
 
 remove dest plugin in from transport
