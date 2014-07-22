@@ -273,6 +273,32 @@ describe('Transport', function() {
         done();
       });
     });
+
+    it('rename dependency with debug', function(done) {
+      var pkg = getPackage('type-transport');
+      var opt = {
+        cwd: join(base, 'type-transport'),
+        cwdbase: true
+      };
+      var ret = [], src = [
+        pkg.main,
+        'sea-modules/handlebars-runtime/1.3.0/handlebars.js'
+      ];
+      gulp.src(src, opt)
+      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      .pipe(plugin.dest({pkg: pkg}))
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
+        util.winPath(ret[0].path).should.include('type-transport/type-transport/1.0.0/index-debug.js');
+        assert(ret[0], 'transport-rename-debug.js');
+
+        util.winPath(ret[1].path).should.endWith('type-transport/handlebars-runtime/1.3.0/handlebars-debug.js');
+        assert(ret[1], 'transport-rename-debug-handelbars.js');
+        done();
+      });
+    });
   });
 
   xit('no handlebars deps', function(done) {

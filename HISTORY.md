@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.5
+
+fix dest plugin when rename
+
 ## 0.6.4
 
 can transport the dependencies of the package
