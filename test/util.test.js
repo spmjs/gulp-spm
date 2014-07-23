@@ -57,14 +57,14 @@ describe('Util', function() {
     util.rename('a.js', {
       rename: {suffix: '-debug'}
     }).should.eql('a-debug.js');
-    util.rename('a', {
+    util.rename('a.js', {
       rename: function(file) {
         file.basename += '-debug';
         return file;
       }
     }).should.eql('a-debug.js');
     (function() {
-      util.rename('a', {rename: rename});
+      util.rename('a.js', {rename: rename});
       function rename() {
         throw new Error('not found');
       }

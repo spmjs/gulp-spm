@@ -250,7 +250,7 @@ describe('Transport', function() {
       .pipe(transport({pkg: pkg, rename: rename}))
       .on('data', function(file) {
         util.winPath(file.originPath).should.include('transport-hash/index.js');
-        util.winPath(file.path).should.include('transport-hash/index-8951f677.js');
+        util.winPath(file.path).should.include('transport-hash/index-e16dba71.js');
         assert(file, 'transport-rename-hash.js');
         done();
       });
