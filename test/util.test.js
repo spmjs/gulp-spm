@@ -53,18 +53,22 @@ describe('Util', function() {
   });
 
   it('rename', function() {
-    util.rename('a.js').should.eql('a.js');
-    util.rename('a.js', {
+    var file = {
+      path: 'a.js',
+      originPath: 'a.js'
+    };
+    util.rename(file).should.eql('a.js');
+    util.rename(file, {
       rename: {suffix: '-debug'}
     }).should.eql('a-debug.js');
-    util.rename('a.js', {
+    util.rename(file, {
       rename: function(file) {
         file.basename += '-debug';
         return file;
       }
     }).should.eql('a-debug.js');
     (function() {
-      util.rename('a.js', {rename: rename});
+      util.rename(file, {rename: rename});
       function rename() {
         throw new Error('not found');
       }
