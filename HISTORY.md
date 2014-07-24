@@ -2,6 +2,11 @@
 
 ---
 
+## 0.6.6
+
+- improve rename
+- return package name when package is ignore
+
 ## 0.6.5
 
 - fix dest plugin when rename
