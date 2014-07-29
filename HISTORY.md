@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.7
+
+if package is not existed, fileInfo.ignore will be true 
+
 ## 0.6.6
 
 - improve rename

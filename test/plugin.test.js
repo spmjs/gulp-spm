@@ -1,6 +1,6 @@
 'use strict';
 
-require('should');
+var should = require('should');
 var join = require('path').join;
 var File = require('vinyl');
 
@@ -272,18 +272,54 @@ describe('Plugin', function() {
     });
   });
 
-  xdescribe('include', function() {
-    var pkg = getPackage('css-conflict');
+  describe('include', function() {
 
-    it('self', function(done) {
+    it('all', function(done) {
+      var pkg = getPackage('js-require-js');
       var fakeFile = createFile(pkg.dest, pkg.main);
 
       var ret = [];
-      var stream = include({pkg: pkg, include: 'self'})
+      var stream = include({pkg: pkg, include: 'all'})
       .on('data', function(file) {
         ret.push(file);
       })
       .on('end', function() {
+        ret[0].relative.should.equal('src/index.js');
+        should.not.exist(ret[0].dependentPath);
+        ret[1].relative.should.equal('sea-modules/b/1.0.0/index.js');
+        ret[1].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
+        ret[2].relative.should.equal('sea-modules/c/1.0.0/index.js');
+        ret[2].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
+        ret[3].relative.should.equal('sea-modules/c/1.0.0/c.js');
+        ret[3].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
+        ret[4].relative.should.equal('sea-modules/b/1.0.0/b.js');
+        ret[4].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
+        ret[5].relative.should.equal('a.js');
+        ret[5].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
+        ret[6].relative.should.equal('src/index.js');
+        ret[6].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
+        ret[6].contents.toString().should.equal('');
+        done();
+      });
+      stream.write(fakeFile);
+      stream.end();
+    });
+
+    it('all with ignore', function(done) {
+      var pkg = getPackage('ignore-package', {ignore: ['jquery']});
+      var fakeFile = createFile(pkg.dest, pkg.main);
+
+      var ret = [];
+      var stream = include({pkg: pkg, include: 'all', ignore: ['jquery']})
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
+        ret[0].relative.should.equal('index.js');
+        should.not.exist(ret[0].dependentPath);
+        ret[1].relative.should.equal('index.js');
+        ret[1].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[1].contents.toString().should.equal('');
         done();
       });
       stream.write(fakeFile);
