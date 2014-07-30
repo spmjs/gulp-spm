@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.8
+
+fix ignore package in transportDeps when fileInfo.ignore
+
 ## 0.6.7
 
 if package is not existed, fileInfo.ignore will be true 

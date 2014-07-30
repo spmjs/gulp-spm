@@ -194,6 +194,22 @@ describe('Transport', function() {
       });
     });
 
+    it('all with ignore package', function(done) {
+      var pkg = getPackage('ignore-package', {ignore: ['jquery']});
+
+      var opt = {
+        cwd: join(base, 'ignore-package'),
+        cwdbase: true
+      };
+
+      gulp.src(pkg.main, opt)
+      .pipe(transport({pkg: pkg, include: 'all', ignore: ['jquery']}))
+      .on('data', function(file) {
+        assert(file, 'transport-include-all-ignore-package.js');
+        done();
+      });
+    });
+
     it('all with css', function(done) {
       var pkg = getPackage('js-require-css');
 
