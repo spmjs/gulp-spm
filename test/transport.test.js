@@ -490,7 +490,11 @@ describe('Transport', function() {
     });
 
     it('plugin.tpl', function() {
-      exports.plugin.tpl.should.equal(require('../lib/plugin/tpl'));
+      exports.plugin.tpl.should.equal(require('../lib/plugin/tpl').tpl);
+    });
+
+    it('plugin.html', function() {
+      exports.plugin.html.should.equal(require('../lib/plugin/tpl').html);
     });
 
     it('plugin.json', function() {

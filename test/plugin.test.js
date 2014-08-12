@@ -4,15 +4,17 @@ var should = require('should');
 var join = require('path').join;
 var File = require('vinyl');
 
-var jsParser = require('../lib/plugin/js');
-var css2jsParser = require('../lib/plugin/css2js');
-var jsonParser = require('../lib/plugin/json');
-var tplParser = require('../lib/plugin/tpl');
-var handlebarsParser = require('../lib/plugin/handlebars');
-var cssParser = require('../lib/plugin/css');
-var include = require('../lib/plugin/include');
-var concat = require('../lib/plugin/concat');
-var dest = require('../lib/plugin/dest');
+var plugin = require('../lib/plugin');
+var jsParser = plugin.js;
+var css2jsParser = plugin.css2js;
+var jsonParser = plugin.json;
+var tplParser = plugin.tpl;
+var htmlParser = plugin.html;
+var handlebarsParser = plugin.handlebars;
+var cssParser = plugin.css;
+var include = plugin.include;
+var concat = plugin.concat;
+var dest = plugin.dest;
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
 var getPackage = require('./support/getPackage');
@@ -159,6 +161,21 @@ describe('Plugin', function() {
       .on('data', function(file) {
         file.path.should.endWith('.tpl.js');
         assert(file, 'plugin-tpl.js');
+      })
+      .on('end', done);
+      stream.write(fakeFile);
+      stream.end();
+    });
+
+    it('transport html', function(done) {
+      var pkg = getPackage('type-transport');
+      var fakeFile = createFile(pkg.dest, 'a.html');
+
+      var stream = htmlParser({pkg: pkg});
+      stream
+      .on('data', function(file) {
+        file.path.should.endWith('.html.js');
+        assert(file, 'plugin-html.js');
       })
       .on('end', done);
       stream.write(fakeFile);

@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.9
+
+support .html
+
 ## 0.6.8
 
 fix ignore package in transportDeps when fileInfo.ignore
