@@ -2,6 +2,10 @@
 
 ---
 
+## 0.7.0
+
+now support require file in package just like node
+
 ## 0.6.9
 
 support .html
