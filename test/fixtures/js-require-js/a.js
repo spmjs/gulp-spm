@@ -1,2 +1,2 @@
-require('b/c');
+require('b/c.js');
 console.log('a');
