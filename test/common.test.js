@@ -153,7 +153,7 @@ describe('Common', function() {
       var pkg = getPackage('simple-transport');
       (function() {
         common.transportDeps('not-exist.js', pkg);
-      }).should.throw('not-exist.js is not included in index.js,relative1.js,relative2.js,relative3.js');
+      }).should.throw('not-exist.js is not included in files:index.js,relative1.js,relative2.js,relative3.js');
     });
 
     it('transportDeps getExtra expection', function() {

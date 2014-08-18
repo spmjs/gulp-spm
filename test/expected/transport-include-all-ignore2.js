@@ -13,6 +13,11 @@ console.log('b');
 
 });
 define("a/1.0.0/a", [], function(require, exports, module){
+require("b/1.0.0/c");
 console.log('a');
+
+});
+define("b/1.0.0/c", [], function(require, exports, module){
+console.log('b/c.js');
 
 });

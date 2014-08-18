@@ -466,6 +466,20 @@ describe('Transport', function() {
     });
   });
 
+  it('skip package', function(done) {
+    var pkg = getPackage('ignore-package', {skip: 'jquery'});
+    var opt = {
+      cwd: join(base, 'ignore-package'),
+      cwdbase: true
+    };
+    gulp.src('index.js', opt)
+    .pipe(transport({pkg: pkg, include: 'relative'}))
+    .on('data', function(file) {
+      assert(file, 'transport-skip.js');
+      done();
+    });
+  });
+
   describe('exports', function() {
     var exports = require('..');
 
