@@ -10,12 +10,12 @@ require("import-style/1.0.0/index")('html,body{margin:0;}div{padding:0;}body{bac
 
 });
 define("d/1.0.0/index", [], function(require, exports, module){
-require("c/1.0.0/index.css.js");
+require("d/1.0.0/d.css.js");
 require("e/1.0.0/e2.css.js");
 
 });
-define("c/1.0.0/index.css.js", [], function(require, exports, module){
-require("import-style/1.0.0/index")('div{padding:0;}');
+define("d/1.0.0/d.css.js", [], function(require, exports, module){
+require("import-style/1.0.0/index")('div{margin:0;}');
 
 });
 define("e/1.0.0/e2.css.js", [], function(require, exports, module){
