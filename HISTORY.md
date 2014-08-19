@@ -6,6 +6,10 @@
 
 now support require file in package just like node
 
+## 0.6.10
+
+fix throw error when transporting css required by js
+
 ## 0.6.9
 
 support .html
