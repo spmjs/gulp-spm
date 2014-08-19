@@ -2,6 +2,9 @@
   "name": "b",
   "version": "1.0.0",
   "spm": {
-    "main": "index.css"
+    "main": "index.css",
+    "dependencies": {
+      "c": "1.0.0"
+    }
   }
 }

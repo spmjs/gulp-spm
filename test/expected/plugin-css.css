@@ -14,6 +14,10 @@ body {
   background: blue;
 }
 
+.c {
+  color: #cccccc;
+}
+
 div {
   border: 1px;
 }
