@@ -2,13 +2,13 @@
 
 ---
 
+## 0.7.1
+
+fix missing extra dependencies
+
 ## 0.7.0
 
 now support require file in package just like node
-
-## 0.6.10
-
-fix throw error when transporting css required by js
 
 ## 0.6.9
 
