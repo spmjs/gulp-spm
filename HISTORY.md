@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.11
+
+fix missing extra dependencies
+
 ## 0.6.10
 
 fix throw error when transporting css required by js
