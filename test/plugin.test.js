@@ -266,7 +266,6 @@ describe('Plugin', function() {
 
       var stream = cssParser({pkg: pkg})
       .on('error', function(e) {
-                console.log(e.stack)
         e.message.should.eql('package d not exists');
         e.plugin.should.eql('transport:css');
         done();
@@ -339,6 +338,45 @@ describe('Plugin', function() {
         ret[1].relative.should.equal('index.js');
         ret[1].dependentPath.should.equal(join(pkg.dest, 'index.js'));
         ret[1].contents.toString().should.equal('');
+        done();
+      });
+      stream.write(fakeFile);
+      stream.end();
+    });
+
+    it('include other type', function(done) {
+      var pkg = getPackage('type-transport', {});
+      var fakeFile = createFile(pkg.dest, pkg.main);
+
+      var ret = [];
+      var stream = include({pkg: pkg, include: 'all'})
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
+        ret[0].relative.should.equal('index.js');
+        should.not.exist(ret[0].dependentPath);
+        ret[1].relative.should.equal('a.css');
+        ret[1].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[2].relative.should.equal('a.json');
+        ret[2].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[3].relative.should.equal('a.tpl');
+        ret[3].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[4].relative.should.equal('a.html');
+        ret[4].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[5].relative.should.equal('a.handlebars');
+        ret[5].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[6].relative.should.equal('a.js');
+        ret[6].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[7].relative.should.equal('sea-modules/handlebars-runtime/1.3.0/handlebars.js');
+        ret[7].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[8].relative.should.equal('sea-modules/handlebars-runtime/1.3.0/handlebars-a.js');
+        ret[8].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[9].relative.should.equal('sea-modules/import-style/1.0.0/index.js');
+        ret[9].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[10].relative.should.equal('index.js');
+        ret[10].dependentPath.should.equal(join(pkg.dest, 'index.js'));
+        ret[10].contents.toString().should.equal('');
         done();
       });
       stream.write(fakeFile);
