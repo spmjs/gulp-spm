@@ -4,13 +4,14 @@ require('should');
 var fs = require('fs');
 var path = require('path');
 var join = require('path').join;
-var gutil = require('gulp-util');
+var File = require('vinyl');
 var Package = require('father').SpmPackage;
 
 var common = require('../lib/common');
 var base = join(__dirname, 'fixtures');
 
 describe('Common', function() {
+  var pkg = getPackage('simple-transport');
 
   describe('transportId', function() {
 
@@ -86,7 +87,6 @@ describe('Common', function() {
   describe('transportDeps', function() {
 
     it('transportDeps', function() {
-      var pkg = getPackage('simple-transport');
       var options = {
         idleading: '{{name}}/{{version}}',
         include: 'self'
@@ -104,7 +104,6 @@ describe('Common', function() {
     });
 
     it('transportDeps when ignore', function() {
-      var pkg = getPackage('simple-transport');
       var options = {
         ignore: ['d'],
         idleading: '{{name}}/{{version}}',
@@ -150,7 +149,6 @@ describe('Common', function() {
 
     // father will throw now
     it('transportDeps which not exist in pkg.files', function() {
-      var pkg = getPackage('simple-transport');
       (function() {
         common.transportDeps('not-exist.js', pkg);
       }).should.throw('not-exist.js is not included in files:index.js,relative1.js,relative2.js,relative3.js');
@@ -164,7 +162,6 @@ describe('Common', function() {
     });
 
     xit('transportDeps skip', function() {
-      var pkg = getPackage('simple-transport');
       var deps = common.transportDeps('index.js', pkg, {skip: ['c']});
       deps.should.eql([
         'simple-transport/1.0.0/relative1',
@@ -181,45 +178,66 @@ describe('Common', function() {
 
   });
 
-  describe('getFileInfo', function() {
+  describe('getFile', function() {
 
-    it('getFileInfo', function() {
-      var pkg = getPackage('simple-transport');
+    it('getFile', function() {
       var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         contents: '',
         path: fakePath
       });
 
-      var fileInfo = common.getFileInfo(fakeFile, pkg);
-      fileInfo.originPath.should.eql('src/b.js');
+      var fileInfo = common.getFile(fakeFile, pkg);
       fileInfo.path.should.eql('src/b.js');
       fileInfo.pkg.id.should.eql('b@1.1.0');
     });
 
-    it('getFileInfo deep directory', function() {
+    it('getFile with string', function() {
+      var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
+      var fileInfo = common.getFile(fakePath, pkg);
+      fileInfo.path.should.eql('src/b.js');
+      fileInfo.pkg.id.should.eql('b@1.1.0');
+    });
+
+    it('getFile deep directory', function() {
       var pkg = getPackage('require-directory');
       var fakePath = join(base, 'require-directory/lib/index.js');
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         contents: '',
         path: fakePath
       });
 
-      var fileInfo = common.getFileInfo(fakeFile, pkg);
-      fileInfo.originPath.should.eql('lib/index.js');
+      var fileInfo = common.getFile(fakeFile, pkg);
       fileInfo.path.should.eql('lib/index.js');
       fileInfo.pkg.id.should.eql('a@1.0.0');
     });
 
-    it('getFileInfo not found', function() {
+    it('getFile when change file', function() {
+      var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.coffee');
+      var fakeFile = new File({
+        contents: '',
+        path: fakePath
+      });
+      fakeFile.path = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
+      fakeFile.path = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b-debug.js');
+
+      var fileInfo = common.getFile(fakeFile, pkg);
+      fileInfo.path.should.eql('src/b.js');
+      fileInfo.pkg.id.should.eql('b@1.1.0');
+    });
+
+    it('getFile not found', function() {
       var pkg = getPackage('js-require-css');
       var fakePath = join(base, 'js-require-css/sea-modules/b/1.0.1/index.css');
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         contents: '',
         path: fakePath
       });
       (function() {
-        common.getFileInfo(fakeFile, pkg);
+        common.getFile(fakeFile, pkg);
+      }).should.throw('not found sea-modules/b/1.0.1/index.css of pkg a@1.0.0');
+      (function() {
+        common.getFile(fakePath, pkg);
       }).should.throw('not found sea-modules/b/1.0.1/index.css of pkg a@1.0.0');
     });
   });
@@ -228,10 +246,9 @@ describe('Common', function() {
   describe('createStream', function() {
 
     it('createStream', function(done) {
-      var pkg = getPackage('simple-transport');
       var stream = common.createStream({pkg: pkg}, 'js', parser);
       var fakePath = join(base, 'simple-transport/index.js');
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         path: fakePath,
         contents: new Buffer('123')
       });
@@ -246,10 +263,9 @@ describe('Common', function() {
     });
 
     it('createStream throw by parser', function(done) {
-      var pkg = getPackage('simple-transport');
       var stream = common.createStream({pkg: pkg}, 'js', function() {throw new Error('error')});
       var fakePath = join(base, 'simple-transport/index.js');
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         path: fakePath,
         contents: new Buffer('123')
       });
@@ -270,10 +286,9 @@ describe('Common', function() {
     });
 
     it('createStream do not support stream', function() {
-      var pkg = getPackage('simple-transport');
       var stream = common.createStream({pkg: pkg}, 'js', parser);
       var filePath = join(base, 'simple-transport/index.js');
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         path: filePath,
         contents: fs.createReadStream(filePath)
       });
@@ -285,9 +300,8 @@ describe('Common', function() {
     });
 
     it('createStream not supported parser', function() {
-      var pkg = getPackage('simple-transport');
       var stream = common.createStream({pkg: pkg}, 'js', parser);
-      var fakeFile = new gutil.File({
+      var fakeFile = new File({
         path: join(base, 'simple-transport/a.no'),
         contents: ''
       });
@@ -301,18 +315,13 @@ describe('Common', function() {
   });
 
   it('getStyleId', function() {
-    var pkg = getPackage('simple-transport');
-    var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
-    var fakeFile = new gutil.File({
-      contents: '',
-      path: fakePath
-    });
+    var file = pkg.get('b@1.1.0').files['src/b.js'];
 
     var opt = {
       idleading: '{{name}}/{{version}}',
       pkg: pkg
     };
-    common.getStyleId(fakeFile, opt)
+    common.getStyleId(file, opt)
       .should.eql('b-1_1_0');
 
     opt = {
@@ -321,7 +330,7 @@ describe('Common', function() {
       },
       pkg: pkg
     };
-    common.getStyleId(fakeFile, opt)
+    common.getStyleId(file, opt)
       .should.eql('b-_js');
   });
 

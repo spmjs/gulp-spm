@@ -55,7 +55,7 @@ describe('Util', function() {
   it('rename', function() {
     var file = {
       path: 'a.js',
-      originPath: 'a.js'
+      history: ['a.js']
     };
     util.rename(file).should.eql('a.js');
     util.rename(file, {

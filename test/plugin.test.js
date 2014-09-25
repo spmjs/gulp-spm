@@ -107,7 +107,7 @@ describe('Plugin', function() {
 
       var stream = css2jsParser({pkg: pkg})
       .on('data', function(file) {
-        file.originPath.should.endWith('.css');
+        file.history[0].should.endWith('.css');
         file.path.should.endWith('.css.js');
         assert(file, 'plugin-css2js.js');
       })
@@ -121,7 +121,7 @@ describe('Plugin', function() {
 
       var stream = css2jsParser({pkg: pkg, styleBox: true})
       .on('data', function(file) {
-        file.originPath.should.endWith('.css');
+        file.history[0].should.endWith('.css');
         file.path.should.endWith('.css.js');
         assert(file, 'plugin-css2js-stylebox.js');
       })
@@ -140,7 +140,7 @@ describe('Plugin', function() {
       var stream = jsonParser({pkg: pkg});
       stream
       .on('data', function(file) {
-        file.originPath.should.endWith('.json');
+        file.history[0].should.endWith('.json');
         file.path.should.endWith('.json.js');
         assert(file, 'plugin-json.js');
       })
@@ -159,6 +159,7 @@ describe('Plugin', function() {
       var stream = tplParser({pkg: pkg});
       stream
       .on('data', function(file) {
+        file.history[0].should.endWith('.tpl');
         file.path.should.endWith('.tpl.js');
         assert(file, 'plugin-tpl.js');
       })
@@ -174,6 +175,7 @@ describe('Plugin', function() {
       var stream = htmlParser({pkg: pkg});
       stream
       .on('data', function(file) {
+        file.history[0].should.endWith('.html');
         file.path.should.endWith('.html.js');
         assert(file, 'plugin-html.js');
       })
@@ -191,7 +193,7 @@ describe('Plugin', function() {
 
       var stream = handlebarsParser({pkg: pkg})
       .on('data', function(file) {
-        file.originPath.should.endWith('.handlebars');
+        file.history[0].should.endWith('.handlebars');
         file.path.should.endWith('.handlebars.js');
         assert(file, 'plugin-handlebars.js');
       })
