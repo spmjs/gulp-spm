@@ -19,7 +19,7 @@ describe('Common', function() {
       var pkg, opt;
       (function() {
         common.transportId('./a.js');
-      }).should.throw('do not support relative path');
+      }).should.throw('do not support relative path ./a.js');
 
       pkg = {
         a: 1,

@@ -208,7 +208,6 @@ describe('Plugin', function() {
 
       var stream = handlebarsParser({pkg: pkg})
       .on('error', function(e) {
-        e.plugin.should.eql('transport:handlebars');
         e.message.should.eql('handlebars version should be 1.3.0 but 1.2.0');
         done();
       });
@@ -283,7 +282,6 @@ describe('Plugin', function() {
 
       var stream = cssParser({pkg: pkg})
       .on('error', function(e) {
-        e.plugin.should.eql('transport:css');
         e.message.should.eql('c@1.0.0 conflict with c@1.0.1');
         done();
       });
