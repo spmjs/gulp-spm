@@ -77,7 +77,7 @@ describe('Common', function() {
         idleading: '{{name}}/{{version}}',
         include: 'self'
       };
-      var expected = common.transportDeps('index.js', pkg, options);
+      var expected = common.transportDeps(pkg.files['index.js'], options);
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
@@ -95,7 +95,7 @@ describe('Common', function() {
         idleading: '{{name}}/{{version}}',
         include: 'self'
       };
-      var expected = common.transportDeps('index.js', pkg, options);
+      var expected = common.transportDeps(pkg.files['index.js'], options);
       expected.should.eql([
         'simple-transport/1.0.0/relative1',
         'simple-transport/1.0.0/relative2',
@@ -112,7 +112,7 @@ describe('Common', function() {
         ignore: ['c'],
         idleading: '{{name}}/{{version}}'
       };
-      var expected = common.transportDeps('a.js', pkg, options);
+      var expected = common.transportDeps(pkg.files['a.js'], options);
       expected.should.eql([
         'b/1.1.0/src/b',
         'c',
@@ -122,19 +122,19 @@ describe('Common', function() {
 
     it('transportDeps do not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
-      var deps = common.transportDeps('index.js', pkg, {pkg: pkg});
-      deps.should.eql(['d/1.0.0/index', 'f/1.0.0/index', 'import-style/1.0.0/index']);
+      var deps = common.transportDeps(pkg.files['index.js'], {pkg: pkg});
+      deps.should.eql(['d/1.0.0/index', 'f/1.0.0/index', 'import-style/1.0.0/index']);      deps.should.eql(['d/1.0.0/index', 'import-style/1.0.0/index']);
     });
 
 
     it('transportDeps do not contain css\'s dependencies deep', function() {
       var pkg = getPackage('js-require-js-require-css');
-      var deps = common.transportDeps('index.js', pkg, {pkg: pkg});
+      var deps = common.transportDeps(pkg.files['index.js'], {pkg: pkg});
       deps.should.eql(['b/1.0.0/index', 'import-style/1.0.0/index']);
     });
 
     // father will throw now
-    it('transportDeps which not exist in pkg.files', function() {
+    xit('transportDeps which not exist in pkg.files', function() {
       (function() {
         common.transportDeps('not-exist.js', pkg);
       }).should.throw('not-exist.js is not included in files:index.js,relative1.js,relative2.js,relative3.js');
@@ -143,7 +143,7 @@ describe('Common', function() {
     it('transportDeps getExtra expection', function() {
       var pkg = getPackage('no-handlebars');
       (function() {
-        common.transportDeps('index.js', pkg, {pkg: pkg});
+        common.transportDeps(pkg.files['index.js'], {pkg: pkg});
       }).should.throw('handlebars-runtime not exist, but required .handlebars');
     });
 
