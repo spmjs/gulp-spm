@@ -15,35 +15,19 @@ describe('Common', function() {
 
   describe('transportId', function() {
 
-    it('transportId', function() {
-      var pkg, opt;
+    it('should throw when file is not father file object', function() {
       (function() {
         common.transportId('./a.js');
-      }).should.throw('do not support relative path ./a.js');
+      }).should.throw('should pass file object of father when transportId `./a.js`');
+    });
 
-      pkg = {
-        a: 1,
-        b: 2,
-        c: 3,
-        dest: ''
-      };
-      opt = {
-        idleading: '{{a}}-{{b}}-{{c}}',
-        cwd: ''
-      };
-      common.transportId('src/a', pkg, opt)
-        .should.eql('1-2-3/src/a');
-
-      pkg = {
-        name: 'a',
-        version: '1.0.0',
-        dest: join(base, 'test')
-      };
-      opt = {
+    it('transportId', function() {
+      var main = pkg.files[pkg.main];
+      var opt = {
         idleading: '{{name}}/{{version}}'
       };
-      common.transportId('index.js', pkg, opt)
-        .should.eql('a/1.0.0/index');
+      common.transportId(main, opt)
+        .should.eql('simple-transport/1.0.0/index');
     });
 
     it('transportId with suffix', function() {
@@ -51,8 +35,8 @@ describe('Common', function() {
       var opt = {
         rename: {suffix: '-debug'}
       };
-
-      common.transportId('index.js', pkg, opt)
+      var main = pkg.files[pkg.main];
+      common.transportId(main, opt)
         .should.eql('type-transport/1.0.0/index-debug');
     });
 
@@ -65,9 +49,10 @@ describe('Common', function() {
         }
       };
 
-      common.transportId('index.js', pkg, opt)
+      var main = pkg.files[pkg.main];
+      common.transportId(main, opt)
         .should.eql('js/type-transport/1.0.0/index');
-      common.transportId('a.tpl', pkg, opt)
+      common.transportId(pkg.files['a.tpl'], opt)
         .should.eql('other/type-transport/1.0.0/a.tpl');
     });
 
@@ -77,9 +62,10 @@ describe('Common', function() {
         idleading: ''
       };
 
-      common.transportId('index.js', pkg, opt)
+      var main = pkg.files[pkg.main];
+      common.transportId(main, opt)
         .should.eql('index');
-      common.transportId('a.tpl', pkg, opt)
+      common.transportId(pkg.files['a.tpl'], opt)
         .should.eql('a.tpl');
     });
   });
