@@ -307,7 +307,6 @@ describe('Transport', function() {
         ret.push(file);
       })
       .on('end', function() {
-        console.log(ret);
         util.winPath(ret[0].path).should.include('type-transport/type-transport/1.0.0/index-debug.js');
         assert(ret[0], 'transport-rename-debug.js');
 

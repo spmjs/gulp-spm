@@ -22,7 +22,6 @@
     "concat-stream": "~1.4.4",
     "coveralls": "~2.8.0",
     "father": "~0.9.0",
-    "gulp": "~3.8.0",
     "vinyl-fs": "~0.3.7",
     "istanbul": "^0.2.6",
     "mocha": "^1.17.1",
