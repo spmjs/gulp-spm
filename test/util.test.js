@@ -90,7 +90,7 @@ describe('Util', function() {
     util.resolvePath('a.js').should.eql('a.js');
     (function() {
       util.resolvePath('../a.js', 'b.js');
-    }).should.throw('../a.js is out of bound');
+    }).should.throw('../a.js is out of bound of b.js');
   });
 
 });

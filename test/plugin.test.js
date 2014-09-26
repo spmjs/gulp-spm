@@ -208,7 +208,7 @@ describe('Plugin', function() {
 
       var stream = handlebarsParser({pkg: pkg})
       .on('error', function(e) {
-        e.message.should.eql('handlebars version should be 1.3.0 but 1.2.0');
+        e.message.should.eql('the version of handlebars-runtime in package.json should be 1.3.0 but got 1.2.0');
         done();
       });
       stream.write(fakeFile);

@@ -144,7 +144,7 @@ describe('Common', function() {
       var pkg = getPackage('no-handlebars');
       (function() {
         common.transportDeps(pkg.files['index.js'], {pkg: pkg});
-      }).should.throw('handlebars-runtime not exist, but required .handlebars');
+      }).should.throw('handlebars-runtime is not configured in package.json, but .handlebars is required');
     });
 
     xit('transportDeps skip', function() {
@@ -221,10 +221,7 @@ describe('Common', function() {
       });
       (function() {
         common.getFile(fakeFile, pkg);
-      }).should.throw('not found sea-modules/b/1.0.1/index.css of pkg a@1.0.0');
-      (function() {
-        common.getFile(fakePath, pkg);
-      }).should.throw('not found sea-modules/b/1.0.1/index.css of pkg a@1.0.0');
+      }).should.throw('getFile from sea-modules/b/1.0.1/index.css of pkg a@1.0.0 is not found');
     });
   });
 
