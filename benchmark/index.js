@@ -19,7 +19,7 @@ suite('transport relative', function(){
     pkg3._parse();
   });
 
-  bench('one dependencies', function(done){
+  bench('no dependencies', function(done){
     vfs.src(join(pkg1.dest, pkg1.main))
     .pipe(transport({
       pkg: pkg1
@@ -60,7 +60,7 @@ suite('transport all', function(){
     pkg3._parse();
   });
 
-  bench('one dependencies', function(done){
+  bench('no dependencies', function(done){
     vfs.src(join(pkg1.dest, pkg1.main))
     .pipe(transport({
       pkg: pkg1,

@@ -72,7 +72,7 @@ describe('Common', function() {
 
   describe('transportDeps', function() {
 
-    it('transportDeps', function() {
+    it('should return dependencies', function() {
       var options = {
         idleading: '{{name}}/{{version}}',
         include: 'self'
@@ -89,7 +89,7 @@ describe('Common', function() {
       ]);
     });
 
-    it('transportDeps when ignore', function() {
+    it('should return dependencies when ignore', function() {
       var options = {
         ignore: ['d'],
         idleading: '{{name}}/{{version}}',
@@ -106,7 +106,7 @@ describe('Common', function() {
       ]);
     });
 
-    it('stop parsing dependencies when ignore', function() {
+    it('should stop parsing dependencies when ignore', function() {
       var pkg = getPackage('deep-deps');
       var options = {
         ignore: ['c'],
@@ -120,17 +120,23 @@ describe('Common', function() {
       ]);
     });
 
-    it('transportDeps do not contain css\'s dependencies', function() {
+    it('should not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
       var deps = common.transportDeps(pkg.files['index.js'], {pkg: pkg});
       deps.should.eql(['d/1.0.0/index', 'f/1.0.0/index', 'import-style/1.0.0/index']);      deps.should.eql(['d/1.0.0/index', 'import-style/1.0.0/index']);
     });
 
 
-    it('transportDeps do not contain css\'s dependencies deep', function() {
+    it('should not contain css\'s dependencies deep', function() {
       var pkg = getPackage('js-require-js-require-css');
       var deps = common.transportDeps(pkg.files['index.js'], {pkg: pkg});
       deps.should.eql(['b/1.0.0/index', 'import-style/1.0.0/index']);
+    });
+
+    it('should error when argument is not gulp file', function() {
+      (function() {
+        common.transportDeps();
+      }).should.throw('should pass file object of father when transportDeps `undefined`');
     });
 
     // father will throw now
@@ -286,7 +292,7 @@ describe('Common', function() {
       var stream = common.createStream({pkg: pkg}, 'js', parser);
       var fakeFile = new File({
         path: join(base, 'simple-transport/a.no'),
-        contents: ''
+        contents: new Buffer('11')
       });
 
       (function() {

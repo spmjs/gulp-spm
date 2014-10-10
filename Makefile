@@ -7,6 +7,9 @@ coveralls: test
 debug:
 	node $(NODE_DEBUG) ./node_modules/.bin/_mocha -R spec -t 20000
 
+bench:
+	./node_modules/.bin/matcha
+
 totoro:
 	./node_modules/.bin/totoro --runner test/transport.test.js -b "windows7/node/0.10,linux/node/0.10"
 

@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('should');
+var fs = require('fs');
 var join = require('path').join;
 var File = require('vinyl');
 
@@ -18,6 +19,7 @@ var dest = plugin.dest;
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
 var getPackage = require('./support/getPackage');
+var base = join(__dirname, 'fixtures');
 
 describe('Plugin', function() {
 
@@ -322,7 +324,7 @@ describe('Plugin', function() {
         ret[8].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
         ret[9].relative.should.equal('src/index.js');
         ret[9].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
-        ret[9].contents.toString().should.equal('');
+        (ret[9].contents === null).should.be.true;
         done();
       });
       stream.write(fakeFile);
@@ -343,7 +345,7 @@ describe('Plugin', function() {
         should.not.exist(ret[0].dependentPath);
         ret[1].relative.should.equal('index.js');
         ret[1].dependentPath.should.equal(join(pkg.dest, 'index.js'));
-        ret[1].contents.toString().should.equal('');
+        (ret[1].contents === null).should.be.true;
         done();
       });
       stream.write(fakeFile);
@@ -382,11 +384,47 @@ describe('Plugin', function() {
         ret[9].dependentPath.should.equal(join(pkg.dest, 'index.js'));
         ret[10].relative.should.equal('index.js');
         ret[10].dependentPath.should.equal(join(pkg.dest, 'index.js'));
-        ret[10].contents.toString().should.equal('');
+        (ret[10].contents === null).should.be.true;
         done();
       });
       stream.write(fakeFile);
       stream.end();
+    });
+
+    it('skip when null', function(done) {
+      var pkg = getPackage('type-transport', {});
+      var filePath = join(base, 'simple-transport/index.js');
+      var fakeFile = new File({
+        path: filePath,
+        contents: null
+      });
+
+      var ret = [];
+      var stream = include({pkg: pkg, include: 'all'})
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
+        ret.length.should.eql(1);
+        done();
+      });
+      stream.write(fakeFile);
+      stream.end();
+    });
+
+    it('do not support stream', function() {
+      var pkg = getPackage('type-transport', {});
+      var stream = include({pkg: pkg, include: 'all'});
+      var filePath = join(base, 'simple-transport/index.js');
+      var fakeFile = new File({
+        path: filePath,
+        contents: fs.createReadStream(filePath)
+      });
+
+      (function() {
+        stream.write(fakeFile);
+        stream.end();
+      }).should.throw('Streaming not supported.');
     });
   });
 
