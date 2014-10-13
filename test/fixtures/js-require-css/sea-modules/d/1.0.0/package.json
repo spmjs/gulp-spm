@@ -4,6 +4,7 @@
   "spm": {
     "dependencies": {
       "e": "1.0.0",
+      "f": "1.0.0",
       "import-style": "1.0.0"
     }
   }

@@ -8,3 +8,9 @@ require('b/c.js');
 console.log('a');
 
 });
+define("import-style/1.0.0/index", [], function(require, exports, module){
+module.exports = function importStyle(str) {
+  return '';
+};
+
+});

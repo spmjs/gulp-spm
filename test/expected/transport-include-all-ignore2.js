@@ -21,3 +21,9 @@ define("b/1.0.0/c", [], function(require, exports, module){
 console.log('b/c.js');
 
 });
+define("import-style/1.0.0/index", [], function(require, exports, module){
+module.exports = function importStyle(str) {
+  return '';
+};
+
+});
