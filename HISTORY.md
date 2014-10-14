@@ -2,6 +2,10 @@
 
 ---
 
+## 0.7.2
+
+fix miss import-style when css is required deeply #18
+
 ## 0.7.1
 
 fix missing extra dependencies
