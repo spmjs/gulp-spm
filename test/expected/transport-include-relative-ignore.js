@@ -1,4 +1,4 @@
-define("a/1.0.0/src/index", ["b","c"], function(require, exports, module){
+define("a/1.0.0/src/index", ["b","c","import-style/1.0.0/index"], function(require, exports, module){
 require('b');
 require("a/1.0.0/a");
 

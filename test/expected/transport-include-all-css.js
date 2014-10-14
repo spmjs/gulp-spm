@@ -12,6 +12,7 @@ require("import-style/1.0.0/index")('html,body{margin:0;}div{padding:0;}body{bac
 define("d/1.0.0/index", [], function(require, exports, module){
 require("d/1.0.0/d.css.js");
 require("e/1.0.0/e2.css.js");
+require("f/1.0.0/index");
 
 });
 define("d/1.0.0/d.css.js", [], function(require, exports, module){
@@ -20,6 +21,14 @@ require("import-style/1.0.0/index")('div{margin:0;}');
 });
 define("e/1.0.0/e2.css.js", [], function(require, exports, module){
 require("import-style/1.0.0/index")('.e2{background:#e1e1e1;}');
+
+});
+define("f/1.0.0/index", [], function(require, exports, module){
+require("f/1.0.0/f.css.js");
+
+});
+define("f/1.0.0/f.css.js", [], function(require, exports, module){
+require("import-style/1.0.0/index")('.f{padding:0;}');
 
 });
 define("a/1.0.0/a.css.js", [], function(require, exports, module){
