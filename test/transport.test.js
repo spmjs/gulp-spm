@@ -241,8 +241,8 @@ describe('Transport', function() {
       vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
-        util.winPath(file.history[0]).should.include('type-transport/index.js');
-        util.winPath(file.path).should.include('type-transport/index-debug.js');
+        util.winPath(file.history[0]).should.containEql('type-transport/index.js');
+        util.winPath(file.path).should.containEql('type-transport/index-debug.js');
         assert(file, 'transport-rename-debug.js');
         done();
       });
@@ -265,8 +265,8 @@ describe('Transport', function() {
       vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: rename}))
       .on('data', function(file) {
-        util.winPath(file.history[0]).should.include('transport-hash/index.js');
-        util.winPath(file.path).should.include('transport-hash/index-e16dba71.js');
+        util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
+        util.winPath(file.path).should.containEql('transport-hash/index-e16dba71.js');
         assert(file, 'transport-rename-hash.js');
         done();
       });
@@ -283,8 +283,8 @@ describe('Transport', function() {
       vfs.src('index.css', opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
-        util.winPath(file.history[0]).should.include('css-import/index.css');
-        util.winPath(file.path).should.include('css-import/index-debug.css');
+        util.winPath(file.history[0]).should.containEql('css-import/index.css');
+        util.winPath(file.path).should.containEql('css-import/index-debug.css');
         assert(file, 'transport-rename-css.css');
         done();
       });
@@ -307,7 +307,7 @@ describe('Transport', function() {
         ret.push(file);
       })
       .on('end', function() {
-        util.winPath(ret[0].path).should.include('type-transport/type-transport/1.0.0/index-debug.js');
+        util.winPath(ret[0].path).should.containEql('type-transport/type-transport/1.0.0/index-debug.js');
         assert(ret[0], 'transport-rename-debug.js');
 
         util.winPath(ret[1].path).should.endWith('type-transport/handlebars-runtime/1.3.0/handlebars-debug.js');

@@ -123,7 +123,7 @@ describe('Common', function() {
     it('should not contain css\'s dependencies', function() {
       var pkg = getPackage('js-require-css');
       var deps = common.transportDeps(pkg.files['index.js'], {pkg: pkg});
-      deps.should.eql(['d/1.0.0/index', 'f/1.0.0/index', 'import-style/1.0.0/index']);      deps.should.eql(['d/1.0.0/index', 'import-style/1.0.0/index']);
+      deps.should.eql(['d/1.0.0/index', 'f/1.0.0/index', 'import-style/1.0.0/index']);
     });
 
 
