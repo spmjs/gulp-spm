@@ -3,7 +3,7 @@
 require('should');
 var fs = require('fs');
 var join = require('path').join;
-var gulp = require('gulp');
+var vfs = require('vinyl-fs');
 var utility = require('utility');
 var Package = require('father').SpmPackage;
 var base = join(__dirname, 'fixtures');
@@ -21,7 +21,7 @@ describe('Transport', function() {
       cwdbase: true
     };
 
-    gulp.src(pkg.main, opt)
+    vfs.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
     .on('data', function(file) {
       util.winPath(file.path).should.endWith('simple-transport/index.js');
@@ -41,7 +41,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'self'}))
       .on('data', function(file) {
         assert(file, 'transport-include-self.js');
@@ -57,7 +57,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'self', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-self-ignore.js');
@@ -73,7 +73,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'self'}))
       .on('data', function(file) {
         assert(file, 'transport-include-self-css.js');
@@ -89,7 +89,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative'}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative.js');
@@ -106,7 +106,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-ignore.js');
@@ -122,7 +122,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative'}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-css.js');
@@ -138,7 +138,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'relative', ignore: ['import-style']}))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-css-ignore.js');
@@ -154,7 +154,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all'}))
       .on('data', function(file) {
         assert(file, 'transport-include-all.js');
@@ -170,7 +170,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore.js');
@@ -186,7 +186,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all', ignore: ['c']}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore2.js');
@@ -202,7 +202,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all', ignore: ['jquery']}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore-package.js');
@@ -218,7 +218,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, include: 'all'}))
       .on('data', function(file) {
         assert(file, 'transport-include-all-css.js');
@@ -238,11 +238,11 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
-        util.winPath(file.originPath).should.include('type-transport/index.js');
-        util.winPath(file.path).should.include('type-transport/index-debug.js');
+        util.winPath(file.history[0]).should.containEql('type-transport/index.js');
+        util.winPath(file.path).should.containEql('type-transport/index-debug.js');
         assert(file, 'transport-rename-debug.js');
         done();
       });
@@ -262,11 +262,11 @@ describe('Transport', function() {
         return file;
       }
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: rename}))
       .on('data', function(file) {
-        util.winPath(file.originPath).should.include('transport-hash/index.js');
-        util.winPath(file.path).should.include('transport-hash/index-e16dba71.js');
+        util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
+        util.winPath(file.path).should.containEql('transport-hash/index-e16dba71.js');
         assert(file, 'transport-rename-hash.js');
         done();
       });
@@ -280,11 +280,11 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src('index.css', opt)
+      vfs.src('index.css', opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
-        util.winPath(file.originPath).should.include('css-import/index.css');
-        util.winPath(file.path).should.include('css-import/index-debug.css');
+        util.winPath(file.history[0]).should.containEql('css-import/index.css');
+        util.winPath(file.path).should.containEql('css-import/index-debug.css');
         assert(file, 'transport-rename-css.css');
         done();
       });
@@ -300,14 +300,14 @@ describe('Transport', function() {
         pkg.main,
         'sea-modules/handlebars-runtime/1.3.0/handlebars.js'
       ];
-      gulp.src(src, opt)
+      vfs.src(src, opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .pipe(plugin.dest({pkg: pkg}))
       .on('data', function(file) {
         ret.push(file);
       })
       .on('end', function() {
-        util.winPath(ret[0].path).should.include('type-transport/type-transport/1.0.0/index-debug.js');
+        util.winPath(ret[0].path).should.containEql('type-transport/type-transport/1.0.0/index-debug.js');
         assert(ret[0], 'transport-rename-debug.js');
 
         util.winPath(ret[1].path).should.endWith('type-transport/handlebars-runtime/1.3.0/handlebars-debug.js');
@@ -324,7 +324,7 @@ describe('Transport', function() {
       cwdbase: true
     };
 
-    gulp.src(pkg.main, opt)
+    vfs.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'self'}))
     .once('error', function(e) {
       e.message.should.eql('handlebars-runtime not exist, but required .handlebars');
@@ -342,7 +342,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg}))
       .on('data', function(file) {
         assert(file, 'transport-other-ext.js');
@@ -357,7 +357,7 @@ describe('Transport', function() {
         cwdbase: true
       };
 
-      gulp.src(pkg.main, opt)
+      vfs.src(pkg.main, opt)
       .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
       .on('data', function(file) {
         assert(file, 'transport-other-ext-debug.js');
@@ -392,7 +392,7 @@ describe('Transport', function() {
         stream: stream
       };
 
-      gulp.src(pkg.main, gulpOpt)
+      vfs.src(pkg.main, gulpOpt)
       .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-relative.js');
@@ -427,7 +427,7 @@ describe('Transport', function() {
       cwdbase: true
     };
 
-    gulp.src(pkg.main, opt)
+    vfs.src(pkg.main, opt)
     .pipe(transport({pkg: pkg, include: 'self'}))
     .on('data', function(file) {
       assert(file, 'require-directory.js');
@@ -447,7 +447,7 @@ describe('Transport', function() {
       'sea-modules/b/1.0.0/index.js',
       'sea-modules/c/1.0.0/index.js'
     ];
-    gulp.src(src, opt)
+    vfs.src(src, opt)
     .pipe(transport({pkg: pkg, include: 'relative'}))
     .pipe(plugin.dest({pkg: pkg}))
     .on('data', function(file) {
@@ -472,7 +472,7 @@ describe('Transport', function() {
       cwd: join(base, 'ignore-package'),
       cwdbase: true
     };
-    gulp.src('index.js', opt)
+    vfs.src('index.js', opt)
     .pipe(transport({pkg: pkg, include: 'relative'}))
     .on('data', function(file) {
       assert(file, 'transport-skip.js');

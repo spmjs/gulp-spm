@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('should');
+var fs = require('fs');
 var join = require('path').join;
 var File = require('vinyl');
 
@@ -18,6 +19,7 @@ var dest = plugin.dest;
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
 var getPackage = require('./support/getPackage');
+var base = join(__dirname, 'fixtures');
 
 describe('Plugin', function() {
 
@@ -107,7 +109,7 @@ describe('Plugin', function() {
 
       var stream = css2jsParser({pkg: pkg})
       .on('data', function(file) {
-        file.originPath.should.endWith('.css');
+        file.history[0].should.endWith('.css');
         file.path.should.endWith('.css.js');
         assert(file, 'plugin-css2js.js');
       })
@@ -121,7 +123,7 @@ describe('Plugin', function() {
 
       var stream = css2jsParser({pkg: pkg, styleBox: true})
       .on('data', function(file) {
-        file.originPath.should.endWith('.css');
+        file.history[0].should.endWith('.css');
         file.path.should.endWith('.css.js');
         assert(file, 'plugin-css2js-stylebox.js');
       })
@@ -140,7 +142,7 @@ describe('Plugin', function() {
       var stream = jsonParser({pkg: pkg});
       stream
       .on('data', function(file) {
-        file.originPath.should.endWith('.json');
+        file.history[0].should.endWith('.json');
         file.path.should.endWith('.json.js');
         assert(file, 'plugin-json.js');
       })
@@ -159,6 +161,7 @@ describe('Plugin', function() {
       var stream = tplParser({pkg: pkg});
       stream
       .on('data', function(file) {
+        file.history[0].should.endWith('.tpl');
         file.path.should.endWith('.tpl.js');
         assert(file, 'plugin-tpl.js');
       })
@@ -174,6 +177,7 @@ describe('Plugin', function() {
       var stream = htmlParser({pkg: pkg});
       stream
       .on('data', function(file) {
+        file.history[0].should.endWith('.html');
         file.path.should.endWith('.html.js');
         assert(file, 'plugin-html.js');
       })
@@ -191,7 +195,7 @@ describe('Plugin', function() {
 
       var stream = handlebarsParser({pkg: pkg})
       .on('data', function(file) {
-        file.originPath.should.endWith('.handlebars');
+        file.history[0].should.endWith('.handlebars');
         file.path.should.endWith('.handlebars.js');
         assert(file, 'plugin-handlebars.js');
       })
@@ -206,8 +210,7 @@ describe('Plugin', function() {
 
       var stream = handlebarsParser({pkg: pkg})
       .on('error', function(e) {
-        e.plugin.should.eql('transport:handlebars');
-        e.message.should.eql('handlebars version should be 1.3.0 but 1.2.0');
+        e.message.should.eql('the version of handlebars-runtime in package.json should be 1.3.0 but got 1.2.0');
         done();
       });
       stream.write(fakeFile);
@@ -281,7 +284,6 @@ describe('Plugin', function() {
 
       var stream = cssParser({pkg: pkg})
       .on('error', function(e) {
-        e.plugin.should.eql('transport:css');
         e.message.should.eql('c@1.0.0 conflict with c@1.0.1');
         done();
       });
@@ -322,7 +324,7 @@ describe('Plugin', function() {
         ret[8].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
         ret[9].relative.should.equal('src/index.js');
         ret[9].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
-        ret[9].contents.toString().should.equal('');
+        (ret[9].contents === null).should.be.true;
         done();
       });
       stream.write(fakeFile);
@@ -343,7 +345,7 @@ describe('Plugin', function() {
         should.not.exist(ret[0].dependentPath);
         ret[1].relative.should.equal('index.js');
         ret[1].dependentPath.should.equal(join(pkg.dest, 'index.js'));
-        ret[1].contents.toString().should.equal('');
+        (ret[1].contents === null).should.be.true;
         done();
       });
       stream.write(fakeFile);
@@ -382,11 +384,47 @@ describe('Plugin', function() {
         ret[9].dependentPath.should.equal(join(pkg.dest, 'index.js'));
         ret[10].relative.should.equal('index.js');
         ret[10].dependentPath.should.equal(join(pkg.dest, 'index.js'));
-        ret[10].contents.toString().should.equal('');
+        (ret[10].contents === null).should.be.true;
         done();
       });
       stream.write(fakeFile);
       stream.end();
+    });
+
+    it('skip when null', function(done) {
+      var pkg = getPackage('type-transport', {});
+      var filePath = join(base, 'simple-transport/index.js');
+      var fakeFile = new File({
+        path: filePath,
+        contents: null
+      });
+
+      var ret = [];
+      var stream = include({pkg: pkg, include: 'all'})
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
+        ret.length.should.eql(1);
+        done();
+      });
+      stream.write(fakeFile);
+      stream.end();
+    });
+
+    it('do not support stream', function() {
+      var pkg = getPackage('type-transport', {});
+      var stream = include({pkg: pkg, include: 'all'});
+      var filePath = join(base, 'simple-transport/index.js');
+      var fakeFile = new File({
+        path: filePath,
+        contents: fs.createReadStream(filePath)
+      });
+
+      (function() {
+        stream.write(fakeFile);
+        stream.end();
+      }).should.throw('Streaming not supported.');
     });
   });
 

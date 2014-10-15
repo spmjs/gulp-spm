@@ -26,6 +26,9 @@
     "beforeEach": false,
     "after": false,
     "afterEach": false,
-    "define": false
+    "define": false,
+    "suite": false,
+    "bench": false,
+    "set": false
   }
 }
