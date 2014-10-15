@@ -2,6 +2,13 @@
 
 ---
 
+## 0.8.0
+
+- add bench
+- skip when file is null
+- don't use PluginError
+- upgrade gulp and vinyl
+
 ## 0.7.2
 
 fix miss import-style when css is required deeply #18
