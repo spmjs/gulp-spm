@@ -2,6 +2,10 @@
 
 ---
 
+## 0.8.1
+
+Fixed unescape quote when transport tpl
+
 ## 0.8.0
 
 - add bench
