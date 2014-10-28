@@ -1,1 +1,1 @@
-module.exports = '<div></div>';
+module.exports = '<div>\'</div>';
