@@ -16,11 +16,11 @@ module.exports = {"a":1};
 
 });
 define("type-transport/1.0.0/a-debug.tpl", [], function(require, exports, module){
-module.exports = '<div></div>';
+module.exports = '<div>\'</div>';
 
 });
 define("type-transport/1.0.0/a-debug.html", [], function(require, exports, module){
-module.exports = '<div></div>';
+module.exports = '<div>\'</div>';
 
 });
 define("type-transport/1.0.0/a-debug.handlebars", ["handlebars-runtime/1.3.0/handlebars-debug"], function(require, exports, module){
