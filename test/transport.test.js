@@ -5,8 +5,7 @@ var fs = require('fs');
 var join = require('path').join;
 var vfs = require('vinyl-fs');
 var utility = require('utility');
-var Package = require('father').SpmPackage;
-var base = join(__dirname, 'fixtures');
+var fixtures = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
 var plugin = require('../lib/plugin');
 var util = require('../lib/util');
@@ -14,15 +13,16 @@ var util = require('../lib/util');
 describe('Transport', function() {
 
   it('transport all', function(done) {
-    var pkg = getPackage('simple-transport');
-
+    var cwd = join(fixtures, 'simple-transport');
     var opt = {
-      cwd: join(base, 'simple-transport'),
-      cwdbase: true
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      include: 'all',
+      ignore: ['b']
     };
 
-    vfs.src(pkg.main, opt)
-    .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
+    vfs.src('index.js', {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
     .on('data', function(file) {
       util.winPath(file.path).should.endWith('simple-transport/index.js');
       assert(file, 'transport-all.js');
@@ -34,15 +34,15 @@ describe('Transport', function() {
   describe('include', function() {
 
     it('self', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'self'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'self'}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-self.js');
         done();
@@ -50,15 +50,16 @@ describe('Transport', function() {
     });
 
     it('self with ignore', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'self',
+        ignore: ['b']
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'self', ignore: ['b']}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-self-ignore.js');
         done();
@@ -66,15 +67,15 @@ describe('Transport', function() {
     });
 
     it('self with css', function(done) {
-      var pkg = getPackage('js-require-css');
-
+      var cwd = join(fixtures, 'js-require-css');
       var opt = {
-        cwd: join(base, 'js-require-css'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'self'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'self'}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-self-css.js');
         done();
@@ -82,15 +83,15 @@ describe('Transport', function() {
     });
 
     it('relative', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'relative'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'relative'}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-relative.js');
         done();
@@ -99,15 +100,16 @@ describe('Transport', function() {
 
 
     it('relative with ignore', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'relative',
+        ignore: ['b']
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'relative', ignore: ['b']}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-ignore.js');
         done();
@@ -115,15 +117,15 @@ describe('Transport', function() {
     });
 
     it('relative with css', function(done) {
-      var pkg = getPackage('js-require-css');
-
+      var cwd = join(fixtures, 'js-require-css');
       var opt = {
-        cwd: join(base, 'js-require-css'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'relative'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'relative'}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-css.js');
         done();
@@ -131,15 +133,16 @@ describe('Transport', function() {
     });
 
     it('relative with css ignore', function(done) {
-      var pkg = getPackage('js-require-css');
-
+      var cwd = join(fixtures, 'js-require-css');
       var opt = {
-        cwd: join(base, 'js-require-css'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'relative',
+        ignore: ['import-style']
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'relative', ignore: ['import-style']}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-relative-css-ignore.js');
         done();
@@ -147,15 +150,15 @@ describe('Transport', function() {
     });
 
     it('all', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'all'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'all'}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-all.js');
         done();
@@ -163,15 +166,16 @@ describe('Transport', function() {
     });
 
     it('all with ignore', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'all',
+        ignore: ['b']
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'all', ignore: ['b']}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore.js');
         done();
@@ -179,15 +183,16 @@ describe('Transport', function() {
     });
 
     it('all with ignore2', function(done) {
-      var pkg = getPackage('js-require-js');
-
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'all',
+        ignore: ['c']
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'all', ignore: ['c']}))
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore2.js');
         done();
@@ -195,15 +200,16 @@ describe('Transport', function() {
     });
 
     it('all with ignore package', function(done) {
-      var pkg = getPackage('ignore-package', {ignore: ['jquery']});
-
+      var cwd = join(fixtures, 'ignore-package');
       var opt = {
-        cwd: join(base, 'ignore-package'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'all',
+        ignore: ['jquery']
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'all', ignore: ['jquery']}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-all-ignore-package.js');
         done();
@@ -211,15 +217,15 @@ describe('Transport', function() {
     });
 
     it('all with css', function(done) {
-      var pkg = getPackage('js-require-css');
-
+      var cwd = join(fixtures, 'js-require-css');
       var opt = {
-        cwd: join(base, 'js-require-css'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'all'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, include: 'all'}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-all-css.js');
         done();
@@ -231,15 +237,15 @@ describe('Transport', function() {
   describe('rename', function() {
 
     it('rename with debug', function(done) {
-      var pkg = getPackage('type-transport');
-
+      var cwd = join(fixtures, 'type-transport');
       var opt = {
-        cwd: join(base, 'type-transport'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        rename: {suffix: '-debug'}
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('type-transport/index.js');
         util.winPath(file.path).should.containEql('type-transport/index-debug.js');
@@ -249,11 +255,11 @@ describe('Transport', function() {
     });
 
     it('rename with hash', function(done) {
-      var pkg = getPackage('transport-hash');
-
+      var cwd = join(fixtures, 'transport-hash');
       var opt = {
-        cwd: join(base, 'transport-hash'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        rename: rename
       };
 
       function rename(file) {
@@ -262,8 +268,8 @@ describe('Transport', function() {
         return file;
       }
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, rename: rename}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
         util.winPath(file.path).should.containEql('transport-hash/index-e16dba71.js');
@@ -273,15 +279,15 @@ describe('Transport', function() {
     });
 
     it('rename with css', function(done) {
-      var pkg = getPackage('css-import');
-
+      var cwd = join(fixtures, 'css-import');
       var opt = {
-        cwd: join(base, 'css-import'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        rename: {suffix: '-debug'}
       };
 
-      vfs.src('index.css', opt)
-      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      vfs.src('index.css', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('css-import/index.css');
         util.winPath(file.path).should.containEql('css-import/index-debug.css');
@@ -290,19 +296,21 @@ describe('Transport', function() {
       });
     });
 
-    it('rename dependency with debug', function(done) {
-      var pkg = getPackage('type-transport');
+    xit('rename dependency with debug', function(done) {
+      var cwd = join(fixtures, 'type-transport');
       var opt = {
-        cwd: join(base, 'type-transport'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        rename: {suffix: '-debug'}
       };
+
       var ret = [], src = [
-        pkg.main,
+        'index.js',
         'sea-modules/handlebars-runtime/1.3.0/handlebars.js'
       ];
-      vfs.src(src, opt)
-      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
-      .pipe(plugin.dest({pkg: pkg}))
+      vfs.src(src, {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
+      .pipe(plugin.dest({base: cwd}))
       .on('data', function(file) {
         ret.push(file);
       })
@@ -318,14 +326,15 @@ describe('Transport', function() {
   });
 
   xit('no handlebars deps', function(done) {
-    var pkg = getPackage('no-handlebars');
+    var cwd = join(fixtures, 'no-handlebars');
     var opt = {
-      cwd: join(base, 'no-handlebars'),
-      cwdbase: true
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      include: 'self'
     };
 
-    vfs.src(pkg.main, opt)
-    .pipe(transport({pkg: pkg, include: 'self'}))
+    vfs.src('index.js', {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
     .once('error', function(e) {
       e.message.should.eql('handlebars-runtime not exist, but required .handlebars');
 
@@ -336,14 +345,14 @@ describe('Transport', function() {
   describe('other extension', function() {
 
     it('relative', function(done) {
-      var pkg = getPackage('require-other-ext');
+      var cwd = join(fixtures, 'require-other-ext');
       var opt = {
-        cwd: join(base, 'require-other-ext'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules'
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-other-ext.js');
         done();
@@ -351,14 +360,15 @@ describe('Transport', function() {
     });
 
     it('debug', function(done) {
-      var pkg = getPackage('require-other-ext');
+      var cwd = join(fixtures, 'require-other-ext');
       var opt = {
-        cwd: join(base, 'require-other-ext'),
-        cwdbase: true
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        rename: {suffix: '-debug'}
       };
 
-      vfs.src(pkg.main, opt)
-      .pipe(transport({pkg: pkg, rename: {suffix: '-debug'}}))
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-other-ext-debug.js');
         done();
@@ -369,49 +379,46 @@ describe('Transport', function() {
   describe('custom stream', function() {
 
     it('js stream', function(done) {
-      var pkg = getPackage('js-require-js');
-
-      var gulpOpt = {
-        cwd: join(base, 'js-require-js'),
-        cwdbase: true
-      };
-
+      var cwd = join(fixtures, 'js-require-js');
       var isCalled = false, args;
       var stream = {
         '.js': function(opt) {
           isCalled = true;
           args = opt;
           return plugin.js({
-            pkg: pkg
+            cwd: cwd,
+            pkg: opt.pkg
           });
         }
       };
       var opt = {
-        pkg: pkg,
+        cwd: cwd,
+        moduleDir: 'sea-modules',
         idleading: '',
         stream: stream
       };
 
-      vfs.src(pkg.main, gulpOpt)
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
       .pipe(transport(opt))
       .on('data', function(file) {
         assert(file, 'transport-include-relative.js');
         isCalled.should.be.true;
-        args.ignore.should.equal('');
-        args.include.should.equal('');
-        args.pkg.should.equal(pkg);
+        args.ignore.should.eql([]);
+        args.include.should.equal('relative');
+        //args.pkg.should.equal(pkg);
         args.idleading.should.equal('');
         args.stream.should.equal(stream);
         done();
       });
     });
 
-    it('should throw when opt.stream is not function', function() {
-      var pkg = getPackage('js-require-js');
+    xit('should throw when opt.stream is not function', function() {
+      var cwd = join(fixtures, 'js-require-js');
       var opt = {
-        pkg: pkg,
+        cwd: cwd,
+        moduleDir: 'sea-modules',
         stream: {
-          '.js': plugin.js({pkg: pkg})
+          '.js': plugin.js({base: cwd})
         }
       };
       (function() {
@@ -421,25 +428,27 @@ describe('Transport', function() {
   });
 
   it('require directory', function(done) {
-    var pkg = getPackage('require-directory');
+    var cwd = join(fixtures, 'require-directory');
     var opt = {
-      cwd: join(base, 'require-directory'),
-      cwdbase: true
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      include: 'self'
     };
 
-    vfs.src(pkg.main, opt)
-    .pipe(transport({pkg: pkg, include: 'self'}))
+    vfs.src('index.js', {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
     .on('data', function(file) {
       assert(file, 'require-directory.js');
       done();
     });
   });
 
-  it('transport dependency', function(done) {
-    var pkg = getPackage('js-require-js');
+  xit('transport dependency', function(done) {
+    var cwd = join(fixtures, 'js-require-js');
     var opt = {
-      cwd: join(base, 'js-require-js'),
-      cwdbase: true
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      include: 'relative'
     };
 
     var ret = [], src = [
@@ -447,9 +456,9 @@ describe('Transport', function() {
       'sea-modules/b/1.0.0/index.js',
       'sea-modules/c/1.0.0/index.js'
     ];
-    vfs.src(src, opt)
-    .pipe(transport({pkg: pkg, include: 'relative'}))
-    .pipe(plugin.dest({pkg: pkg}))
+    vfs.src(src, {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
+    .pipe(plugin.dest({base: cwd}))
     .on('data', function(file) {
       ret.push(file);
     })
@@ -467,13 +476,16 @@ describe('Transport', function() {
   });
 
   it('skip package', function(done) {
-    var pkg = getPackage('ignore-package', {skip: 'jquery'});
+    var cwd = join(fixtures, 'ignore-package');
     var opt = {
-      cwd: join(base, 'ignore-package'),
-      cwdbase: true
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      include: 'relative',
+      skip: 'jquery'
     };
-    vfs.src('index.js', opt)
-    .pipe(transport({pkg: pkg, include: 'relative'}))
+
+    vfs.src('index.js', {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
     .on('data', function(file) {
       assert(file, 'transport-skip.js');
       done();
@@ -537,11 +549,6 @@ describe('Transport', function() {
   });
 
 });
-
-function getPackage(name, options) {
-  var dir = join(base, name);
-  return new Package(dir, options);
-}
 
 function assert(file, expectedFile) {
   var code = file.contents.toString();
