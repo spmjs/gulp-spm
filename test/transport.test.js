@@ -9,6 +9,7 @@ var fixtures = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
 var plugin = require('../lib/plugin');
 var util = require('../lib/util');
+var Package = require('father').SpmPackage;
 
 describe('Transport', function() {
 
@@ -19,6 +20,27 @@ describe('Transport', function() {
       moduleDir: 'sea-modules',
       include: 'all',
       ignore: ['b']
+    };
+
+    vfs.src('index.js', {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
+    .on('data', function(file) {
+      util.winPath(file.path).should.endWith('simple-transport/index.js');
+      assert(file, 'transport-all.js');
+      done();
+    });
+  });
+
+  it('transport all using father', function(done) {
+    var cwd = join(fixtures, 'simple-transport');
+    var pkg = new Package(cwd, {
+      moduleDir: 'sea-modules',
+      ignore: ['b']
+    });
+    var opt = {
+      pkg: pkg,
+      include: 'all',
+      ignore: 'b'
     };
 
     vfs.src('index.js', {cwd: cwd, cwdbase: true})
