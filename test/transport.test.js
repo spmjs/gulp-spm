@@ -25,7 +25,7 @@ describe('Transport', function() {
     vfs.src('index.js', {cwd: cwd, cwdbase: true})
     .pipe(transport(opt))
     .on('data', function(file) {
-      util.winPath(file.path).should.endWith('simple-transport/index.js');
+      util.winPath(file.path).should.endWith('simple-transport/simple-transport/1.0.0/index.js');
       assert(file, 'transport-all.js');
       done();
     });
@@ -46,7 +46,7 @@ describe('Transport', function() {
     vfs.src('index.js', {cwd: cwd, cwdbase: true})
     .pipe(transport(opt))
     .on('data', function(file) {
-      util.winPath(file.path).should.endWith('simple-transport/index.js');
+      util.winPath(file.path).should.endWith('simple-transport/simple-transport/1.0.0/index.js');
       assert(file, 'transport-all.js');
       done();
     });
@@ -270,7 +270,7 @@ describe('Transport', function() {
       .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('type-transport/index.js');
-        util.winPath(file.path).should.containEql('type-transport/index-debug.js');
+        util.winPath(file.path).should.containEql('type-transport/type-transport/1.0.0/index-debug.js');
         assert(file, 'transport-rename-debug.js');
         done();
       });
@@ -294,7 +294,7 @@ describe('Transport', function() {
       .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
-        util.winPath(file.path).should.containEql('transport-hash/index-e16dba71.js');
+        util.winPath(file.path).should.containEql('transport-hash/a/1.0.0/index-e16dba71.js');
         assert(file, 'transport-rename-hash.js');
         done();
       });
@@ -312,7 +312,7 @@ describe('Transport', function() {
       .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('css-import/index.css');
-        util.winPath(file.path).should.containEql('css-import/index-debug.css');
+        util.winPath(file.path).should.containEql('css-import/a/1.0.0/index-debug.css');
         assert(file, 'transport-rename-css.css');
         done();
       });
