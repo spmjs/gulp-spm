@@ -254,6 +254,38 @@ describe('Transport', function() {
       });
     });
 
+    it('standalone', function(done) {
+      var cwd = join(fixtures, 'js-require-js');
+      var opt = {
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'standalone'
+      };
+
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+        .pipe(transport(opt))
+        .on('data', function(file) {
+          assert(file, 'transport-include-standalone.js');
+          done();
+        });
+    });
+
+    it('umd', function(done) {
+      var cwd = join(fixtures, 'js-require-js');
+      var opt = {
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'umd'
+      };
+
+      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
+        .pipe(transport(opt))
+        .on('data', function(file) {
+          assert(file, 'transport-include-umd.js');
+          done();
+        });
+    });
+
   });
 
   describe('rename', function() {
