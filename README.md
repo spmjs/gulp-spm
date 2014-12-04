@@ -1,4 +1,4 @@
-# gulp-transport [![Build Status](https://travis-ci.org/popomore/gulp-transport.png?branch=master)](https://travis-ci.org/popomore/gulp-transport) [![Coverage Status](https://coveralls.io/repos/popomore/gulp-transport/badge.png?branch=master)](https://coveralls.io/r/popomore/gulp-transport?branch=master)
+# gulp-spm [![Build Status](https://travis-ci.org/popomore/gulp-spm.png?branch=master)](https://travis-ci.org/popomore/gulp-spm) [![Coverage Status](https://coveralls.io/repos/popomore/gulp-spm/badge.png?branch=master)](https://coveralls.io/r/popomore/gulp-spm?branch=master)
 
 gulp plugin for cmd transport
 
@@ -7,7 +7,7 @@ gulp plugin for cmd transport
 ## Install
 
 ```
-$ npm install gulp-transport -g
+$ npm install gulp-spm -g
 ```
 
 ## Usage
@@ -16,14 +16,14 @@ Transport will use pkg parsed by [father](https://github.com/popomore/father)
 
 ```
 var Package = require('father').SpmPackage;
-var transport = require('gulp-transport');
+var transport = require('gulp-spm');
 var pkg = new Package('path/to/module');
 gulp.src(pkg.main)
   .pipe(transport({pkg: pkg}))
   .pipe(gulp.dest('path/to/dest'));
 ```
 
-See [example](https://github.com/popomore/gulp-transport/blob/master/test/parser.test.js)
+See [example](https://github.com/spmjs/gulp-spm/blob/master/test/parser.test.js)
 
 ### options
 

@@ -52,7 +52,7 @@ describe('Transport', function() {
     });
   });
 
-  // https://github.com/popomore/gulp-transport/issues/5
+  // https://github.com/spmjs/gulp-spm/issues/5
   describe('include', function() {
 
     it('self', function(done) {

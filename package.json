@@ -1,5 +1,5 @@
 {
-  "name": "gulp-transport",
+  "name": "gulp-spm",
   "version": "0.8.1",
   "description": "gulp plugin for cmd transport",
   "main": "index",
@@ -34,9 +34,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/popomore/gulp-transport"
+    "url": "https://github.com/spmjs/gulp-spm"
   },
-  "homepage": "https://github.com/popomore/gulp-transport",
+  "homepage": "https://github.com/spmjs/gulp-spm",
   "author": "popomore <sakura9515@gmail.com>",
   "license": "MIT",
   "scripts": {
