@@ -37,6 +37,7 @@ describe('Transport', function() {
       moduleDir: 'sea-modules',
       ignore: ['b']
     });
+    pkg._parse();
     var opt = {
       pkg: pkg,
       include: 'all',

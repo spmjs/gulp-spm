@@ -28,7 +28,7 @@ describe('Plugin', function() {
     var pkg = getPackage('simple-transport', {entry: ['c.js']});
 
     it('transport js', function(done) {
-      var fakeFile = createFile(pkg.dest, 'c.js');
+      var fakeFile = createFile(pkg, 'c.js');
 
       var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
@@ -40,7 +40,7 @@ describe('Plugin', function() {
     });
 
     it('transport js ignore', function(done) {
-      var fakeFile = createFile(pkg.dest, 'c.js');
+      var fakeFile = createFile(pkg, 'c.js');
 
       var stream = jsParser({
         pkg: pkg,
@@ -58,7 +58,7 @@ describe('Plugin', function() {
 
     it('transport js with type', function(done) {
       var pkg = getPackage('type-transport');
-      var fakeFile = createFile(pkg.dest, 'index.js');
+      var fakeFile = createFile(pkg, 'index.js');
 
       var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
@@ -70,7 +70,7 @@ describe('Plugin', function() {
     });
 
     it('transport js deep', function(done) {
-      var fakeFile = createFile(pkg.dest, 'sea-modules/b/1.1.0/src/b.js');
+      var fakeFile = createFile(pkg, 'sea-modules/b/1.1.0/src/b.js', pkg.get('b@1.1.0').files['src/b.js']);
 
       var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
@@ -85,7 +85,7 @@ describe('Plugin', function() {
       var pkg = getPackage('type-transport', {
         entry: ['stylebox.js']
       });
-      var fakeFile = createFile(pkg.dest, 'stylebox.js');
+      var fakeFile = createFile(pkg, 'stylebox.js');
 
       var stream = jsParser({pkg: pkg, styleBox: true, include: 'self'})
       .on('data', function(file) {
@@ -105,7 +105,7 @@ describe('Plugin', function() {
     });
 
     it('transport css2js', function(done) {
-      var fakeCss = createFile(pkg.dest, 'a.css');
+      var fakeCss = createFile(pkg, 'a.css');
 
       var stream = css2jsParser({pkg: pkg})
       .on('data', function(file) {
@@ -119,7 +119,7 @@ describe('Plugin', function() {
     });
 
     it('transport css2js with styleBox', function(done) {
-      var fakeCss = createFile(pkg.dest, 'stylebox.css');
+      var fakeCss = createFile(pkg, 'stylebox.css');
 
       var stream = css2jsParser({pkg: pkg, styleBox: true})
       .on('data', function(file) {
@@ -137,7 +137,7 @@ describe('Plugin', function() {
 
     it('transport json', function(done) {
       var pkg = getPackage('type-transport');
-      var fakeFile = createFile(pkg.dest, 'a.json');
+      var fakeFile = createFile(pkg, 'a.json');
 
       var stream = jsonParser({pkg: pkg});
       stream
@@ -156,7 +156,7 @@ describe('Plugin', function() {
 
     it('transport tpl', function(done) {
       var pkg = getPackage('type-transport');
-      var fakeFile = createFile(pkg.dest, 'a.tpl');
+      var fakeFile = createFile(pkg, 'a.tpl');
 
       var stream = tplParser({pkg: pkg});
       stream
@@ -172,7 +172,7 @@ describe('Plugin', function() {
 
     it('transport html', function(done) {
       var pkg = getPackage('type-transport');
-      var fakeFile = createFile(pkg.dest, 'a.html');
+      var fakeFile = createFile(pkg, 'a.html');
 
       var stream = htmlParser({pkg: pkg});
       stream
@@ -191,7 +191,7 @@ describe('Plugin', function() {
 
     it('transport handlebars', function(done) {
       var pkg = getPackage('type-transport');
-      var fakeFile = createFile(pkg.dest, 'a.handlebars');
+      var fakeFile = createFile(pkg, 'a.handlebars');
 
       var stream = handlebarsParser({pkg: pkg})
       .on('data', function(file) {
@@ -206,7 +206,7 @@ describe('Plugin', function() {
 
     it('transport handlebars not match', function(done) {
       var pkg = getPackage('handlebars-not-match');
-      var fakeFile = createFile(pkg.dest, 'a.handlebars');
+      var fakeFile = createFile(pkg, 'a.handlebars');
 
       var stream = handlebarsParser({pkg: pkg})
       .on('error', function(e) {
@@ -219,7 +219,7 @@ describe('Plugin', function() {
 
     it('no handlebars deps', function(done) {
       var pkg = getPackage('no-handlebars');
-      var fakeFile = createFile(pkg.dest, 'a.handlebars');
+      var fakeFile = createFile(pkg, 'a.handlebars');
 
       var stream = handlebarsParser({pkg: pkg})
       .on('data', function(file) {
@@ -237,7 +237,7 @@ describe('Plugin', function() {
     var pkg = getPackage('css-import');
 
     it('transport css import', function(done) {
-      var fakeFile = createFile(pkg.dest, pkg.main);
+      var fakeFile = createFile(pkg, pkg.main);
 
       var stream = cssParser({pkg: pkg})
       .on('data', function(file) {
@@ -251,7 +251,7 @@ describe('Plugin', function() {
     });
 
     it('transport css import ignore', function(done) {
-      var fakeFile = createFile(pkg.dest, pkg.main);
+      var fakeFile = createFile(pkg, pkg.main);
 
       var stream = cssParser({pkg: pkg, ignore: ['b']})
       .on('data', function(file) {
@@ -265,7 +265,7 @@ describe('Plugin', function() {
 
     xit('transport css import error', function(done) {
       var pkg = getPackage('css-import', {entry: ['a5.css']});
-      var fakeFile = createFile(pkg.dest, 'a5.css');
+      var fakeFile = createFile(pkg, 'a5.css');
 
       var stream = cssParser({pkg: pkg})
       .on('error', function(e) {
@@ -280,7 +280,7 @@ describe('Plugin', function() {
 
     it('transport css conflict', function(done) {
       var pkg = getPackage('css-conflict');
-      var fakeFile = createFile(pkg.dest, pkg.main);
+      var fakeFile = createFile(pkg, pkg.main);
 
       var stream = cssParser({pkg: pkg})
       .on('error', function(e) {
@@ -296,7 +296,7 @@ describe('Plugin', function() {
 
     it('all', function(done) {
       var pkg = getPackage('js-require-js');
-      var fakeFile = createFile(pkg.dest, pkg.main);
+      var fakeFile = createFile(pkg, pkg.main);
 
       var ret = [];
       var stream = include({pkg: pkg, include: 'all'})
@@ -333,7 +333,7 @@ describe('Plugin', function() {
 
     it('all with ignore', function(done) {
       var pkg = getPackage('ignore-package', {ignore: ['jquery']});
-      var fakeFile = createFile(pkg.dest, pkg.main);
+      var fakeFile = createFile(pkg, pkg.main);
 
       var ret = [];
       var stream = include({pkg: pkg, include: 'all', ignore: ['jquery']})
@@ -354,7 +354,7 @@ describe('Plugin', function() {
 
     it('include other type', function(done) {
       var pkg = getPackage('type-transport', {});
-      var fakeFile = createFile(pkg.dest, pkg.main);
+      var fakeFile = createFile(pkg, pkg.main);
 
       var ret = [];
       var stream = include({pkg: pkg, include: 'all'})
@@ -492,7 +492,7 @@ describe('Plugin', function() {
     var pkg = getPackage('simple-transport', {entry: ['c.js']});
 
     it('change file.path', function(done) {
-      var fakeFile = createFile(pkg.dest, 'c.js');
+      var fakeFile = createFile(pkg, 'c.js');
 
       var stream = dest({pkg: pkg, include: 'self'})
       .on('data', function(file) {
@@ -504,7 +504,7 @@ describe('Plugin', function() {
     });
 
     it('change file.path with function of idleading', function(done) {
-      var fakeFile = createFile(pkg.dest, 'c.js');
+      var fakeFile = createFile(pkg, 'c.js');
 
       var opt = {
         pkg: pkg,

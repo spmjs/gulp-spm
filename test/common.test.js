@@ -170,68 +170,6 @@ describe('Common', function() {
 
   });
 
-  describe('getFile', function() {
-
-    it('getFile', function() {
-      var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
-      var fakeFile = new File({
-        contents: '',
-        path: fakePath
-      });
-
-      var fileInfo = common.getFile(fakeFile, pkg);
-      fileInfo.path.should.eql('src/b.js');
-      fileInfo.pkg.id.should.eql('b@1.1.0');
-    });
-
-    it('getFile with string', function() {
-      var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
-      var fileInfo = common.getFile(fakePath, pkg);
-      fileInfo.path.should.eql('src/b.js');
-      fileInfo.pkg.id.should.eql('b@1.1.0');
-    });
-
-    it('getFile deep directory', function() {
-      var pkg = getPackage('require-directory');
-      var fakePath = join(base, 'require-directory/lib/index.js');
-      var fakeFile = new File({
-        contents: '',
-        path: fakePath
-      });
-
-      var fileInfo = common.getFile(fakeFile, pkg);
-      fileInfo.path.should.eql('lib/index.js');
-      fileInfo.pkg.id.should.eql('a@1.0.0');
-    });
-
-    it('getFile when change file', function() {
-      var fakePath = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.coffee');
-      var fakeFile = new File({
-        contents: '',
-        path: fakePath
-      });
-      fakeFile.path = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b.js');
-      fakeFile.path = join(base, 'simple-transport/sea-modules/b/1.1.0/src/b-debug.js');
-
-      var fileInfo = common.getFile(fakeFile, pkg);
-      fileInfo.path.should.eql('src/b.js');
-      fileInfo.pkg.id.should.eql('b@1.1.0');
-    });
-
-    it('getFile not found', function() {
-      var pkg = getPackage('js-require-css');
-      var fakePath = join(base, 'js-require-css/sea-modules/b/1.0.1/index.css');
-      var fakeFile = new File({
-        contents: '',
-        path: fakePath
-      });
-      (function() {
-        common.getFile(fakeFile, pkg);
-      }).should.throw('getFile from sea-modules/b/1.0.1/index.css of pkg a@1.0.0 is not found');
-    });
-  });
-
-
   describe('createStream', function() {
 
     it('createStream', function(done) {
