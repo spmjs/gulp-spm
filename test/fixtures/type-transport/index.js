@@ -4,3 +4,4 @@ require('./a.tpl');
 require('./a.html');
 require('./a.handlebars');
 require('./a');
+require('./react');
