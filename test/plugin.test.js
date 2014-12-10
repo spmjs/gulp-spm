@@ -16,6 +16,7 @@ var cssParser = plugin.css;
 var include = plugin.include;
 var concat = plugin.concat;
 var dest = plugin.dest;
+var file = plugin.file;
 var createFile = require('./support/file');
 var assert = require('./support/assertFile');
 var getPackage = require('./support/getPackage');
@@ -40,11 +41,14 @@ describe('Plugin', function() {
     });
 
     it('transport js ignore', function(done) {
+      var pkg = getPackage('simple-transport', {
+        entry: ['c.js'],
+        ignore: ['b']
+      });
       var fakeFile = createFile(pkg, 'c.js');
 
       var stream = jsParser({
         pkg: pkg,
-        ignore: ['b'],
         idleading: '{{name}}-{{version}}',
         include: 'self'
       })
@@ -70,7 +74,7 @@ describe('Plugin', function() {
     });
 
     it('transport js deep', function(done) {
-      var fakeFile = createFile(pkg, 'sea-modules/b/1.1.0/src/b.js', pkg.get('b@1.1.0').files['src/b.js']);
+      var fakeFile = createFile(pkg, 'sea-modules/b/1.1.0/src/b.js', pkg.getPackage('b@1.1.0').files['src/b.js']);
 
       var stream = jsParser({pkg: pkg, include: 'self'})
       .on('data', function(file) {
@@ -251,9 +255,12 @@ describe('Plugin', function() {
     });
 
     it('transport css import ignore', function(done) {
+      var pkg = getPackage('css-import', {
+        ignore: ['b']
+      });
       var fakeFile = createFile(pkg, pkg.main);
 
-      var stream = cssParser({pkg: pkg, ignore: ['b']})
+      var stream = cssParser({pkg: pkg})
       .on('data', function(file) {
         assert(file, 'plugin-css-ignore.css');
       })
@@ -308,11 +315,11 @@ describe('Plugin', function() {
         should.not.exist(ret[0].dependentPath);
         ret[1].relative.should.equal('sea-modules/b/1.0.0/index.js');
         ret[1].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
-        ret[2].relative.should.equal('sea-modules/c/1.0.0/index.js');
+        ret[2].relative.should.equal('sea-modules/camel-case/1.0.0/index.js');
         ret[2].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
-        ret[3].relative.should.equal('sea-modules/c/1.0.0/c.js');
+        ret[3].relative.should.equal('sea-modules/camel-case/1.0.0/c.js');
         ret[3].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
-        ret[4].relative.should.equal('sea-modules/c/1.0.0/index.css');
+        ret[4].relative.should.equal('sea-modules/camel-case/1.0.0/index.css');
         ret[4].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
         ret[5].relative.should.equal('sea-modules/b/1.0.0/b.js');
         ret[5].dependentPath.should.equal(join(pkg.dest, 'src/index.js'));
@@ -522,6 +529,37 @@ describe('Plugin', function() {
         file.path.should.equal(join(pkg.dest, 'c.js' ));
       })
       .on('end', done);
+      stream.write(fakeFile);
+      stream.end();
+    });
+  });
+
+  describe('file', function() {
+    it('do not support stream', function() {
+      var stream = file();
+      var filePath = join(base, 'simple-transport/index.js');
+      var fakeFile = new File({
+        path: filePath,
+        contents: fs.createReadStream(filePath)
+      });
+
+      (function() {
+        stream.write(fakeFile);
+        stream.end();
+      }).should.throw('Streaming not supported.');
+    });
+
+    it('skip when is null', function(done) {
+      var fakeFile = new File({
+        path: 'a.js',
+        contents: null
+      });
+
+      var stream = file();
+      stream.on('data', function(file) {
+        should.not.exists(file.file);
+        done();
+      });
       stream.write(fakeFile);
       stream.end();
     });

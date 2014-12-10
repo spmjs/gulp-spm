@@ -19,7 +19,8 @@ describe('Transport', function() {
       cwd: cwd,
       moduleDir: 'sea-modules',
       include: 'all',
-      ignore: ['b']
+      ignore: 'b',
+      skip: []
     };
 
     vfs.src('index.js', {cwd: cwd, cwdbase: true})
@@ -37,11 +38,9 @@ describe('Transport', function() {
       moduleDir: 'sea-modules',
       ignore: ['b']
     });
-    pkg._parse();
     var opt = {
       pkg: pkg,
-      include: 'all',
-      ignore: 'b'
+      include: 'all'
     };
 
     vfs.src('index.js', {cwd: cwd, cwdbase: true})
@@ -211,7 +210,7 @@ describe('Transport', function() {
         cwd: cwd,
         moduleDir: 'sea-modules',
         include: 'all',
-        ignore: ['c']
+        ignore: ['camel-case']
       };
 
       vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
@@ -266,6 +265,7 @@ describe('Transport', function() {
       vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
         .pipe(transport(opt))
         .on('data', function(file) {
+          file.contents = new Buffer(file.contents + '\n');
           assert(file, 'transport-include-standalone.js');
           done();
         });
@@ -282,6 +282,7 @@ describe('Transport', function() {
       vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
         .pipe(transport(opt))
         .on('data', function(file) {
+          file.contents = new Buffer(file.contents + '\n');
           assert(file, 'transport-include-umd.js');
           done();
         });

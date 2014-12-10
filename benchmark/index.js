@@ -14,9 +14,6 @@ suite('transport relative', function(){
     pkg1 = new Package(join(__dirname, 'self'));
     pkg2 = new Package(join(__dirname, 'serial'));
     pkg3 = new Package(join(__dirname, 'parallel'));
-    pkg1._parse();
-    pkg2._parse();
-    pkg3._parse();
   });
 
   bench('no dependencies', function(done){
@@ -55,9 +52,6 @@ suite('transport all', function(){
     pkg1 = new Package(join(__dirname, 'self'));
     pkg2 = new Package(join(__dirname, 'serial'));
     pkg3 = new Package(join(__dirname, 'parallel'));
-    pkg1._parse();
-    pkg2._parse();
-    pkg3._parse();
   });
 
   bench('no dependencies', function(done){

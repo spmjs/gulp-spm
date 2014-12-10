@@ -5,7 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var join = require('path').join;
 var File = require('vinyl');
-var Package = require('father').SpmPackage;
+var getPackage = require('./support/getPackage');
 
 var common = require('../lib/common');
 var base = join(__dirname, 'fixtures');
@@ -90,8 +90,10 @@ describe('Common', function() {
     });
 
     it('should return dependencies when ignore', function() {
+      var pkg = getPackage('simple-transport', {
+        ignore: ['d']
+      });
       var options = {
-        ignore: ['d'],
         idleading: '{{name}}/{{version}}',
         include: 'self'
       };
@@ -107,16 +109,14 @@ describe('Common', function() {
     });
 
     it('should stop parsing dependencies when ignore', function() {
-      var pkg = getPackage('deep-deps');
+      var pkg = getPackage('deep-deps', {ignore: ['c']});
       var options = {
-        ignore: ['c'],
         idleading: '{{name}}/{{version}}'
       };
       var expected = common.transportDeps(pkg.files['a.js'], options);
       expected.should.eql([
         'b/1.1.0/src/b',
-        'c',
-        'd'
+        'c'
       ]);
     });
 
@@ -242,7 +242,7 @@ describe('Common', function() {
   });
 
   it('getStyleId', function() {
-    var file = pkg.get('b@1.1.0').files['src/b.js'];
+    var file = pkg.getPackage('b@1.1.0').files['src/b.js'];
 
     var opt = {
       idleading: '{{name}}/{{version}}',
@@ -263,11 +263,6 @@ describe('Common', function() {
 
 
 });
-
-function getPackage(name, options) {
-  var dir = join(base, name);
-  return new Package(dir, options);
-}
 
 function parser(file) {
   return file;
