@@ -548,6 +548,26 @@ describe('Transport', function() {
     });
   });
 
+  it('transport other type', function(done) {
+    var ret = [], cwd = join(fixtures, 'other-type');
+    var opt = {
+      cwd: cwd
+    };
+
+    vfs.src(['a.jpg', 'a.html', 'index.js'], {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
+    .on('data', function(file) {
+      ret.push(file);
+    })
+    .on('end', function() {
+      ret.should.have.length(3);
+      ret[0].path.should.endWith('other-type/a/1.0.0/a.jpg');
+      ret[1].path.should.endWith('other-type/a/1.0.0/a.html');
+      ret[2].path.should.endWith('other-type/a/1.0.0/index.js');
+      done();
+    });
+  });
+
   describe('exports', function() {
     var exports = require('..');
 
