@@ -2,6 +2,8 @@
 
 gulp plugin for cmd transport
 
+name has changed after 0.9.x, old version see [gulp-transport](https://www.npmjs.com/package/gulp-transport)
+
 ---
 
 ## Install
@@ -32,13 +34,15 @@ See [example](https://github.com/spmjs/gulp-spm/blob/master/test/parser.test.js)
 - ignore: array that ignore to transport
 - rename: option in [rename](https://github.com/popomore/rename)
 
-### parser
+### stream plugin
 
-- transport.plugin.tplParser: transport .tpl to .js
-- transport.plugin.jsonParser: transport .json to .js
-- transport.plugin.css2jsParser: transport .css to .js
-- transport.plugin.handlebarsParser: transport .handlebars to .js
-- transport.plugin.cssParser: transport .css to .css
+- transport.plugin.tpl: transport .tpl to .js
+- transport.plugin.html: transport .html to .js
+- transport.plugin.json: transport .json to .js
+- transport.plugin.css2js: transport .css to .js
+- transport.plugin.handlebars: transport .handlebars to .js
+- transport.plugin.css: transport .css to .css
+- transport.plugin.json: transport .json to .js
 
 ## LISENCE
 

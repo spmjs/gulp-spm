@@ -2,6 +2,21 @@
 
 ---
 
+## 0.9.0
+
+Package name changed: gulp-transport -> gulp-spm
+
+- set file.base of sub module
+- pass file to next stream directly when it's not js or css
+- upgrade father@0.10.0
+- parse jsx before js by default
+- support standalone and umd
+- father file can be used from gulp file
+- rename gulp-transport -> gulp-spm
+- integrate dest into transport
+- using global package that need not parse any more
+- integrate father into transport
+
 ## 0.8.1
 
 Fixed unescape quote when transport tpl
