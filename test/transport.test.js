@@ -552,21 +552,35 @@ describe('Transport', function() {
   });
 
   it('transport other type', function(done) {
-    var ret = [], cwd = join(fixtures, 'other-type');
+    var ret = [], cwd = join(fixtures, 'type-transport');
     var opt = {
-      cwd: cwd
+      cwd: cwd,
+      moduleDir: 'sea-modules'
     };
 
-    vfs.src(['a.jpg', 'a.html', 'index.js'], {cwd: cwd, cwdbase: true})
+    var files = [
+      'a.jpg',
+      'a.html',
+      'a.json',
+      'a.tpl',
+      'a.handlebars'
+    ];
+    vfs.src(files, {cwd: cwd, cwdbase: true})
     .pipe(transport(opt))
     .on('data', function(file) {
       ret.push(file);
     })
     .on('end', function() {
-      ret.should.have.length(3);
-      ret[0].path.should.endWith('other-type/a/1.0.0/a.jpg');
-      ret[1].path.should.endWith('other-type/a/1.0.0/a.html');
-      ret[2].path.should.endWith('other-type/a/1.0.0/index.js');
+      ret.should.have.length(5);
+      ret[0].path.should.endWith('type-transport/type-transport/1.0.0/a.jpg');
+      ret[1].path.should.endWith('type-transport/type-transport/1.0.0/a.html');
+      assert(ret[1], 'transport-other-type.html');
+      ret[2].path.should.endWith('type-transport/type-transport/1.0.0/a.json.js');
+      assert(ret[2], 'transport-other-type-json.js');
+      ret[3].path.should.endWith('type-transport/type-transport/1.0.0/a.tpl.js');
+      assert(ret[3], 'transport-other-type-tpl.js');
+      ret[4].path.should.endWith('type-transport/type-transport/1.0.0/a.handlebars.js');
+      assert(ret[4], 'transport-other-type-handlebars.js');
       done();
     });
   });

@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.1
+
+Fixed parse .json, .tpl, .handlebars when it is an entry
+
 ## 0.9.0
 
 Package name changed: gulp-transport -> gulp-spm
