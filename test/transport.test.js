@@ -352,7 +352,7 @@ describe('Transport', function() {
       });
     });
 
-    xit('rename dependency with debug', function(done) {
+    it('rename dependency with debug', function(done) {
       var cwd = join(fixtures, 'type-transport');
       var opt = {
         cwd: cwd,
@@ -366,15 +366,16 @@ describe('Transport', function() {
       ];
       vfs.src(src, {cwd: cwd, cwdbase: true})
       .pipe(transport(opt))
-      .pipe(plugin.dest({base: cwd}))
       .on('data', function(file) {
         ret.push(file);
       })
       .on('end', function() {
-        util.winPath(ret[0].path).should.containEql('type-transport/type-transport/1.0.0/index-debug.js');
+        util.winPath(ret[0].path).should.endWith('type-transport/type-transport/1.0.0/index-debug.js');
+        util.winPath(ret[0].base).should.endWith('type-transport');
         assert(ret[0], 'transport-rename-debug.js');
 
-        util.winPath(ret[1].path).should.endWith('type-transport/handlebars-runtime/1.3.0/handlebars-debug.js');
+        util.winPath(ret[1].path).should.endWith('type-transport/sea-modules/handlebars-runtime/1.3.0/handlebars-runtime/1.3.0/handlebars-debug.js');
+        util.winPath(ret[1].base).should.endWith('type-transport/sea-modules/handlebars-runtime/1.3.0');
         assert(ret[1], 'transport-rename-debug-handelbars.js');
         done();
       });
@@ -468,13 +469,13 @@ describe('Transport', function() {
       });
     });
 
-    xit('should throw when opt.stream is not function', function() {
+    it('should throw when opt.stream is not function', function() {
       var cwd = join(fixtures, 'js-require-js');
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
         stream: {
-          '.js': plugin.js({base: cwd})
+          '.js': plugin.js({base: cwd, pkg: {}})
         }
       };
       (function() {
@@ -499,7 +500,7 @@ describe('Transport', function() {
     });
   });
 
-  xit('transport dependency', function(done) {
+  it('transport dependency', function(done) {
     var cwd = join(fixtures, 'js-require-js');
     var opt = {
       cwd: cwd,
@@ -510,23 +511,25 @@ describe('Transport', function() {
     var ret = [], src = [
       'src/index.js',
       'sea-modules/b/1.0.0/index.js',
-      'sea-modules/c/1.0.0/index.js'
+      'sea-modules/camel-case/1.0.0/index.js'
     ];
     vfs.src(src, {cwd: cwd, cwdbase: true})
     .pipe(transport(opt))
-    .pipe(plugin.dest({base: cwd}))
     .on('data', function(file) {
       ret.push(file);
     })
     .on('end', function() {
-      util.winPath(ret[0].path).should.endWith('js-require-js/a/1.0.0/src/index.js');
+      util.winPath(ret[0].path).should.endWith('js-require-js/my-package/1.0.0/src/index.js');
+      util.winPath(ret[0].base).should.endWith('js-require-js');
       assert(ret[0], 'transport-include-relative.js');
 
-      util.winPath(ret[1].path).should.endWith('js-require-js/b/1.0.0/index.js');
+      util.winPath(ret[1].path).should.endWith('js-require-js/sea-modules/b/1.0.0/b/1.0.0/index.js');
+      util.winPath(ret[1].base).should.endWith('js-require-js/sea-modules/b/1.0.0');
       assert(ret[1], 'transport-include-relative-b.js');
 
-      util.winPath(ret[2].path).should.endWith('js-require-js/c/1.0.0/index.js');
-      assert(ret[2], 'transport-include-relative-c.js');
+      util.winPath(ret[2].path).should.endWith('js-require-js/sea-modules/camel-case/1.0.0/camel-case/1.0.0/index.js');
+      util.winPath(ret[2].base).should.endWith('js-require-js/sea-modules/camel-case/1.0.0');
+      assert(ret[2], 'transport-include-relative-camel-case.js');
       done();
     });
   });
