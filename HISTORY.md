@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.2
+
+searequire -> crequire
+
 ## 0.9.1
 
 Fixed parse .json, .tpl, .handlebars when it is an entry
