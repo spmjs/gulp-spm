@@ -1,5 +1,5 @@
 {
-  "name": "a",
+  "name": "my-package",
   "version": "1.0.0",
   "spm": {
     "main": "src/index.js",

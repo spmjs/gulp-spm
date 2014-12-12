@@ -1,9 +1,9 @@
-define("a/1.0.0/src/index", ["b","c","import-style/1.0.0/index"], function(require, exports, module){
+define("my-package/1.0.0/src/index", ["b","b/c.js"], function(require, exports, module){
 require('b');
-require("a/1.0.0/a");
+require("my-package/1.0.0/a");
 
 });
-define("a/1.0.0/a", ["b"], function(require, exports, module){
+define("my-package/1.0.0/a", ["b/c.js"], function(require, exports, module){
 require('b/c.js');
 console.log('a');
 

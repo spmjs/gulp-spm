@@ -1,10 +1,11 @@
-define("type-transport/1.0.0/index-debug", ["handlebars-runtime/1.3.0/handlebars-debug","import-style/1.0.0/index-debug"], function(require, exports, module){
+define("type-transport/1.0.0/index-debug", ["react/1.0.0/index-debug","handlebars-runtime/1.3.0/handlebars-debug","import-style/1.0.0/index-debug"], function(require, exports, module){
 require("type-transport/1.0.0/a-debug.css.js");
 require("type-transport/1.0.0/a-debug.json");
 require("type-transport/1.0.0/a-debug.tpl");
 require("type-transport/1.0.0/a-debug.html");
 require("type-transport/1.0.0/a-debug.handlebars");
 require("type-transport/1.0.0/a-debug");
+require("type-transport/1.0.0/react-debug");
 
 });
 define("type-transport/1.0.0/a-debug.css.js", ["import-style/1.0.0/index-debug"], function(require, exports, module){
@@ -42,5 +43,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 });
 define("type-transport/1.0.0/a-debug", [], function(require, exports, module){
 console.log('a');
+
+});
+define("type-transport/1.0.0/react-debug", ["react/1.0.0/index-debug"], function(require, exports, module){
+/** @jsx React.DOM */
+var React = require("react/1.0.0/index-debug");
+var Mask = React.createClass({displayName: 'Mask',
+  render : function () {
+    return (React.createElement("div", null));
+  }
+});
 
 });

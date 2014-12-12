@@ -1,2 +1,2 @@
-require('c');
+require('camel-case');
 require('./b');
