@@ -50,7 +50,8 @@ describe('Plugin', function() {
       var stream = jsParser({
         pkg: pkg,
         idleading: '{{name}}-{{version}}',
-        include: 'self'
+        include: 'self',
+        global: {}
       })
       .on('data', function(file) {
         assert(file, 'plugin-js-ignore.js');
