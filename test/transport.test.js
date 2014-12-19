@@ -52,6 +52,27 @@ describe('Transport', function() {
     });
   });
 
+  it('transport all with global', function(done) {
+    var cwd = join(fixtures, 'global');
+    var opt = {
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      include: 'all',
+      global: {
+        jquery: 'jQuery',
+        react: 'React'
+      }
+    };
+
+    vfs.src('index.js', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
+      .on('data', function(file) {
+        file.contents = new Buffer(file.contents + '\n');
+        assert(file, 'transport-all-global.js');
+        done();
+      });
+  });
+
   // https://github.com/spmjs/gulp-spm/issues/5
   describe('include', function() {
 
@@ -271,6 +292,24 @@ describe('Transport', function() {
         });
     });
 
+    it('standalone with global', function(done) {
+      var cwd = join(fixtures, 'global');
+      var opt = {
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        include: 'standalone',
+        global: 'jquery:jQuery,react:React'
+      };
+
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+        .pipe(transport(opt))
+        .on('data', function(file) {
+          file.contents = new Buffer(file.contents + '\n');
+          assert(file, 'transport-include-standalone-global.js');
+          done();
+        });
+    });
+
     it('umd', function(done) {
       var cwd = join(fixtures, 'js-require-js');
       var opt = {
@@ -287,7 +326,6 @@ describe('Transport', function() {
           done();
         });
     });
-
   });
 
   describe('rename', function() {

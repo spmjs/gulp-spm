@@ -1,0 +1,10 @@
+{
+  "name": "global",
+  "version": "1.0.0",
+  "spm": {
+    "dependencies": {
+      "jquery": "1.0.0",
+      "react": "1.0.0"
+    }
+  }
+}
