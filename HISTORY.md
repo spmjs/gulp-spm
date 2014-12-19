@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.3
+
+Set global option can replace require('xx') to global variable
+
 ## 0.9.2
 
 searequire -> crequire
