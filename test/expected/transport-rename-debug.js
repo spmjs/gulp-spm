@@ -48,7 +48,7 @@ console.log('a');
 define("type-transport/1.0.0/react-debug", ["react/1.0.0/index-debug"], function(require, exports, module){
 /** @jsx React.DOM */
 var React = require("react/1.0.0/index-debug");
-var Mask = React.createClass({displayName: 'Mask',
+var Mask = React.createClass({displayName: "Mask",
   render : function () {
     return (React.createElement("div", null));
   }
