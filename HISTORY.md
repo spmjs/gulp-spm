@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.4
+
+Return window.xx if not contain `window.` when global
+
 ## 0.9.3
 
 Set global option can replace require('xx') to global variable
