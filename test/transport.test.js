@@ -59,7 +59,7 @@ describe('Transport', function() {
       moduleDir: 'sea-modules',
       include: 'all',
       global: {
-        jquery: 'jQuery',
+        jquery: 'window.jQuery',
         react: 'React'
       }
     };
