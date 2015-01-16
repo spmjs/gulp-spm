@@ -1,4 +1,4 @@
-# gulp-spm [![Build Status](https://travis-ci.org/popomore/gulp-spm.png?branch=master)](https://travis-ci.org/popomore/gulp-spm) [![Coverage Status](https://coveralls.io/repos/popomore/gulp-spm/badge.png?branch=master)](https://coveralls.io/r/popomore/gulp-spm?branch=master)
+# gulp-spm [![Build Status](https://travis-ci.org/spmjs/gulp-spm.png?branch=master)](https://travis-ci.org/spmjs/gulp-spm) [![Coverage Status](https://coveralls.io/repos/spmjs/gulp-spm/badge.png?branch=master)](https://coveralls.io/r/spmjs/gulp-spm?branch=master)
 
 gulp plugin for cmd transport
 
