@@ -2,6 +2,10 @@
 
 ---
 
+## 0.10.0
+
+Get umd variable name from opt.umd
+
 ## 0.9.4
 
 Return window.xx if not contain `window.` when global
