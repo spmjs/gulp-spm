@@ -315,7 +315,8 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        include: 'umd'
+        include: 'umd',
+        umd: 'myPackage'
       };
 
       vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
