@@ -2,6 +2,10 @@
 
 ---
 
+## 0.10.1
+
+Get css's image and font resources and push to stream.
+
 ## 0.10.0
 
 Get umd variable name from opt.umd
