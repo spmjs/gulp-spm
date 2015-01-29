@@ -604,7 +604,7 @@ describe('Transport', function() {
       })
       .on('end', function() {
         ret.should.have.length(3);
-        ret[0].path.should.endWith('css-resources/a/0.1.0/a_0_1_0_a.jpg');
+        ret[0].path.should.endWith('css-resources/a/0.1.0/a_0_1_0_a.jpg?#xx');
         ret[1].path.should.endWith('css-resources/a/0.1.0/b_0_2_0_a.jpg');
         ret[2].path.should.endWith('css-resources/a/0.1.0/a.css');
         assert(ret[2], 'css-resources-a.css');
