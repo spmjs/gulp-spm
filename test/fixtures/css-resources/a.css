@@ -1,0 +1,8 @@
+@import 'b';
+
+body {
+  background: url(./a.jpg?#xx);
+}
+div {
+  background: url(https://t.alipayobjects.com/images/T1D84eXjFcXXXXXXXX.jpeg);
+}
