@@ -2,6 +2,10 @@
 
 ---
 
+## 0.10.2
+
+Fix(css) get all local css resources, not just relative resources
+
 ## 0.10.1
 
 Get css's image and font resources and push to stream.
