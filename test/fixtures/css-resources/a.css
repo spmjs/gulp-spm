@@ -2,6 +2,7 @@
 
 body {
   background: url(./a.jpg?#xx);
+  background: url('data:image/png;base64,xxxx');
 }
 div {
   background: url(https://t.alipayobjects.com/images/T1D84eXjFcXXXXXXXX.jpeg);

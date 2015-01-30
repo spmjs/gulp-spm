@@ -2,6 +2,10 @@
 
 ---
 
+## 0.10.3
+
+Fix(css) don't parse `data:` resources
+
 ## 0.10.2
 
 Fix(css) get all local css resources, not just relative resources
