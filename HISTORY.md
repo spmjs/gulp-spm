@@ -2,6 +2,10 @@
 
 ---
 
+## 0.10.4
+
+Deps: upgrade father to 0.11
+
 ## 0.10.3
 
 Fix(css) don't parse `data:` resources
