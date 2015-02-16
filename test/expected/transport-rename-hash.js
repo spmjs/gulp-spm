@@ -1,15 +1,15 @@
-define("a/1.0.0/index-e16dba71", ["b/1.1.0/index-beb5e20c","handlebars-runtime/1.3.0/handlebars-6d71154c"], function(require, exports, module){
-require("a/1.0.0/a-981454e8");
-require("a/1.0.0/a-2d503fe3.handlebars");
-require("b/1.1.0/index-beb5e20c");
+define("a/1.0.0/index-3a9e238e", ["b/1.1.0/index-998790d7","handlebars-runtime/1.3.0/handlebars-2f3d1a73"], function(require, exports, module){
+require("a/1.0.0/a-77d5c9d3");
+require("a/1.0.0/a-aff38bc7.handlebars");
+require("b/1.1.0/index-998790d7");
 
 });
-define("a/1.0.0/a-981454e8", [], function(require, exports, module){
+define("a/1.0.0/a-77d5c9d3", [], function(require, exports, module){
 console.log('a');
 
 });
-define("a/1.0.0/a-2d503fe3.handlebars", ["handlebars-runtime/1.3.0/handlebars-6d71154c"], function(require, exports, module){
-var Handlebars = require("handlebars-runtime/1.3.0/handlebars-6d71154c")["default"];
+define("a/1.0.0/a-aff38bc7.handlebars", ["handlebars-runtime/1.3.0/handlebars-2f3d1a73"], function(require, exports, module){
+var Handlebars = require("handlebars-runtime/1.3.0/handlebars-2f3d1a73")["default"];
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};

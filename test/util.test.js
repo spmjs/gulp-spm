@@ -52,29 +52,6 @@ describe('Util', function() {
     util.addExt('./a.css').should.eql('./a.css');
   });
 
-  it('rename', function() {
-    var file = {
-      path: 'a.js',
-      history: ['a.js']
-    };
-    util.rename(file).should.eql('a.js');
-    util.rename(file, {
-      rename: {suffix: '-debug'}
-    }).should.eql('a-debug.js');
-    util.rename(file, {
-      rename: function(file) {
-        file.basename += '-debug';
-        return file;
-      }
-    }).should.eql('a-debug.js');
-    (function() {
-      util.rename(file, {rename: rename});
-      function rename() {
-        throw new Error('not found');
-      }
-    }).should.throw('a.js not found');
-  });
-
   it('isRelative', function() {
     util.isRelative('./a').should.be.ok;
     util.isRelative('../a').should.be.ok;
