@@ -4,7 +4,6 @@ require('should');
 var fs = require('fs');
 var join = require('path').join;
 var vfs = require('vinyl-fs');
-var utility = require('utility');
 var fixtures = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
 var plugin = require('../lib/plugin');
@@ -354,20 +353,16 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: rename
+        rename: {
+          suffix: '-${hash}'
+        }
       };
-
-      function rename(file) {
-        var hash = utility.sha1(fs.readFileSync(file.origin)).substring(0,8);
-        file.basename += '-' + hash;
-        return file;
-      }
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
       .pipe(transport(opt))
       .on('data', function(file) {
         util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
-        util.winPath(file.path).should.containEql('transport-hash/a/1.0.0/index-e16dba71.js');
+        util.winPath(file.path).should.containEql('transport-hash/a/1.0.0/index-3a9e238e.js');
         assert(file, 'transport-rename-hash.js');
         done();
       });
