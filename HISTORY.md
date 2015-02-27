@@ -2,6 +2,10 @@
 
 ---
 
+## 0.11.0
+
+Support rename with hash
+
 ## 0.10.4
 
 Deps: upgrade father to 0.11
