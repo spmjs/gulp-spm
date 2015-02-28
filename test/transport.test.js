@@ -599,10 +599,32 @@ describe('Transport', function() {
       })
       .on('end', function() {
         ret.should.have.length(3);
-        ret[0].path.should.endWith('css-resources/a/0.1.0/a.jpg?#xx');
+        ret[0].path.should.endWith('css-resources/a/0.1.0/a.jpg');
         ret[1].path.should.endWith('css-resources/a/0.1.0/b_0_2_0_a.jpg');
         ret[2].path.should.endWith('css-resources/a/0.1.0/a.css');
         assert(ret[2], 'css-resources-a.css');
+        done();
+      });
+  });
+
+  it('transport css resources (not root)', function(done) {
+    var ret = [], cwd = join(fixtures, 'css-resources-not-root');
+    var opt = {
+      cwd: cwd,
+      moduleDir: 'spm_modules'
+    };
+
+    vfs.src(['css/a.css'], {cwd:cwd, cwdbase:true})
+      .pipe(transport(opt))
+      .on('data', function(file) {
+        ret.push(file);
+      })
+      .on('end', function() {
+        ret.should.have.length(3);
+        ret[0].path.should.endWith('css-resources-not-root/a/0.1.0/a.jpg');
+        ret[1].path.should.endWith('css-resources-not-root/a/0.1.0/b_0_2_0_a.jpg');
+        ret[2].path.should.endWith('css-resources-not-root/a/0.1.0/css/a.css');
+        assert(ret[2], 'css-resources-not-root-a.css');
         done();
       });
   });
