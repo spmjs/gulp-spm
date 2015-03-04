@@ -335,7 +335,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug:true}
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
@@ -353,9 +353,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {
-          suffix: '-${hash}'
-        }
+        rename: {hash:true}
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
@@ -373,7 +371,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
 
       vfs.src('index.css', {cwd: cwd, cwdbase: true})
@@ -391,7 +389,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
 
       var ret = [], src = [
@@ -455,7 +453,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})

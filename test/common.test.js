@@ -33,7 +33,7 @@ describe('Common', function() {
     it('transportId with suffix', function() {
       var pkg = getPackage('type-transport');
       var opt = {
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
       var main = pkg.files[pkg.main];
       common.transportId(main, opt)
