@@ -335,7 +335,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug:true}
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
@@ -353,9 +353,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {
-          suffix: '-${hash}'
-        }
+        rename: {hash:true}
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
@@ -368,12 +366,30 @@ describe('Transport', function() {
       });
     });
 
+    it('rename with hash and debug', function(done) {
+      var cwd = join(fixtures, 'transport-hash');
+      var opt = {
+        cwd: cwd,
+        moduleDir: 'sea-modules',
+        rename: {hash:true,debug:true}
+      };
+
+      vfs.src('index.js', {cwd: cwd, cwdbase: true})
+        .pipe(transport(opt))
+        .on('data', function(file) {
+          util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
+          util.winPath(file.path).should.containEql('transport-hash/a/1.0.0/index-3a9e238e-debug.js');
+          assert(file, 'transport-rename-hash-debug.js');
+          done();
+        });
+    });
+
     it('rename with css', function(done) {
       var cwd = join(fixtures, 'css-import');
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
 
       vfs.src('index.css', {cwd: cwd, cwdbase: true})
@@ -391,7 +407,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
 
       var ret = [], src = [
@@ -455,7 +471,7 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {suffix: '-debug'}
+        rename: {debug: true}
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
