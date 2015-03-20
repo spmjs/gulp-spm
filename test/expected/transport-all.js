@@ -14,7 +14,7 @@ require("simple-transport/1.0.0/relative3");
 define("simple-transport/1.0.0/relative2", ["b"], function(require, exports, module){
 require("simple-transport/1.0.0/relative3");
 console.log('relative2');
-require('b');
+require("b");
 
 });
 define("simple-transport/1.0.0/relative3", [], function(require, exports, module){

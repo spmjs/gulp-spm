@@ -4,7 +4,7 @@ require("my-package/1.0.0/a");
 
 });
 define("b/1.0.0/index", ["camel-case"], function(require, exports, module){
-require('camel-case');
+require("camel-case");
 require("b/1.0.0/b");
 
 });
