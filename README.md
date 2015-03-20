@@ -1,4 +1,9 @@
-# gulp-spm [![Build Status](https://travis-ci.org/spmjs/gulp-spm.png?branch=master)](https://travis-ci.org/spmjs/gulp-spm) [![Coverage Status](https://coveralls.io/repos/spmjs/gulp-spm/badge.png?branch=master)](https://coveralls.io/r/spmjs/gulp-spm?branch=master)
+# gulp-spm
+
+[![NPM version](https://img.shields.io/npm/v/gulp-spm.svg?style=flat)](https://npmjs.org/package/gulp-spm)
+[![Build Status](https://img.shields.io/travis/spmjs/gulp-spm.svg?style=flat)](https://travis-ci.org/spmjs/gulp-spm)
+[![Coverage Status](https://img.shields.io/coveralls/spmjs/gulp-spm.svg?style=flat)](https://coveralls.io/r/spmjs/gulp-spm)
+[![NPM downloads](http://img.shields.io/npm/dm/gulp-spm.svg?style=flat)](https://npmjs.org/package/gulp-spm)
 
 gulp plugin for cmd transport
 
