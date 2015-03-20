@@ -4,6 +4,7 @@
 
 ## 0.12.0
 
+Remove standalone.
 Fix(hash): calculate hash on demand
 
 ## 0.11.1
