@@ -2,6 +2,10 @@
 
 ---
 
+## 0.12.0
+
+Fix(hash): calculate hash on demand
+
 ## 0.11.1
 
 Fix(css): dont handle css resources when entry is js file, Fix [spmjs/spm#1206](https://github.com/spmjs/spm/issues/1206)
