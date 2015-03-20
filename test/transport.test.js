@@ -273,59 +273,6 @@ describe('Transport', function() {
         done();
       });
     });
-
-    it('standalone', function(done) {
-      var cwd = join(fixtures, 'js-require-js');
-      var opt = {
-        cwd: cwd,
-        moduleDir: 'sea-modules',
-        include: 'standalone'
-      };
-
-      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
-        .pipe(transport(opt))
-        .on('data', function(file) {
-          file.contents = new Buffer(file.contents + '\n');
-          assert(file, 'transport-include-standalone.js');
-          done();
-        });
-    });
-
-    it('standalone with global', function(done) {
-      var cwd = join(fixtures, 'global');
-      var opt = {
-        cwd: cwd,
-        moduleDir: 'sea-modules',
-        include: 'standalone',
-        global: 'jquery:jQuery,react:React'
-      };
-
-      vfs.src('index.js', {cwd: cwd, cwdbase: true})
-        .pipe(transport(opt))
-        .on('data', function(file) {
-          file.contents = new Buffer(file.contents + '\n');
-          assert(file, 'transport-include-standalone-global.js');
-          done();
-        });
-    });
-
-    it('umd', function(done) {
-      var cwd = join(fixtures, 'js-require-js');
-      var opt = {
-        cwd: cwd,
-        moduleDir: 'sea-modules',
-        include: 'umd',
-        umd: 'myPackage'
-      };
-
-      vfs.src('src/index.js', {cwd: cwd, cwdbase: true})
-        .pipe(transport(opt))
-        .on('data', function(file) {
-          file.contents = new Buffer(file.contents + '\n');
-          assert(file, 'transport-include-umd.js');
-          done();
-        });
-    });
   });
 
   describe('rename', function() {
