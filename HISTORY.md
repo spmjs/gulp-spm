@@ -2,6 +2,10 @@
 
 ---
 
+## 0.12.1
+
+Add styleBox as an option
+
 ## 0.12.0
 
 Remove standalone.
