@@ -626,6 +626,31 @@ describe('Transport', function() {
     });
   });
 
+  it('transport js stylebox', function(done) {
+    var cwd = join(fixtures, 'type-transport');
+    var pkg = new Package(cwd, {
+      entry: ['stylebox.js'],
+      moduleDir: 'sea-modules'
+    });
+    var opt = {
+      cwd: cwd,
+      moduleDir: 'sea-modules',
+      pkg: pkg,
+      styleBox: true
+    };
+
+    var ret = [];
+    vfs.src(['stylebox.js'], {cwd: cwd, cwdbase: true})
+    .pipe(transport(opt))
+    .on('data', function(file) {
+      ret.push(file);
+    })
+    .on('end', function() {
+      assert(ret[0], 'transport-stylebox.js');
+      done();
+    });
+  });
+
   describe('exports', function() {
     var exports = require('..');
 
