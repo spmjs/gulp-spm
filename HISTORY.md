@@ -2,6 +2,10 @@
 
 ---
 
+## 0.12.2
+
+Fix: crash in windows when import css, Close #35
+
 ## 0.12.1
 
 Add styleBox as an option
