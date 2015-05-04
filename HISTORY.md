@@ -2,6 +2,10 @@
 
 ---
 
+## 1.0.0
+
+Feat: parse ~ prefix css deps as module, else as file
+
 ## 0.12.2
 
 Fix: crash in windows when import css, Close #35
