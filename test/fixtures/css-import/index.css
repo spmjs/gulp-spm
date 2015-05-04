@@ -1,5 +1,5 @@
 @import url("./a1.css");
-@import url("b");
+@import url("~b");
 
 div {
   border: 1px;

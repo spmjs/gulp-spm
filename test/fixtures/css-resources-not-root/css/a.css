@@ -1,4 +1,4 @@
-@import 'b';
+@import '~b';
 
 body {
   background: url(../img/a.jpg);
