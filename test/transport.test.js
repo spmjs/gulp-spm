@@ -302,7 +302,10 @@ describe('Transport', function() {
       var opt = {
         cwd: cwd,
         moduleDir: 'sea-modules',
-        rename: {hash:true}
+        rename: function(file, fileObj) {
+          fileObj.suffix = '-' + file.hash;
+          return fileObj;
+        }
       };
 
       vfs.src('index.js', {cwd: cwd, cwdbase: true})
