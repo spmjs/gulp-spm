@@ -2,6 +2,10 @@
 
 ---
 
+## 0.12.3 / 2015-05-05
+
+- fix: generate hash with handlebars/tpl/json
+
 ## 0.12.2
 
 Fix: crash in windows when import css, Close #35
