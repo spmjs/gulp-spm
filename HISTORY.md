@@ -2,6 +2,10 @@
 
 ---
 
+## 0.13.0 / 2015-05-05
+
+- feat(rename): pass file to rename as a first arguments when it's a function
+
 ## 0.12.4 / 2015-05-05
 
 - fix: generate hash with .css.js
