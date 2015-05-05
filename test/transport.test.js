@@ -4,6 +4,7 @@ require('should');
 var fs = require('fs');
 var join = require('path').join;
 var vfs = require('vinyl-fs');
+var pedding = require('pedding');
 var fixtures = join(__dirname, 'fixtures');
 var transport = require('../lib/transport');
 var plugin = require('../lib/plugin');
@@ -296,6 +297,7 @@ describe('Transport', function() {
     });
 
     it('rename with hash', function(done) {
+      done = pedding(2, done);
       var cwd = join(fixtures, 'transport-hash');
       var opt = {
         cwd: cwd,
@@ -309,6 +311,15 @@ describe('Transport', function() {
         util.winPath(file.history[0]).should.containEql('transport-hash/index.js');
         util.winPath(file.path).should.containEql('transport-hash/a/1.0.0/index-3a9e238e.js');
         assert(file, 'transport-rename-hash.js');
+        done();
+      });
+
+      vfs.src('a.handlebars', {cwd: cwd, cwdbase: true})
+      .pipe(transport(opt))
+      .on('data', function(file) {
+        util.winPath(file.history[0]).should.containEql('transport-hash/a.handlebars');
+        util.winPath(file.path).should.containEql('transport-hash/a/1.0.0/a-aff38bc7.handlebars.js');
+        assert(file, 'transport-rename-hash-handlebars.js');
         done();
       });
     });

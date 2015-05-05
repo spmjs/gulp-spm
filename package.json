@@ -30,6 +30,7 @@
     "totoro": "1",
     "concat-stream": "~1.4.4",
     "coveralls": "~2.8.0",
+    "pedding": "~1.0.0",
     "vinyl-fs": "~0.3.7",
     "utility": "*"
   },
