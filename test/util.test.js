@@ -59,6 +59,16 @@ describe('Util', function() {
     util.isRelative('a.js').should.not.be.ok;
   });
 
+  it('isLocal', function() {
+    util.isLocal('http://a').should.be.false;
+    util.isLocal('https://a').should.be.false;
+    util.isLocal('//a').should.be.false;
+    util.isLocal('data:a').should.be.false;
+    util.isLocal('./a').should.be.true;
+    util.isLocal('../b').should.be.true;
+    util.isLocal('/abc').should.be.true;
+  });
+
   it('resolvePath', function() {
     util.resolvePath('./a.js', 'b.js').should.eql('a.js');
     util.resolvePath('./a', 'b.js').should.eql('a');
