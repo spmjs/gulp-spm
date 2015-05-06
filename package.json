@@ -1,6 +1,6 @@
 {
   "name": "gulp-spm",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "gulp plugin for cmd transport",
   "main": "index",
   "dependencies": {

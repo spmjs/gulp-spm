@@ -2,6 +2,10 @@
 
 ---
 
+## 0.13.1 / 2015-05-06
+
+- fix: isLocal don't cover pattern like `//a.com/a.js`
+
 ## 0.13.0 / 2015-05-05
 
 - feat(rename): pass file to rename as a first arguments when it's a function
