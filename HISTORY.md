@@ -2,10 +2,17 @@
 
 ---
 
+## 0.11.2
+
+- Fix(rename): opts can be function
+- Feat(rename): only support hash and debug rename opts
+- Fix: crash in windows when import css, Close #35
+- Fix: isLocal don't cover pattern like `//a.com/a.js`
+
 ## 0.11.1
 
-Fix(css): dont handle css resources when entry is js file, Fix [spmjs/spm#1206](https://github.com/spmjs/spm/issues/1206)
-Fix(css): fix css resources path error
+- Fix(css): dont handle css resources when entry is js file, Fix [spmjs/spm#1206](https://github.com/spmjs/spm/issues/1206)
+- Fix(css): fix css resources path error
 
 ## 0.11.0
 
